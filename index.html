@@ -10,7 +10,7 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="logo.png" />
 
-  <!-- Google Fonts: Baloo 2 (Headings/Buttons) + Be Vietnam Pro (Clean Body Sans scanned from Uranus Center) -->
+  <!-- Google Fonts: Baloo 2 (Headings/Buttons) + Be Vietnam Pro (Body text scanned from Uranus Center) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -99,12 +99,16 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
 
-    /* Uranus Sidebar Styles */
+    /* Uranus Sidebar Transitions & Collapse */
+    #app-sidebar {
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
     .sidebar-link {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1rem;
       border-radius: 1rem;
       font-size: 0.875rem;
       font-weight: 600;
@@ -120,6 +124,46 @@
       background-color: #fef2f2;
       color: #dc2626;
       font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(220, 38, 38, 0.12);
+    }
+
+    /* Collapsed Mode Styling (Khớp 100% hình chụp thu gọn Uranus) */
+    #app-sidebar.sidebar-collapsed {
+      width: 4.75rem !important; /* ~76px */
+    }
+    #app-sidebar.sidebar-collapsed .sidebar-expanded-only {
+      display: none !important;
+    }
+    #app-sidebar.sidebar-collapsed .sidebar-collapsed-only {
+      display: block !important;
+    }
+    #app-sidebar:not(.sidebar-collapsed) .sidebar-collapsed-only {
+      display: none !important;
+    }
+
+    #app-sidebar.sidebar-collapsed .sidebar-header-box {
+      justify-content: center;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    #app-sidebar.sidebar-collapsed .sidebar-link {
+      justify-content: center;
+      padding: 0;
+      width: 3rem;
+      height: 3rem;
+      margin: 0.35rem auto;
+      border-radius: 9999px; /* Tròn như trong ảnh mẫu Uranus */
+    }
+    #app-sidebar.sidebar-collapsed .sidebar-link.active {
+      background-color: #fee2e2; /* Vòng tròn cam/đỏ nhạt */
+      color: #dc2626;
+      box-shadow: none;
+    }
+    #app-sidebar.sidebar-collapsed .sidebar-link svg {
+      width: 1.35rem;
+      height: 1.35rem;
     }
 
     /* Toast Notification */
@@ -147,98 +191,96 @@
   <!-- ================= MOBILE SIDEBAR BACKDROP ================= -->
   <div id="mobile-sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/40 z-40 backdrop-blur-xs hidden transition-opacity lg:hidden"></div>
 
-  <!-- ================= EXACT URANUS DASHBOARD SIDEBAR ================= -->
-  <aside id="app-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static lg:z-auto shrink-0 shadow-sm">
+  <!-- ================= EXACT URANUS DASHBOARD SIDEBAR (CÓ THU GỌN BẰNG NÚT 3 GẠCH) ================= -->
+  <aside id="app-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col -translate-x-full lg:translate-x-0 lg:static lg:z-auto shrink-0 shadow-sm">
     
-    <!-- Sidebar Header: Hamburger Toggle + Logo + URANUS/SUGOI Brand -->
-    <div class="h-16 px-4 flex items-center justify-between border-b border-slate-100">
-      <div class="flex items-center gap-3">
-        <button onclick="toggleSidebar()" class="w-9 h-9 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-700 transition" title="Thu gọn / Mở rộng menu">
+    <!-- Sidebar Header: Nút 3 gạch ≡ + Logo To Rõ + Tên Đầy Đủ SUGOI HANOI TRIP -->
+    <div class="h-18 px-3.5 flex items-center justify-between border-b border-slate-100 sidebar-header-box">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <!-- Nút 3 gạch để thu gọn / mở rộng sidebar -->
+        <button onclick="toggleSidebar()" class="w-10 h-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-700 transition shrink-0" title="Bấm để thu gọn / mở rộng sidebar">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <div class="flex items-center gap-2">
-          <img src="logo.png" alt="SUGOI" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
-          <span class="font-baloo text-xl font-extrabold text-[#dc2626] tracking-tight uppercase">SUGOI</span>
+
+        <!-- Logo to rõ + Tên đầy đủ SUGOI HANOI TRIP -->
+        <img src="logo.png" alt="SUGOI HANOI TRIP" class="w-11 h-11 object-contain rounded-xl border border-slate-200/90 shadow-2xs shrink-0 p-0.5 bg-white" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
+        
+        <div class="sidebar-expanded-only flex flex-col justify-center min-w-0">
+          <span class="font-baloo text-sm font-extrabold text-[#dc2626] tracking-tight uppercase leading-tight truncate">
+            SUGOI HANOI TRIP
+          </span>
+          <span class="text-[9px] font-bold text-slate-400 tracking-wider uppercase">
+            Hà Nội 2026
+          </span>
         </div>
       </div>
+
       <button onclick="toggleSidebar(false)" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 lg:hidden text-sm font-bold">✕</button>
     </div>
 
-    <!-- Navigation Scroll Area -->
-    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+    <!-- Navigation Scroll Area (CHỈ 3 TAB THEO ĐÚNG YÊU CẦU: LỊCH TRÌNH - QUỸ & CHI PHÍ - CHECKLIST) -->
+    <div class="flex-1 overflow-y-auto px-2.5 py-4 space-y-6">
       
-      <!-- Section: QUẢN TRỊ HÀNH TRÌNH (Exact Uranus Style) -->
       <div>
-        <div class="px-3 pb-2 text-[11px] font-extrabold text-slate-400 tracking-wider uppercase">
+        <!-- Tiêu đề mục: Khi mở rộng là 'QUẢN TRỊ HÀNH TRÌNH', khi thu gọn là 'ADMIN' (như ảnh chụp Uranus) -->
+        <div class="sidebar-expanded-only px-3 pb-2 text-[11px] font-extrabold text-slate-400 tracking-wider uppercase">
           QUẢN TRỊ HÀNH TRÌNH
         </div>
+        <div class="sidebar-collapsed-only text-center pb-2 text-[10px] font-extrabold text-slate-400 tracking-wider uppercase">
+          ADMIN
+        </div>
 
-        <nav class="space-y-1">
-          <!-- 1. Tổng quan (Active Soft Orange/Red Pill) -->
-          <button onclick="navigateTo('overview')" id="nav-overview" class="w-full sidebar-link active">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            <span class="truncate">Tổng quan</span>
-          </button>
-
-          <!-- 2. Thành viên (8 người) -->
-          <button onclick="navigateTo('members')" id="nav-members" class="w-full sidebar-link">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-            <span class="truncate">Thành viên (8 người)</span>
-          </button>
-
-          <!-- 3. Lịch trình dạng bảng -->
-          <button onclick="navigateTo('schedule')" id="nav-schedule" class="w-full sidebar-link">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            <span class="truncate">Lịch trình (Dạng bảng)</span>
-          </button>
-
-          <!-- 4. Quỹ & Chi phí -->
-          <button onclick="navigateTo('budget')" id="nav-budget" class="w-full sidebar-link">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            <span class="truncate">Quỹ & Chi phí</span>
-          </button>
-
-          <!-- 5. Chuyến bay SGN ⇄ HAN -->
-          <button onclick="navigateTo('flight')" id="nav-flight" class="w-full sidebar-link">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
-            <span class="truncate">Vé bay SGN ⇄ HAN</span>
-          </button>
-
-          <!-- 6. Checklist hành lý -->
-          <button onclick="navigateTo('checklist')" id="nav-checklist" class="w-full sidebar-link">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-            <span class="truncate">Checklist hành lý</span>
-          </button>
-
-          <!-- 7. Thảo luận nhóm (With badge) -->
-          <button onclick="navigateTo('comments')" id="nav-comments" class="w-full sidebar-link justify-between">
+        <nav class="space-y-1.5">
+          
+          <!-- TAB 1: LỊCH TRÌNH -->
+          <button onclick="switchTab('schedule')" id="nav-schedule" title="Lịch trình dạng bảng" class="w-full sidebar-link active justify-between relative group">
             <div class="flex items-center gap-3 truncate">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <span class="truncate">Thảo luận nhóm</span>
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="sidebar-expanded-only truncate">Lịch trình</span>
             </div>
-            <span id="sidebar-comment-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#dc2626] text-white shrink-0">0</span>
+            <span id="badge-schedule-count" class="sidebar-expanded-only px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-[#dc2626] shrink-0">0 Kèo</span>
           </button>
 
-          <!-- 8. Hỗ trợ chuyến đi (With Badge 14 like in Uranus screenshot) -->
-          <button onclick="navigateTo('support')" id="nav-support" class="w-full sidebar-link justify-between">
+          <!-- TAB 2: QUỸ & CHI PHÍ -->
+          <button onclick="switchTab('budget')" id="nav-budget" title="Bảng tính quỹ & chi phí" class="w-full sidebar-link justify-between relative group">
             <div class="flex items-center gap-3 truncate">
-              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-              <span class="truncate">Hỗ trợ chuyến đi</span>
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span class="sidebar-expanded-only truncate">Quỹ & Chi phí</span>
             </div>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ea580c] text-white shrink-0">14</span>
+            <span id="badge-budget-total" class="sidebar-expanded-only px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 font-mono shrink-0">0đ</span>
           </button>
+
+          <!-- TAB 3: CHECKLIST -->
+          <button onclick="switchTab('checklist')" id="nav-checklist" title="Checklist hành lý & dặn dò" class="w-full sidebar-link justify-between relative group">
+            <div class="flex items-center gap-3 truncate">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+              <span class="sidebar-expanded-only truncate">Checklist</span>
+            </div>
+            <span id="badge-checklist-count" class="sidebar-expanded-only px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 shrink-0">0/6</span>
+          </button>
+
         </nav>
       </div>
 
-      <!-- 8 HCM Members Quick Box -->
-      <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
+      <!-- 8 HCM Members Quick Box (Chỉ hiện khi mở rộng) -->
+      <div class="sidebar-expanded-only p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
         <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center justify-between">
           <span>8 Bạn HCM</span>
-          <span class="text-emerald-600 font-extrabold text-[10px]">Đầy Đủ</span>
+          <span class="text-emerald-600 font-extrabold text-[10px]">Đã Chốt Vé</span>
         </div>
         <div class="grid grid-cols-4 gap-1.5 text-center">
           <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Cường</div>
@@ -254,8 +296,8 @@
 
     </div>
 
-    <!-- Sidebar Footer -->
-    <div class="p-4 border-t border-slate-100 flex items-center gap-3">
+    <!-- Sidebar Footer (Chỉ hiện khi mở rộng) -->
+    <div class="sidebar-expanded-only p-4 border-t border-slate-100 flex items-center gap-3">
       <div class="w-8 h-8 rounded-full bg-red-100 text-[#dc2626] font-bold flex items-center justify-center text-xs">
         8P
       </div>
@@ -270,29 +312,28 @@
   <div class="flex-1 flex flex-col min-w-0">
 
     <!-- ================= CLEAN TOP NAVBAR ================= -->
-    <!-- (Note: Đã xóa 2 nút [Thêm Kèo Mới], [Gửi Nhóm] và đã xóa dòng subtitle theo yêu cầu) -->
     <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
         
         <div class="flex items-center gap-3">
-          <!-- Mobile Hamburger Toggle -->
-          <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+          <!-- Hamburger Toggle Button -->
+          <button onclick="toggleSidebar()" class="p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition" title="Bấm để thu gọn / mở rộng sidebar">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
           </button>
 
-          <!-- Brand Logo in Hanoi Red -->
-          <div class="flex items-center gap-2.5">
-            <img src="logo.png" alt="SUGOI HANOI TRIP" class="w-9 h-9 object-cover rounded-xl border border-slate-200 shadow-xs shrink-0" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
+          <!-- Logo To Rõ + Tên Đầy Đủ: SUGOI HANOI TRIP -->
+          <div class="flex items-center gap-3">
+            <img src="logo.png" alt="SUGOI HANOI TRIP" class="w-11 h-11 sm:w-12 sm:h-12 object-contain rounded-xl border border-slate-200/90 shadow-2xs shrink-0 p-0.5 bg-white" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
             <div class="flex items-center gap-2">
-              <span class="font-baloo text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">SUGOI HANOI TRIP</span>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-[#dc2626] bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">
+              <span class="font-baloo text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">SUGOI HANOI TRIP</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-[#dc2626] bg-red-50 border border-red-200 px-2 py-0.5 rounded-md hidden sm:inline-block">
                 Hà Nội 2026
               </span>
             </div>
           </div>
         </div>
 
-        <!-- Right Side: Weather & Status info (Clean & Minimal) -->
+        <!-- Right Side: Weather pill & Share button -->
         <div class="flex items-center gap-3">
           <div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600">
             <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
@@ -308,7 +349,7 @@
     </header>
 
     <!-- ================= FLIGHT INFO & COUNTDOWN (CONFIRMED ROUND TRIP) ================= -->
-    <section id="section-flight" class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8">
+    <section class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         
         <!-- Flight Details -->
@@ -369,34 +410,11 @@
       </div>
     </section>
 
-    <!-- ================= TWO MAIN HORIZONTAL TABS ================= -->
-    <section class="bg-white border-b border-slate-200 sticky top-16 z-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center gap-2">
-          
-          <!-- Tab 1: Lịch Trình Dạng Bảng -->
-          <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            <span>Lịch Trình (Dạng Bảng)</span>
-            <span id="tab-badge-items" class="ml-1 text-[11px] font-sans font-bold px-2 py-0.2 rounded-full bg-red-50 text-[#dc2626]">0 Kèo</span>
-          </button>
-
-          <!-- Tab 2: Bảng Tính Chi Phí -->
-          <button onclick="switchTab('budget')" id="tab-btn-budget" class="flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            <span>Bảng Tính Chi Phí</span>
-            <span id="tab-badge-cost" class="ml-1 text-[11px] font-sans font-mono font-bold px-2 py-0.2 rounded-full bg-slate-100 text-slate-700">0đ/bạn</span>
-          </button>
-
-        </div>
-      </div>
-    </section>
-
     <!-- ================= MAIN BODY CONTAINER ================= -->
     <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
 
       <!-- =========================================================================
-           TAB 1: LỊCH TRÌNH DẠNG BẢNG (TABLE VIEW WITH FAR-LEFT TIME COLUMN)
+           NỘI DUNG 1: LỊCH TRÌNH DẠNG BẢNG (CHỈ CHỨA LỊCH TRÌNH)
            ========================================================================= -->
       <div id="content-schedule" class="space-y-6">
         
@@ -480,7 +498,7 @@
                 </tr>
               </thead>
 
-              <!-- Table Body (Rendered dynamically based on custom time slots and events) -->
+              <!-- Table Body -->
               <tbody id="schedule-matrix-body" class="divide-y divide-slate-200 text-xs">
                 <!-- Injected via JavaScript -->
               </tbody>
@@ -489,90 +507,10 @@
           </div>
         </div>
 
-        <!-- ================= DISCUSSION & DYNAMIC CHECKLIST ================= -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4">
-          
-          <!-- Left: Thảo Luận & Dặn Dò Nhóm (Với chức năng Sửa & Xóa tin nhắn) -->
-          <div class="lg:col-span-7 space-y-3" id="section-comments">
-            <div class="s-card p-5">
-              <div class="flex items-center justify-between mb-1">
-                <h3 class="text-base font-baloo font-extrabold text-slate-900">
-                  Thảo Luận & Dặn Dò Nhóm
-                </h3>
-                <span class="text-xs text-slate-400">Hỗ trợ sửa & xóa</span>
-              </div>
-              <p class="text-xs text-slate-500 mb-4">Để lại lưu ý hoặc gợi ý địa điểm muốn rủ cả nhóm</p>
-
-              <!-- Discussion Form with 8-Member Dropdown -->
-              <form onsubmit="handleSendComment(event)" class="space-y-2.5 mb-4">
-                <div class="grid grid-cols-2 gap-2">
-                  <select id="cmt-name" required class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
-                    <option value="Cường">1. Cường</option>
-                    <option value="Huy">2. Huy</option>
-                    <option value="Giang">3. Giang</option>
-                    <option value="Dũng">4. Dũng</option>
-                    <option value="Lân">5. Lân</option>
-                    <option value="Nhung">6. Nhung</option>
-                    <option value="Quỳnh">7. Quỳnh</option>
-                    <option value="Lanh">8. Lanh</option>
-                  </select>
-
-                  <select id="cmt-tag" class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
-                    <option value="quán ăn">Gợi ý quán ăn</option>
-                    <option value="lịch trình">Góp ý lịch trình</option>
-                    <option value="chỗ ở">Chỗ ở / Homestay</option>
-                    <option value="xe cộ">Đi lại / Đón tiễn sân bay</option>
-                    <option value="nhắc nhở">Lưu ý chuẩn bị</option>
-                  </select>
-                </div>
-                <textarea id="cmt-content" required rows="2" placeholder="Nội dung thảo luận..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
-                <button type="submit" class="w-full py-2 btn-primary text-xs font-bold">Gửi Tin Nhắn</button>
-              </form>
-
-              <!-- Comments Feed -->
-              <div id="comments-feed" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
-                <!-- Rendered dynamically -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Right: Dynamic Checklist Hành Lý (Cho mọi người tự thêm, sửa, xóa) -->
-          <div class="lg:col-span-5 space-y-3" id="section-checklist">
-            <div class="s-card p-5">
-              <div class="flex items-center justify-between mb-1">
-                <h3 class="text-base font-baloo font-extrabold text-slate-900">
-                  Checklist Hành Lý (20°C - 24°C)
-                </h3>
-                <span class="text-xs font-bold text-[#dc2626]" id="checklist-stat">0/0 Đã Chuẩn Bị</span>
-              </div>
-              <p class="text-xs text-slate-500 mb-3">Vật dụng cần thiết cho chuyến đi 63 giờ tại thủ đô</p>
-
-              <!-- Progress bar -->
-              <div class="w-full bg-slate-100 rounded-full h-1.5 mb-4 overflow-hidden">
-                <div id="checklist-progress" class="bg-[#dc2626] h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-              </div>
-
-              <!-- Form to Add Custom Checklist Items -->
-              <form onsubmit="handleAddChecklistItem(event)" class="flex items-center gap-1.5 mb-3.5">
-                <input type="text" id="new-checklist-text" required placeholder="Thêm vật dụng của bạn..." class="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white" />
-                <button type="submit" class="px-3.5 py-2 btn-primary text-xs font-bold shrink-0">
-                  + Thêm Đồ
-                </button>
-              </form>
-
-              <!-- Dynamic Checklist Items with Edit & Delete -->
-              <div id="checklist-items" class="space-y-2 max-h-72 overflow-y-auto pr-1">
-                <!-- Rendered dynamically -->
-              </div>
-            </div>
-          </div>
-
-        </div>
-
       </div>
 
       <!-- =========================================================================
-           TAB 2: BẢNG TÍNH CHI PHÍ (BUDGET VIEW)
+           NỘI DUNG 2: QUỸ & CHI PHÍ (CHỈ CHỨA BẢNG TÍNH & DỰ TOÁN KINH PHÍ)
            ========================================================================= -->
       <div id="content-budget" class="hidden space-y-6">
         
@@ -635,6 +573,92 @@
 
       </div>
 
+      <!-- =========================================================================
+           NỘI DUNG 3: CHECKLIST HÀNH LÝ & DẶN DÒ (CHỈ CHỨA CHECKLIST & DẶN DÒ)
+           ========================================================================= -->
+      <div id="content-checklist" class="hidden space-y-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left: Dynamic Checklist Hành Lý (Cho mọi người tự thêm, sửa, xóa) -->
+          <div class="lg:col-span-7 space-y-3">
+            <div class="s-card p-5">
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="text-base font-baloo font-extrabold text-slate-900">
+                  Checklist Hành Lý (20°C - 24°C)
+                </h3>
+                <span class="text-xs font-bold text-[#dc2626]" id="checklist-stat">0/0 Đã Chuẩn Bị</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Vật dụng cần thiết cho chuyến đi 63 giờ tại thủ đô (se lạnh)</p>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-slate-100 rounded-full h-1.5 mb-4 overflow-hidden">
+                <div id="checklist-progress" class="bg-[#dc2626] h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+
+              <!-- Form to Add Custom Checklist Items -->
+              <form onsubmit="handleAddChecklistItem(event)" class="flex items-center gap-1.5 mb-3.5">
+                <input type="text" id="new-checklist-text" required placeholder="Thêm vật dụng của bạn (VD: Găng tay, Ô che, Máy ảnh...)..." class="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white" />
+                <button type="submit" class="px-3.5 py-2 btn-primary text-xs font-bold shrink-0">
+                  + Thêm Đồ
+                </button>
+              </form>
+
+              <!-- Dynamic Checklist Items with Edit & Delete -->
+              <div id="checklist-items" class="space-y-2 max-h-[460px] overflow-y-auto pr-1">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Thảo Luận & Dặn Dò Nhóm (Với chức năng Sửa & Xóa tin nhắn) -->
+          <div class="lg:col-span-5 space-y-3">
+            <div class="s-card p-5">
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="text-base font-baloo font-extrabold text-slate-900">
+                  Dặn Dò & Ghi Chú Nhóm
+                </h3>
+                <span class="text-xs text-slate-400">Có sửa & xóa</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Để lại lưu ý đồ đạc hoặc dặn dò cho chuyến đi</p>
+
+              <!-- Discussion Form with 8-Member Dropdown -->
+              <form onsubmit="handleSendComment(event)" class="space-y-2.5 mb-4">
+                <div class="grid grid-cols-2 gap-2">
+                  <select id="cmt-name" required class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
+                    <option value="Cường">1. Cường</option>
+                    <option value="Huy">2. Huy</option>
+                    <option value="Giang">3. Giang</option>
+                    <option value="Dũng">4. Dũng</option>
+                    <option value="Lân">5. Lân</option>
+                    <option value="Nhung">6. Nhung</option>
+                    <option value="Quỳnh">7. Quỳnh</option>
+                    <option value="Lanh">8. Lanh</option>
+                  </select>
+
+                  <select id="cmt-tag" class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
+                    <option value="nhắc nhở">Lưu ý chuẩn bị</option>
+                    <option value="quán ăn">Gợi ý quán ăn</option>
+                    <option value="lịch trình">Góp ý lịch trình</option>
+                    <option value="chỗ ở">Chỗ ở / Homestay</option>
+                    <option value="xe cộ">Đi lại sân bay</option>
+                  </select>
+                </div>
+                <textarea id="cmt-content" required rows="2" placeholder="Nội dung dặn dò..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
+                <button type="submit" class="w-full py-2 btn-primary text-xs font-bold">Gửi Dặn Dò</button>
+              </form>
+
+              <!-- Comments Feed -->
+              <div id="comments-feed" class="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
     </main>
 
     <!-- ================= FOOTER ================= -->
@@ -644,7 +668,7 @@
           <img src="logo.png" alt="SUGOI" class="w-6 h-6 object-cover rounded-md" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
           <span class="font-baloo text-sm font-extrabold text-slate-800">SUGOI HANOI TRIP • 2026</span>
         </div>
-        <p>Giao diện Uranus Center chuẩn hóa • Lịch trình dạng bảng & quản trị chi phí 8 thành viên HCM</p>
+        <p>Lịch trình dạng bảng • Quỹ & chi phí • Checklist hành lý 8 thành viên HCM</p>
       </div>
     </footer>
 
@@ -779,7 +803,7 @@
       <button onclick="closeCommentEditModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
       
       <div class="mb-3">
-        <h3 class="text-base font-baloo font-extrabold text-slate-900">Chỉnh Sửa Tin Nhắn Thảo Luận</h3>
+        <h3 class="text-base font-baloo font-extrabold text-slate-900">Chỉnh Sửa Dặn Dò</h3>
         <p class="text-xs text-slate-500">Cập nhật nội dung hoặc phân loại thảo luận</p>
       </div>
 
@@ -803,22 +827,22 @@
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Phân Loại</label>
             <select id="edit-cmt-tag" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:border-[#dc2626] focus:bg-white">
+              <option value="nhắc nhở">Lưu ý chuẩn bị</option>
               <option value="quán ăn">Gợi ý quán ăn</option>
               <option value="lịch trình">Góp ý lịch trình</option>
               <option value="chỗ ở">Chỗ ở / Homestay</option>
-              <option value="xe cộ">Đi lại / Đón tiễn sân bay</option>
-              <option value="nhắc nhở">Lưu ý chuẩn bị</option>
+              <option value="xe cộ">Đi lại sân bay</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nội Dung Thảo Luận *</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nội Dung Dặn Dò *</label>
           <textarea id="edit-cmt-content" required rows="3" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
         </div>
 
         <button type="submit" class="w-full py-2.5 btn-primary text-xs font-bold">
-          Cập Nhật Tin Nhắn
+          Cập Nhật Dặn Dò
         </button>
       </form>
     </div>
@@ -837,77 +861,6 @@
           Lưu Chỉnh Sửa
         </button>
       </form>
-    </div>
-  </div>
-
-  <!-- ================= MODAL: THÀNH VIÊN (8 NGƯỜI) MODAL ================= -->
-  <div id="members-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-      <button onclick="closeMembersModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
-      
-      <div class="mb-4">
-        <h3 class="text-base font-baloo font-extrabold text-slate-900">Danh Sách 8 Thành Viên HCM</h3>
-        <p class="text-xs text-slate-500">Chuyến đi Hà Nội 22 - 24/11/2026 (Vé bay khứ hồi đã chốt)</p>
-      </div>
-
-      <div class="space-y-2">
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">1</span>
-            <span class="text-xs font-bold text-slate-800">Cường</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">2</span>
-            <span class="text-xs font-bold text-slate-800">Huy</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">3</span>
-            <span class="text-xs font-bold text-slate-800">Giang</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">4</span>
-            <span class="text-xs font-bold text-slate-800">Dũng</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">5</span>
-            <span class="text-xs font-bold text-slate-800">Lân</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">6</span>
-            <span class="text-xs font-bold text-slate-800">Nhung</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">7</span>
-            <span class="text-xs font-bold text-slate-800">Quỳnh</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">8</span>
-            <span class="text-xs font-bold text-slate-800">Lanh</span>
-          </div>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -963,7 +916,7 @@
 
   <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
-    const STORAGE_KEY = 'sugoi_hn_v10_full_state';
+    const STORAGE_KEY = 'sugoi_hn_v12_collapsible';
 
     const INITIAL_SLOTS = [
       { id: 'slot-1', time: '07:00 - 09:00', label: 'Sáng sớm (Phở & Cà phê)' },
@@ -984,7 +937,7 @@
     ];
 
     /* Global Reactive State */
-    let activeTab = 'schedule';
+    let activeTab = 'schedule'; // 'schedule', 'budget', or 'checklist'
     let timeSlots = [];
     let scheduleEvents = [];
     let baseExpenses = [];
@@ -1026,7 +979,7 @@
         {
           id: 'cmt-init-1',
           name: 'Cường',
-          tag: 'quán ăn',
+          tag: 'nhắc nhở',
           content: 'Sáng Chủ Nhật 22/11 đáp xong anh em ghé làm bát Phở Bát Đàn nhé!',
           time: 'Vừa xong'
         }
@@ -1053,6 +1006,12 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadState();
       initCountdown();
+
+      // Check saved sidebar collapse state for desktop
+      if (window.innerWidth >= 1024 && localStorage.getItem('sugoi_sidebar_collapsed') === 'true') {
+        document.getElementById('app-sidebar').classList.add('sidebar-collapsed');
+      }
+
       renderAll();
     });
 
@@ -1066,7 +1025,7 @@
     }
 
     /* =========================================================================
-       SIDEBAR & TAB NAVIGATION
+       SIDEBAR & TAB NAVIGATION (BẤM 3 GẠCH THU GỌN / MỞ RỘNG)
        ========================================================================= */
     function toggleSidebar(forceState) {
       const sidebar = document.getElementById('app-sidebar');
@@ -1086,49 +1045,9 @@
         }
       } else {
         // Desktop collapse toggle
-        sidebar.classList.toggle('lg:w-64');
-        sidebar.classList.toggle('lg:w-20');
-        sidebar.classList.toggle('sidebar-compact');
-      }
-    }
-
-    function navigateTo(target) {
-      // Close mobile sidebar if open
-      if (window.innerWidth < 1024) {
-        toggleSidebar(false);
-      }
-
-      // Update sidebar active link UI
-      const navLinks = ['overview', 'members', 'schedule', 'budget', 'flight', 'checklist', 'comments', 'support'];
-      navLinks.forEach(id => {
-        const el = document.getElementById('nav-' + id);
-        if (el) el.classList.remove('active');
-      });
-      const activeEl = document.getElementById('nav-' + target);
-      if (activeEl) activeEl.classList.add('active');
-
-      if (target === 'members') {
-        openMembersModal();
-      } else if (target === 'schedule' || target === 'overview') {
-        switchTab('schedule');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (target === 'budget') {
-        switchTab('budget');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (target === 'flight') {
-        document.getElementById('section-flight').scrollIntoView({ behavior: 'smooth' });
-      } else if (target === 'checklist') {
-        switchTab('schedule');
-        setTimeout(() => {
-          document.getElementById('section-checklist').scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      } else if (target === 'comments') {
-        switchTab('schedule');
-        setTimeout(() => {
-          document.getElementById('section-comments').scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      } else if (target === 'support') {
-        showToast('Đường dây hỗ trợ 8 thành viên HCM luôn sẵn sàng!');
+        sidebar.classList.toggle('sidebar-collapsed');
+        const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+        localStorage.setItem('sugoi_sidebar_collapsed', isCollapsed ? 'true' : 'false');
       }
     }
 
@@ -1136,25 +1055,59 @@
       activeTab = tabId;
       const schedContent = document.getElementById('content-schedule');
       const budgetContent = document.getElementById('content-budget');
-      const schedBtn = document.getElementById('tab-btn-schedule');
-      const budgetBtn = document.getElementById('tab-btn-budget');
+      const checklistContent = document.getElementById('content-checklist');
 
+      // Hide all contents first
+      schedContent.classList.add('hidden');
+      budgetContent.classList.add('hidden');
+      checklistContent.classList.add('hidden');
+
+      // Show requested content (1 NỘI DUNG DUY NHẤT MỖI TAB)
       if (tabId === 'schedule') {
         schedContent.classList.remove('hidden');
-        budgetContent.classList.add('hidden');
-        schedBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]';
-        budgetBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900';
-      } else {
-        schedContent.classList.add('hidden');
+      } else if (tabId === 'budget') {
         budgetContent.classList.remove('hidden');
-        budgetBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]';
-        schedBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900';
+      } else if (tabId === 'checklist') {
+        checklistContent.classList.remove('hidden');
       }
+
+      // Update active state on sidebar links
+      ['schedule', 'budget', 'checklist'].forEach(id => {
+        const btn = document.getElementById('nav-' + id);
+        if (btn) {
+          if (id === tabId) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        }
+      });
+
+      // Close mobile drawer if on small screen
+      if (window.innerWidth < 1024) {
+        toggleSidebar(false);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function updateBadges() {
-      document.getElementById('tab-badge-items').textContent = scheduleEvents.length + ' Kèo';
-      document.getElementById('sidebar-comment-count').textContent = commentsList.length;
+      // 1. Schedule badge
+      const schedBadge = document.getElementById('badge-schedule-count');
+      if (schedBadge) schedBadge.textContent = scheduleEvents.length + ' Kèo';
+
+      // 2. Budget badge
+      let totalPerPerson = 0;
+      baseExpenses.forEach(exp => totalPerPerson += exp.amount);
+      scheduleEvents.forEach(ev => { if (ev.cost) totalPerPerson += ev.cost; });
+      const budgetBadge = document.getElementById('badge-budget-total');
+      if (budgetBadge) budgetBadge.textContent = formatMoney(totalPerPerson) + 'đ';
+
+      // 3. Checklist badge
+      let checkedCount = 0;
+      checklistItems.forEach((_, i) => { if (checklistChecked[i]) checkedCount++; });
+      const checkBadge = document.getElementById('badge-checklist-count');
+      if (checkBadge) checkBadge.textContent = `${checkedCount}/${checklistItems.length}`;
     }
 
     /* =========================================================================
@@ -1201,7 +1154,6 @@
         let daysHtml = '';
 
         days.forEach(day => {
-          // Find events assigned to this day and this slot
           const events = scheduleEvents.filter(ev => ev.day === day && (ev.slotId === slot.id || ev.time === slot.time));
 
           let eventsListHtml = '';
@@ -1307,7 +1259,6 @@
       if (!time) return;
 
       if (id) {
-        // Edit existing
         const index = timeSlots.findIndex(s => s.id === id);
         if (index !== -1) {
           timeSlots[index].time = time;
@@ -1315,7 +1266,6 @@
           showToast('Đã cập nhật khung giờ!');
         }
       } else {
-        // Add new slot
         const newSlot = {
           id: 'slot-' + Date.now(),
           time,
@@ -1400,7 +1350,6 @@
       const slotTime = matchedSlot ? matchedSlot.time : '';
 
       if (id) {
-        // Edit
         const index = scheduleEvents.findIndex(ev => ev.id === id);
         if (index !== -1) {
           scheduleEvents[index] = {
@@ -1417,7 +1366,6 @@
           showToast('Đã cập nhật kèo!');
         }
       } else {
-        // Add new
         const newEvent = {
           id: 'ev-' + Date.now(),
           day,
@@ -1477,14 +1425,105 @@
     }
 
     /* =========================================================================
-       4. DISCUSSION COMMENTS (VỚI SỬA & XÓA TIN NHẮN)
+       4. DYNAMIC CHECKLIST (THÊM, SỬA, XÓA, TICK HOÀN THÀNH)
+       ========================================================================= */
+    function renderChecklist() {
+      const container = document.getElementById('checklist-items');
+      container.innerHTML = '';
+
+      let checkedCount = 0;
+      checklistItems.forEach((item, index) => {
+        const isChecked = !!checklistChecked[index];
+        if (isChecked) checkedCount++;
+
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between p-2.5 rounded-xl border border-slate-100 hover:border-slate-200 transition bg-slate-50/50 group';
+        div.innerHTML = `
+          <label class="flex items-center gap-2.5 text-xs text-slate-800 cursor-pointer flex-1 min-w-0 pr-2">
+            <input type="checkbox" onchange="toggleChecklist(${index})" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded text-[#dc2626] focus:ring-[#dc2626] border-slate-300 cursor-pointer shrink-0" />
+            <span class="${isChecked ? 'line-through text-slate-400 font-normal' : 'font-medium text-slate-800'} break-words">${item.text}</span>
+          </label>
+          <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition shrink-0">
+            <button onclick="openChecklistEditModal(${index})" title="Sửa tên đồ" class="text-slate-400 hover:text-slate-700 text-xs p-1">✏️</button>
+            <button onclick="deleteChecklistItem(${index})" title="Xóa món này" class="text-slate-400 hover:text-red-600 text-xs p-1">✕</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      const total = checklistItems.length;
+      document.getElementById('checklist-stat').textContent = `${checkedCount}/${total} Đã Chuẩn Bị`;
+      const pct = total > 0 ? (checkedCount / total) * 100 : 0;
+      document.getElementById('checklist-progress').style.width = pct + '%';
+    }
+
+    function handleAddChecklistItem(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-checklist-text');
+      const text = input.value.trim();
+      if (!text) return;
+
+      checklistItems.push({ text });
+      input.value = '';
+      saveState();
+      renderChecklist();
+      updateBadges();
+      showToast('Đã thêm đồ dùng vào checklist!');
+    }
+
+    function toggleChecklist(index) {
+      checklistChecked[index] = !checklistChecked[index];
+      saveState();
+      renderChecklist();
+      updateBadges();
+    }
+
+    function openChecklistEditModal(index) {
+      const item = checklistItems[index];
+      if (!item) return;
+
+      document.getElementById('edit-checklist-index').value = index;
+      document.getElementById('edit-checklist-text').value = item.text;
+      document.getElementById('checklist-edit-modal').classList.remove('hidden');
+    }
+
+    function closeChecklistEditModal() {
+      document.getElementById('checklist-edit-modal').classList.add('hidden');
+    }
+
+    function handleSaveEditedChecklist(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('edit-checklist-index').value);
+      const text = document.getElementById('edit-checklist-text').value.trim();
+
+      if (checklistItems[index] && text) {
+        checklistItems[index].text = text;
+        saveState();
+        renderChecklist();
+        closeChecklistEditModal();
+        showToast('Đã cập nhật đồ dùng!');
+      }
+    }
+
+    function deleteChecklistItem(index) {
+      if (!confirm('Xóa vật dụng này khỏi danh sách?')) return;
+      checklistItems.splice(index, 1);
+      delete checklistChecked[index];
+      saveState();
+      renderChecklist();
+      updateBadges();
+      showToast('Đã xóa vật dụng!');
+    }
+
+    /* =========================================================================
+       5. DISCUSSION / DẶN DÒ COMMENTS (VỚI SỬA & XÓA TIN NHẮN)
        ========================================================================= */
     function renderComments() {
       const feed = document.getElementById('comments-feed');
       feed.innerHTML = '';
 
       if (commentsList.length === 0) {
-        feed.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center">Chưa có bình luận nào. Hãy để lại lời nhắn đầu tiên!</p>';
+        feed.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center">Chưa có dặn dò nào. Hãy để lại lời nhắn đầu tiên!</p>';
         return;
       }
 
@@ -1529,8 +1568,7 @@
       saveState();
       document.getElementById('cmt-content').value = '';
       renderComments();
-      updateBadges();
-      showToast('Đã gửi tin nhắn thảo luận!');
+      showToast('Đã gửi dặn dò!');
     }
 
     function openCommentEditModal(cmtId) {
@@ -1563,119 +1601,20 @@
         saveState();
         renderComments();
         closeCommentEditModal();
-        showToast('Đã cập nhật tin nhắn!');
+        showToast('Đã cập nhật dặn dò!');
       }
     }
 
     function deleteComment(cmtId) {
-      if (!confirm('Bạn có chắc muốn xóa tin nhắn này?')) return;
+      if (!confirm('Bạn có chắc muốn xóa lời dặn này?')) return;
       commentsList = commentsList.filter(c => c.id !== cmtId);
       saveState();
       renderComments();
-      updateBadges();
-      showToast('Đã xóa tin nhắn!');
+      showToast('Đã xóa lời dặn!');
     }
 
     /* =========================================================================
-       5. DYNAMIC CHECKLIST (THÊM, SỬA, XÓA, TICK HOÀN THÀNH)
-       ========================================================================= */
-    function renderChecklist() {
-      const container = document.getElementById('checklist-items');
-      container.innerHTML = '';
-
-      let checkedCount = 0;
-      checklistItems.forEach((item, index) => {
-        const isChecked = !!checklistChecked[index];
-        if (isChecked) checkedCount++;
-
-        const div = document.createElement('div');
-        div.className = 'flex items-center justify-between p-2 rounded-xl border border-slate-100 hover:border-slate-200 transition bg-slate-50/50 group';
-        div.innerHTML = `
-          <label class="flex items-center gap-2.5 text-xs text-slate-800 cursor-pointer flex-1 min-w-0 pr-2">
-            <input type="checkbox" onchange="toggleChecklist(${index})" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded text-[#dc2626] focus:ring-[#dc2626] border-slate-300 rounded cursor-pointer shrink-0" />
-            <span class="${isChecked ? 'line-through text-slate-400 font-normal' : 'font-medium text-slate-800'} break-words">${item.text}</span>
-          </label>
-          <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition shrink-0">
-            <button onclick="openChecklistEditModal(${index})" title="Sửa tên đồ" class="text-slate-400 hover:text-slate-700 text-xs p-1">✏️</button>
-            <button onclick="deleteChecklistItem(${index})" title="Xóa món này" class="text-slate-400 hover:text-red-600 text-xs p-1">✕</button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-
-      const total = checklistItems.length;
-      document.getElementById('checklist-stat').textContent = `${checkedCount}/${total} Đã Chuẩn Bị`;
-      const pct = total > 0 ? (checkedCount / total) * 100 : 0;
-      document.getElementById('checklist-progress').style.width = pct + '%';
-    }
-
-    function handleAddChecklistItem(e) {
-      e.preventDefault();
-      const input = document.getElementById('new-checklist-text');
-      const text = input.value.trim();
-      if (!text) return;
-
-      checklistItems.push({ text });
-      input.value = '';
-      saveState();
-      renderChecklist();
-      showToast('Đã thêm đồ dùng vào checklist!');
-    }
-
-    function toggleChecklist(index) {
-      checklistChecked[index] = !checklistChecked[index];
-      saveState();
-      renderChecklist();
-    }
-
-    function openChecklistEditModal(index) {
-      const item = checklistItems[index];
-      if (!item) return;
-
-      document.getElementById('edit-checklist-index').value = index;
-      document.getElementById('edit-checklist-text').value = item.text;
-      document.getElementById('checklist-edit-modal').classList.remove('hidden');
-    }
-
-    function closeChecklistEditModal() {
-      document.getElementById('checklist-edit-modal').classList.add('hidden');
-    }
-
-    function handleSaveEditedChecklist(e) {
-      e.preventDefault();
-      const index = parseInt(document.getElementById('edit-checklist-index').value);
-      const text = document.getElementById('edit-checklist-text').value.trim();
-
-      if (checklistItems[index] && text) {
-        checklistItems[index].text = text;
-        saveState();
-        renderChecklist();
-        closeChecklistEditModal();
-        showToast('Đã cập nhật đồ dùng!');
-      }
-    }
-
-    function deleteChecklistItem(index) {
-      if (!confirm('Xóa vật dụng này khỏi danh sách?')) return;
-      checklistItems.splice(index, 1);
-      delete checklistChecked[index];
-      saveState();
-      renderChecklist();
-      showToast('Đã xóa vật dụng!');
-    }
-
-    /* =========================================================================
-       6. MEMBERS MODAL
-       ========================================================================= */
-    function openMembersModal() {
-      document.getElementById('members-modal').classList.remove('hidden');
-    }
-    function closeMembersModal() {
-      document.getElementById('members-modal').classList.add('hidden');
-    }
-
-    /* =========================================================================
-       7. BUDGET & EXPENSES
+       6. BUDGET & EXPENSES
        ========================================================================= */
     function renderExpenses() {
       const tbody = document.getElementById('expense-table-rows');
@@ -1733,7 +1672,6 @@
       document.getElementById('stat-group-total').textContent = formatMoney(groupTotal) + 'đ';
       document.getElementById('stat-winning-count').textContent = scheduleEvents.length + ' Kèo';
       document.getElementById('stat-total-props').textContent = totalItemsCount + ' Mục';
-      document.getElementById('tab-badge-cost').textContent = formatMoney(totalPerPerson) + 'đ/bạn';
     }
 
     function openExpenseModal(expId) {
@@ -1765,6 +1703,7 @@
       saveState();
       closeExpenseModal();
       renderExpenses();
+      updateBadges();
       showToast('Đã thêm khoản chi vào bảng tính!');
     }
 
@@ -1773,11 +1712,12 @@
       baseExpenses = baseExpenses.filter(e => e.id !== id);
       saveState();
       renderExpenses();
+      updateBadges();
       showToast('Đã xóa khoản chi!');
     }
 
     /* =========================================================================
-       8. UTILITIES (COUNTDOWN, TOAST, SHARE)
+       7. UTILITIES (COUNTDOWN, TOAST, SHARE)
        ========================================================================= */
     function initCountdown() {
       const target = new Date('2026-11-21T23:00:00+07:00').getTime();
