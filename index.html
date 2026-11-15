@@ -1,99 +1,105 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hà Nội Khám Phá 2026 | Kế Hoạch 8 Người HCM</title>
-  
-  <!-- Fonts: Plus Jakarta Sans & Playfair Display for Editorial Travel Aesthetic -->
+  <title>Uranus • Hà Nội Trip Planner 2026 (8 Người HCM)</title>
+
+  <!-- Uranus Center Fonts: Baloo 2 (Playful & Bold Heading) + Be Vietnam Pro (Clean Body Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Tailwind CSS -->
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
 
   <style>
+    /* Uranus Center Exact Design Tokens */
     :root {
-      --hn-red: #B9382A;
-      --hn-red-dark: #8E2519;
-      --hn-gold: #D4AF37;
-      --hn-gold-light: #F7E7A9;
-      --hn-cream: #FAF7F2;
-      --hn-surface: #FFFFFF;
-      --hn-dark: #1E1B18;
-      --hn-muted: #6B635B;
-      --hn-border: #EADBCE;
-      --hn-teal: #1F6E68;
+      --u-bg: #0f1219;
+      --u-surface: #1a1f2e;
+      --u-surface-hover: #232938;
+      --u-card-inner: #151926;
+      --u-border: #2d3548;
+      --u-border-light: #3d4760;
+      --u-text-main: #ffffff;
+      --u-text-muted: #9499b3;
+      --u-primary: #ff5a1f;       /* Uranus Signature Coral/Orange */
+      --u-primary-hover: #e04a14;
+      --u-accent-gold: #ffc53d;   /* Uranus Signature Amber/Gold */
+      --u-accent-blue: #3b82f6;
+      --u-accent-green: #10b981;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      background-color: var(--hn-cream);
-      color: var(--hn-dark);
-      background-image: radial-gradient(#E8D8C8 0.75px, transparent 0.75px);
-      background-size: 24px 24px;
+      font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+      background-color: var(--u-bg);
+      color: var(--u-text-main);
+      background-image: 
+        radial-gradient(ellipse at 80% 0%, rgba(255, 90, 31, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 20%, rgba(255, 197, 61, 0.05) 0%, transparent 40%),
+        radial-gradient(rgba(45, 53, 72, 0.5) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px;
     }
 
-    .font-serif {
-      font-family: 'Playfair Display', Georgia, serif;
+    .font-baloo {
+      font-family: 'Baloo 2', cursive, sans-serif;
     }
 
     /* Custom scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #FAF7F2; }
-    ::-webkit-scrollbar-thumb { background: #D9C3B0; border-radius: 999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #B9382A; }
+    ::-webkit-scrollbar-track { background: #0f1219; }
+    ::-webkit-scrollbar-thumb { background: #2d3548; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ff5a1f; }
 
-    /* Frosted glass header */
-    .glass-nav {
-      background: rgba(250, 247, 242, 0.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    /* Bento Card */
-    .bento-card {
-      background: #FFFFFF;
-      border: 1px solid var(--hn-border);
+    /* Uranus Card Style */
+    .u-card {
+      background: var(--u-surface);
+      border: 1px solid var(--u-border);
       border-radius: 20px;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 20px -2px rgba(185, 56, 42, 0.04);
     }
-    .bento-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px -4px rgba(185, 56, 42, 0.1);
-      border-color: #D9A59B;
+    .u-card:hover {
+      border-color: var(--u-border-light);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
     }
 
-    /* Filter pills */
-    .filter-btn.active {
-      background-color: var(--hn-red);
-      color: #FFFFFF;
-      border-color: var(--hn-red);
-      box-shadow: 0 4px 12px rgba(185, 56, 42, 0.25);
+    .u-card-inner {
+      background: var(--u-surface-hover);
+      border: 1px solid var(--u-border);
+      border-radius: 14px;
     }
 
-    /* Timeline styling */
-    .timeline-stem {
-      position: absolute;
-      top: 2rem;
-      bottom: -1rem;
-      left: 1.25rem;
-      width: 2px;
-      background: linear-gradient(to bottom, #B9382A, #EADBCE);
+    /* Day pill active */
+    .day-pill.active {
+      background-color: var(--u-primary);
+      color: #ffffff;
+      border-color: var(--u-primary);
+      box-shadow: 0 4px 14px rgba(255, 90, 31, 0.35);
     }
 
-    /* Tab active */
-    .tab-item.active {
-      color: var(--hn-red);
-      border-bottom: 2px solid var(--hn-red);
+    /* Primary button */
+    .btn-uranus {
+      background: var(--u-primary);
+      color: #ffffff;
       font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .btn-uranus:hover {
+      background: var(--u-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 90, 31, 0.3);
+    }
+
+    /* Vote progress bar */
+    .vote-bar {
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Toast */
     .toast-anim {
-      transform: translateY(120%);
+      transform: translateY(140%);
       opacity: 0;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -103,115 +109,96 @@
     }
   </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col selection:bg-[#ff5a1f] selection:text-white">
 
-  <!-- ================= HEADER & TOP BAR ================= -->
-  <header class="glass-nav sticky top-0 z-40 border-b border-[#EADBCE]">
+  <!-- ================= HEADER (URANUS CENTER STYLE) ================= -->
+  <header class="sticky top-0 z-40 bg-[#0f1219]/90 backdrop-blur-xl border-b border-[#2d3548]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-[#B9382A] text-white flex items-center justify-center font-serif text-xl font-bold shadow-md shadow-red-900/20">
-          HN
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#ff5a1f] to-[#ffc53d] p-[1.5px] shadow-lg shadow-orange-950/40">
+          <div class="w-full h-full bg-[#1a1f2e] rounded-[10px] flex items-center justify-center font-baloo text-xl font-extrabold text-[#ffc53d]">
+            U
+          </div>
         </div>
         <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-[#B9382A] block leading-none">Cẩm Nang 2026</span>
-          <h1 class="text-base font-extrabold text-[#1E1B18] tracking-tight">Hà Nội Trip • 8 Chiến Sĩ HCM</h1>
+          <div class="flex items-center gap-2">
+            <span class="font-baloo text-base font-extrabold text-white tracking-wide">Uranus</span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#ff5a1f] bg-[#ff5a1f]/15 border border-[#ff5a1f]/30 px-2 py-0.5 rounded-full">
+              Trip Planner 2026
+            </span>
+          </div>
+          <p class="text-[11px] text-[#9499b3] leading-none hidden sm:block">Hành trình Hà Nội • 8 Chiến Sĩ HCM (22 - 24/11)</p>
         </div>
       </div>
 
-      <!-- Quick action buttons -->
-      <div class="flex items-center gap-2">
-        <button onclick="sharePlan()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FFFFFF] border border-[#EADBCE] text-[#6B635B] hover:text-[#B9382A] hover:border-[#B9382A] transition shadow-sm">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-          <span class="hidden sm:inline">Copy gửi nhóm</span>
+      <!-- Quick Nav Buttons -->
+      <div class="flex items-center gap-2.5">
+        <a href="#section-calculator" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1a1f2e] text-[#ffc53d] border border-[#2d3548] hover:border-[#ffc53d] transition">
+          <span>💰</span>
+          <span>Bảng Tính: <strong id="header-total-cost">--</strong></span>
+        </a>
+        <button onclick="openProposalModal(null, null)" class="btn-uranus px-3.5 py-1.5 text-xs flex items-center gap-1.5 shadow-md">
+          <span class="text-sm font-bold leading-none">+</span>
+          <span>Tạo Đề Xuất Điểm Đến</span>
         </button>
-        <button onclick="switchTab('plan')" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-[#B9382A] text-white hover:bg-[#8E2519] transition shadow-md shadow-red-900/20">
-          <span>Xem Lịch Trình</span>
+        <button onclick="sharePlan()" title="Copy tóm tắt gửi Zalo/Messenger" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:text-white hover:border-[#ff5a1f] transition">
+          <span>📋</span>
+          <span class="hidden sm:inline">Copy Gửi Nhóm</span>
         </button>
       </div>
+
     </div>
   </header>
 
-  <!-- ================= HERO EDITORIAL BANNER ================= -->
-  <section class="relative bg-gradient-to-br from-[#1E1B18] via-[#4A1510] to-[#8E2519] text-white pt-10 pb-12 overflow-hidden">
-    <!-- Atmospheric subtle patterns -->
-    <div class="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-[#B9382A]/20 blur-3xl pointer-events-none"></div>
-    <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#D4AF37]/15 blur-2xl pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+  <!-- ================= HERO OVERVIEW & COUNTDOWN BANNER ================= -->
+  <section class="py-6 px-4 sm:px-6 lg:px-8 border-b border-[#2d3548] bg-[#1a1f2e]/40">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
         
-        <!-- Left: Editorial text -->
+        <!-- Left: Overview Message -->
         <div class="lg:col-span-7">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-[#F7E7A9] font-medium mb-4">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            Hành trình lần đầu đặt chân tới Thủ Đô • Cập nhật 2026
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#232938] border border-[#2d3548] text-[#ffc53d] text-xs font-semibold mb-2">
+            <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+            Hệ thống biểu quyết thời khóa biểu theo khung giờ • Chuẩn Uranus UI
           </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black font-serif tracking-tight leading-tight mb-3">
-            Hà Nội Ngàn Năm Văn Hiến, <br class="hidden sm:inline"/>
-            <span class="italic font-normal text-[#F7E7A9]">Chờ 8 Người Anh Em Sài Gòn!</span>
+          <h2 class="text-2xl sm:text-3xl font-baloo font-extrabold text-white leading-tight">
+            Thời Khóa Biểu Hà Nội <span class="text-[#ff5a1f]">& Bình Chọn Kèo Đi</span>
           </h2>
-          <p class="text-sm sm:text-base text-gray-300 max-w-xl font-normal leading-relaxed mb-6">
-            Từ <strong>02:00 sáng ngày 22/11</strong> đến <strong>17:00 chiều ngày 24/11</strong> (~63 giờ vàng). 
-            Đầy đủ ẩm thực Michelin, phố cổ 36 phố phường, tour đêm 3D Mapping và tọa độ hot 2026.
+          <p class="text-xs sm:text-sm text-[#9499b3] mt-1 max-w-xl leading-relaxed">
+            Mỗi khung giờ đều có nút <strong>[+ Đề xuất địa điểm]</strong>. Anh em muốn ăn gì, đi đâu cứ tạo request, cả nhóm bấm vote trực tiếp. Kèo nhiều vote nhất sẽ tự động thành <strong>👑 Kèo Chốt</strong>!
           </p>
-
-          <!-- Badges highlight -->
-          <div class="flex flex-wrap gap-2.5 text-xs">
-            <span class="px-3 py-1.5 rounded-lg bg-black/30 border border-white/10 flex items-center gap-1.5">
-              <span>👥</span> <strong>8 thành viên</strong>
-            </span>
-            <span class="px-3 py-1.5 rounded-lg bg-black/30 border border-white/10 flex items-center gap-1.5">
-              <span>🌤️</span> <strong>20°C - 24°C Đầu Đông</strong>
-            </span>
-            <span class="px-3 py-1.5 rounded-lg bg-black/30 border border-white/10 flex items-center gap-1.5">
-              <span>🍲</span> <strong>Michelin & Street Food</strong>
-            </span>
-            <span class="px-3 py-1.5 rounded-lg bg-black/30 border border-white/10 flex items-center gap-1.5">
-              <span>🏰</span> <strong>Grand World & Phố Cổ</strong>
-            </span>
-          </div>
         </div>
 
-        <!-- Right: Countdown & Trip Status Card -->
-        <div class="lg:col-span-5">
-          <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/15">
-              <div>
-                <span class="text-xs uppercase font-bold text-[#F7E7A9] tracking-wider block">Thời gian khởi hành</span>
-                <span class="text-sm font-semibold text-white">02:00 AM • 22/11/2026 (Tân Sơn Nhất)</span>
-              </div>
-              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#B9382A] text-white">Đếm ngược</span>
+        <!-- Right: 4-Box Countdown & Group Stats -->
+        <div class="lg:col-span-5 bg-[#1a1f2e] border border-[#2d3548] rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <div class="text-[10px] uppercase font-bold text-[#9499b3] tracking-wider mb-0.5">Khởi hành Tân Sơn Nhất</div>
+            <div class="text-xs font-bold text-white">02:00 AM • 22/11/2026</div>
+            <div class="mt-2 text-[11px] text-[#ffc53d] font-bold flex items-center gap-1.5">
+              <span>👥 8 Thành Viên</span>
+              <span>•</span>
+              <span>🌤️ 20°C - 24°C</span>
             </div>
+          </div>
 
-            <!-- Countdown 4 boxes -->
-            <div class="grid grid-cols-4 gap-2.5 mb-5 text-center">
-              <div class="bg-black/30 border border-white/10 rounded-2xl p-2.5">
-                <div id="cd-days" class="text-2xl sm:text-3xl font-black text-white font-mono">--</div>
-                <div class="text-[10px] uppercase font-bold text-gray-400 mt-0.5">Ngày</div>
-              </div>
-              <div class="bg-black/30 border border-white/10 rounded-2xl p-2.5">
-                <div id="cd-hours" class="text-2xl sm:text-3xl font-black text-white font-mono">--</div>
-                <div class="text-[10px] uppercase font-bold text-gray-400 mt-0.5">Giờ</div>
-              </div>
-              <div class="bg-black/30 border border-white/10 rounded-2xl p-2.5">
-                <div id="cd-mins" class="text-2xl sm:text-3xl font-black text-white font-mono">--</div>
-                <div class="text-[10px] uppercase font-bold text-gray-400 mt-0.5">Phút</div>
-              </div>
-              <div class="bg-black/30 border border-white/10 rounded-2xl p-2.5">
-                <div id="cd-secs" class="text-2xl sm:text-3xl font-black text-[#F7E7A9] font-mono">--</div>
-                <div class="text-[10px] uppercase font-bold text-gray-400 mt-0.5">Giây</div>
-              </div>
+          <div class="flex items-center gap-1.5 font-baloo text-center">
+            <div class="bg-[#0f1219] border border-[#2d3548] rounded-xl px-2.5 py-1.5 min-w-[44px]">
+              <span id="cd-days" class="text-xl font-extrabold text-white block leading-none">--</span>
+              <span class="text-[9px] uppercase text-[#9499b3] font-sans">Ngày</span>
             </div>
-
-            <!-- Trip progress bar -->
-            <div>
-              <div class="flex justify-between text-xs text-gray-300 font-medium mb-1.5">
-                <span>Tiến độ chuyến đi</span>
-                <span id="trip-progress-text">Chưa bắt đầu</span>
-              </div>
-              <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden">
-                <div id="trip-progress-bar" class="bg-gradient-to-r from-amber-400 to-[#B9382A] h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-              </div>
+            <div class="bg-[#0f1219] border border-[#2d3548] rounded-xl px-2.5 py-1.5 min-w-[44px]">
+              <span id="cd-hours" class="text-xl font-extrabold text-white block leading-none">--</span>
+              <span class="text-[9px] uppercase text-[#9499b3] font-sans">Giờ</span>
+            </div>
+            <div class="bg-[#0f1219] border border-[#2d3548] rounded-xl px-2.5 py-1.5 min-w-[44px]">
+              <span id="cd-mins" class="text-xl font-extrabold text-white block leading-none">--</span>
+              <span class="text-[9px] uppercase text-[#9499b3] font-sans">Phút</span>
+            </div>
+            <div class="bg-[#0f1219] border border-[#2d3548] rounded-xl px-2.5 py-1.5 min-w-[44px]">
+              <span id="cd-secs" class="text-xl font-extrabold text-[#ff5a1f] block leading-none">--</span>
+              <span class="text-[9px] uppercase text-[#9499b3] font-sans">Giây</span>
             </div>
           </div>
         </div>
@@ -220,1711 +207,1356 @@
     </div>
   </section>
 
-  <!-- ================= NAVIGATION TABS ================= -->
-  <nav class="sticky top-16 z-30 bg-[#FAF7F2]/95 border-b border-[#EADBCE] backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center space-x-1 sm:space-x-4 overflow-x-auto py-2 no-scrollbar">
-        <button onclick="switchTab('explore')" id="tab-explore" class="tab-item active px-3.5 py-2 text-sm font-semibold rounded-lg hover:bg-black/5 whitespace-nowrap transition">
-          📍 Khám Phá & Crawl 2026
-        </button>
-        <button onclick="switchTab('plan')" id="tab-plan" class="tab-item px-3.5 py-2 text-sm font-semibold text-[#6B635B] rounded-lg hover:bg-black/5 whitespace-nowrap transition">
-          📅 Thời Khóa Biểu 3 Ngày
-        </button>
-        <button onclick="switchTab('discussion')" id="tab-discussion" class="tab-item px-3.5 py-2 text-sm font-semibold text-[#6B635B] rounded-lg hover:bg-black/5 whitespace-nowrap transition">
-          💬 Ý Kiến Nhóm (<span id="comment-count-badge">4</span>)
-        </button>
-        <button onclick="switchTab('polls')" id="tab-polls" class="tab-item px-3.5 py-2 text-sm font-semibold text-[#6B635B] rounded-lg hover:bg-black/5 whitespace-nowrap transition">
-          🗳️ Bầu Chọn (8 Người)
-        </button>
-        <button onclick="switchTab('budget')" id="tab-budget" class="tab-item px-3.5 py-2 text-sm font-semibold text-[#6B635B] rounded-lg hover:bg-black/5 whitespace-nowrap transition">
-          💰 Dự Toán Chi Phí
-        </button>
-        <button onclick="switchTab('checklist')" id="tab-checklist" class="tab-item px-3.5 py-2 text-sm font-semibold text-[#6B635B] rounded-lg hover:bg-black/5 whitespace-nowrap transition">
-          ✅ Checklist Đi HN
-        </button>
-      </div>
-    </div>
-  </nav>
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-12">
 
-  <!-- ================= MAIN CONTENT CONTAINER ================= -->
-  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-
-    <!-- ----------------- TAB 1: EXPLORE & 2026 DATA ----------------- -->
-    <div id="panel-explore" class="space-y-8">
+    <!-- =========================================================================
+         SECTION 1: BẢNG LỊCH TRÌNH KHUNG GIỜ + DẤU CỘNG REQUEST + BÌNH CHỌN (TRỌNG TÂM)
+         ========================================================================= -->
+    <section id="section-schedule" class="space-y-6">
       
-      <!-- Interest Categories Filter Bar -->
-      <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-          <div>
-            <h3 class="text-base font-bold text-[#1E1B18] flex items-center gap-2">
-              <span>🎯</span> Phân loại theo sở thích nhóm
-            </h3>
-            <p class="text-xs text-[#6B635B]">Chọn sở thích để lọc nhanh các địa điểm và ẩm thực Hà Nội được cập nhật 2026</p>
-          </div>
-          <!-- Search box -->
-          <div class="relative w-full sm:w-72">
-            <input type="text" id="search-input" oninput="filterCards()" placeholder="Tìm món ăn, địa danh, phố cổ..." 
-              class="w-full pl-9 pr-3 py-2 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl text-xs font-medium focus:outline-none focus:border-[#B9382A] text-[#1E1B18]"/>
-            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          </div>
-        </div>
-
-        <!-- Filter Pill Chips -->
-        <div class="flex flex-wrap gap-2" id="filter-pills">
-          <button onclick="setCategoryFilter('all')" class="filter-btn active px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            🌟 Tất Cả (30+)
-          </button>
-          <button onclick="setCategoryFilter('food')" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            🍜 Ẩm Thực & Michelin
-          </button>
-          <button onclick="setCategoryFilter('history')" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            🏛️ Lịch Sử & Di Sản
-          </button>
-          <button onclick="setCategoryFilter('photo')" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            📸 Check-in & Sống Ảo
-          </button>
-          <button onclick="setCategoryFilter('night')" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            🌙 Cú Đêm & Bia Phố Cổ
-          </button>
-          <button onclick="setCategoryFilter('new2026')" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            ✨ Tọa Độ Mới 2026 (Grand World/Tây Hồ)
-          </button>
-          <button onclick="setCategoryFilter('shop')" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EADBCE] bg-[#FAF7F2] text-[#6B635B] hover:border-[#B9382A] transition">
-            🎁 Mua Quà & Cốm Hà Nội
-          </button>
-        </div>
-      </div>
-
-      <!-- Result Count Info -->
-      <div class="flex items-center justify-between text-xs text-[#6B635B] px-1">
-        <div>Hiển thị <span id="items-count" class="font-bold text-[#B9382A]">0</span> địa điểm/món ăn phù hợp</div>
-        <div class="flex items-center gap-1.5">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Dữ liệu vé & giờ mở cửa 2026 đã cập nhật</span>
-        </div>
-      </div>
-
-      <!-- Dynamic Bento Grid Container -->
-      <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- Rendered by JS -->
-      </div>
-    </div>
-
-    <!-- ----------------- TAB 2: TIME-TABLE PLAN ----------------- -->
-    <div id="panel-plan" class="space-y-6 hidden">
-      
-      <!-- Day Switcher & Actions -->
-      <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <!-- Day Switcher & Quick Tools -->
+      <div class="u-card p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h3 class="text-base font-bold text-[#1E1B18] flex items-center gap-2">
-            <span>📅</span> Lịch Trình Chi Tiết Từng Ngày
-          </h3>
-          <p class="text-xs text-[#6B635B]">Từ 2:00 sáng 22/11 đến 17:00 chiều 24/11 • Bấm tick để đánh dấu hoàn thành</p>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#ff5a1f]"></span>
+            <h3 class="text-lg font-baloo font-extrabold text-white">Thời Khóa Biểu Theo Khung Giờ & Bình Chọn</h3>
+          </div>
+          <p class="text-xs text-[#9499b3]">Mỗi khung giờ có nút <strong>[+ Đề xuất]</strong> để tạo kèo. Anh em vote kèo thắng sẽ tự động được chọn!</p>
         </div>
 
-        <!-- Filter day pills -->
-        <div class="flex items-center gap-2">
-          <button onclick="filterDayPlan('all')" id="btn-day-all" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#B9382A] text-white transition">Cả 3 Ngày</button>
-          <button onclick="filterDayPlan('22')" id="btn-day-22" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FAF7F2] border border-[#EADBCE] text-[#6B635B] hover:border-[#B9382A] transition">22/11 (T7)</button>
-          <button onclick="filterDayPlan('23')" id="btn-day-23" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FAF7F2] border border-[#EADBCE] text-[#6B635B] hover:border-[#B9382A] transition">23/11 (CN)</button>
-          <button onclick="filterDayPlan('24')" id="btn-day-24" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FAF7F2] border border-[#EADBCE] text-[#6B635B] hover:border-[#B9382A] transition">24/11 (T2)</button>
-          <button onclick="openCustomActivityModal()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 hover:bg-amber-200 border border-amber-300 transition flex items-center gap-1">
-            <span>+</span> <span>Thêm Mục</span>
+        <!-- Day Filter Tabs -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="setDayFilter('all')" id="pill-all" class="day-pill active px-4 py-2 rounded-xl text-xs font-bold border border-[#2d3548] bg-[#1a1f2e] text-[#9499b3] transition">
+            🌟 Tất Cả 3 Ngày
+          </button>
+          <button onclick="setDayFilter('22')" id="pill-22" class="day-pill px-4 py-2 rounded-xl text-xs font-bold border border-[#2d3548] bg-[#1a1f2e] text-[#9499b3] transition">
+            Ngày 1: 22/11 (T7)
+          </button>
+          <button onclick="setDayFilter('23')" id="pill-23" class="day-pill px-4 py-2 rounded-xl text-xs font-bold border border-[#2d3548] bg-[#1a1f2e] text-[#9499b3] transition">
+            Ngày 2: 23/11 (CN)
+          </button>
+          <button onclick="setDayFilter('24')" id="pill-24" class="day-pill px-4 py-2 rounded-xl text-xs font-bold border border-[#2d3548] bg-[#1a1f2e] text-[#9499b3] transition">
+            Ngày 3: 24/11 (T2)
           </button>
         </div>
       </div>
 
-      <!-- Schedule Timeline Container -->
-      <div id="timeline-container" class="space-y-6">
-        <!-- Injected via JS -->
-      </div>
-    </div>
-
-    <!-- ----------------- TAB 3: GROUP OPINIONS & COMMENTS ----------------- -->
-    <div id="panel-discussion" class="space-y-6 hidden">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- Left: Input box -->
-        <div class="lg:col-span-5 space-y-4">
-          <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm sticky top-32">
-            <h3 class="text-base font-bold text-[#1E1B18] mb-1 flex items-center gap-2">
-              <span>✍️</span> Thêm Ý Kiến / Đóng Góp Nhóm
-            </h3>
-            <p class="text-xs text-[#6B635B] mb-4">Các bạn 8 người cùng đóng góp ý kiến về địa điểm, đồ ăn, chỗ ở để chốt lịch chung!</p>
-
-            <form onsubmit="submitComment(event)" class="space-y-3">
-              <div>
-                <label class="block text-xs font-bold text-[#6B635B] mb-1">Tên bạn trong nhóm *</label>
-                <input type="text" id="cmt-author" required placeholder="VD: Tuấn, Huy, Vy, Hoàng..." 
-                  class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl focus:outline-none focus:border-[#B9382A] text-[#1E1B18] font-medium"/>
-              </div>
-
-              <div>
-                <label class="block text-xs font-bold text-[#6B635B] mb-1">Chủ đề thảo luận</label>
-                <select id="cmt-tag" class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl focus:outline-none focus:border-[#B9382A] text-[#1E1B18] font-medium">
-                  <option value="hotel">🏨 Chỗ Ở & Khách Sạn</option>
-                  <option value="food">🍜 Món Ăn Phải Thử</option>
-                  <option value="transport">🚕 Xe Cộ & Di Chuyển</option>
-                  <option value="night">🌙 Đi Chơi Buổi Tối</option>
-                  <option value="warn">⚠️ Lưu Ý & Tips</option>
-                  <option value="general">💡 Ý Tưởng Khác</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="block text-xs font-bold text-[#6B635B] mb-1">Nội dung ý kiến *</label>
-                <textarea id="cmt-content" required rows="4" placeholder="Nêu cảm nghĩ, quán muốn ăn, hoặc lưu ý về lịch trình..." 
-                  class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl focus:outline-none focus:border-[#B9382A] text-[#1E1B18] font-medium resize-none"></textarea>
-              </div>
-
-              <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-[#B9382A] hover:bg-[#8E2519] text-white text-xs font-bold transition shadow-md shadow-red-900/15 flex items-center justify-center gap-1.5">
-                <span>Gửi ý kiến vào bảng tin</span>
-                <span>📤</span>
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- Right: Comments Feed -->
-        <div class="lg:col-span-7 space-y-4">
-          <div class="flex items-center justify-between pb-2 border-b border-[#EADBCE]">
-            <h4 class="text-sm font-bold text-[#1E1B18]">Bảng Tin Ý Kiến 8 Thành Viên</h4>
-            <span class="text-xs text-[#6B635B]">Lưu tự động vào trình duyệt</span>
-          </div>
-
-          <div id="comments-feed" class="space-y-3.5">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ----------------- TAB 4: POLLS / VOTING ----------------- -->
-    <div id="panel-polls" class="space-y-6 hidden">
-      <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm">
-        <h3 class="text-base font-bold text-[#1E1B18] flex items-center gap-2 mb-1">
-          <span>🗳️</span> Biểu Quyết Nhanh Của 8 Thành Viên
-        </h3>
-        <p class="text-xs text-[#6B635B]">Vì nhóm 8 người đi lần đầu dễ 9 người 10 ý, hãy bấm vote để chốt theo số đông!</p>
+      <!-- Time Slots Grid Container -->
+      <div id="schedule-slots-container" class="space-y-8">
+        <!-- Rendered dynamically by JavaScript -->
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="polls-container">
-        <!-- Rendered by JS -->
-      </div>
-    </div>
+    </section>
 
-    <!-- ----------------- TAB 5: BUDGET ESTIMATOR ----------------- -->
-    <div id="panel-budget" class="space-y-6 hidden">
+    <!-- =========================================================================
+         SECTION 2: BẢNG TÍNH & QUẢN LÝ TỔNG CHI PHÍ 8 NGƯỜI
+         ========================================================================= -->
+    <section id="section-calculator" class="space-y-6 pt-6 border-t border-[#2d3548]">
       
-      <!-- Summary Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm">
-          <span class="text-xs font-bold text-[#6B635B] uppercase block mb-1">Mỗi người (Tiết Kiệm)</span>
-          <div class="text-2xl font-black text-emerald-600 font-mono" id="budget-per-person-low">~3.2 tr</div>
-          <span class="text-[11px] text-gray-500 mt-1 block">Bao gồm vé bay sớm + ăn uống vỉa hè</span>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#ffc53d]"></span>
+            <h3 class="text-xl font-baloo font-extrabold text-white">Bảng Tính & Dự Toán Chi Phí Tự Động (8 Người)</h3>
+          </div>
+          <p class="text-xs text-[#9499b3]">Tự động đồng bộ chi phí từ các kèo được chốt trên lịch + tiền vé bay & phòng</p>
         </div>
-        <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm">
-          <span class="text-xs font-bold text-[#6B635B] uppercase block mb-1">Mỗi người (Thoải Mái)</span>
-          <div class="text-2xl font-black text-[#B9382A] font-mono" id="budget-per-person-high">~5.2 tr</div>
-          <span class="text-[11px] text-gray-500 mt-1 block">Bao gồm Chả Cá Lã Vọng, Tour Đêm, Quà</span>
+
+        <button onclick="openExpenseModal(null)" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#10b981] text-white hover:bg-[#0ea371] transition shadow-lg shadow-emerald-950/30 flex items-center gap-1.5 self-start sm:self-auto">
+          <span>+ Thêm Khoản Chi Riêng</span>
+        </button>
+      </div>
+
+      <!-- 4 Uranus Metric Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="u-card p-4">
+          <span class="text-[11px] font-bold text-[#9499b3] uppercase tracking-wider block mb-1">Chi Phí / Mỗi Bạn</span>
+          <div id="stat-per-person" class="text-2xl font-baloo font-extrabold text-[#ff5a1f] leading-none">--</div>
+          <span class="text-[10px] text-gray-400 mt-1.5 block">Đã chia đều cho 8 người</span>
         </div>
-        <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm">
-          <span class="text-xs font-bold text-[#6B635B] uppercase block mb-1">Tổng Quỹ Cả Nhóm 8 Người</span>
-          <div class="text-2xl font-black text-indigo-700 font-mono" id="budget-group-total">~33.6 tr</div>
-          <span class="text-[11px] text-gray-500 mt-1 block">Mức trung bình đề xuất cả nhóm</span>
+        <div class="u-card p-4">
+          <span class="text-[11px] font-bold text-[#9499b3] uppercase tracking-wider block mb-1">Tổng Quỹ Toàn Nhóm</span>
+          <div id="stat-group-total" class="text-2xl font-baloo font-extrabold text-[#ffc53d] leading-none">--</div>
+          <span class="text-[10px] text-gray-400 mt-1.5 block">Tổng chi dự trù cả 8 bạn</span>
         </div>
-        <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm">
-          <span class="text-xs font-bold text-[#6B635B] uppercase block mb-1">Quỹ chung ăn uống/xe (Đề xuất)</span>
-          <div class="text-2xl font-black text-amber-600 font-mono">1.5 tr / bạn</div>
-          <span class="text-[11px] text-gray-500 mt-1 block">Gom thủ quỹ giữ để trả tiền ăn + grab</span>
+        <div class="u-card p-4">
+          <span class="text-[11px] font-bold text-[#9499b3] uppercase tracking-wider block mb-1">Cố Định (Vé Bay + Phòng)</span>
+          <div id="stat-fixed-costs" class="text-2xl font-baloo font-extrabold text-[#3b82f6] leading-none">--</div>
+          <span class="text-[10px] text-gray-400 mt-1.5 block">Cần gom thủ quỹ thanh toán trước</span>
+        </div>
+        <div class="u-card p-4">
+          <span class="text-[11px] font-bold text-[#9499b3] uppercase tracking-wider block mb-1">Chi Tiêu Ăn Uống & Vặt</span>
+          <div id="stat-food-costs" class="text-2xl font-baloo font-extrabold text-[#10b981] leading-none">--</div>
+          <span class="text-[10px] text-gray-400 mt-1.5 block">Tính từ các quán ăn được chốt</span>
         </div>
       </div>
 
-      <!-- Detailed Breakdown Table -->
-      <div class="bg-white border border-[#EADBCE] rounded-2xl overflow-hidden shadow-sm">
-        <div class="p-4 bg-[#FAF7F2] border-b border-[#EADBCE] flex items-center justify-between">
-          <h4 class="text-sm font-bold text-[#1E1B18]">Bảng Dự Toán Chi Phí Từng Hạng Mục (Năm 2026)</h4>
-          <span class="text-xs text-[#6B635B]">Tính trên nhóm 8 người</span>
+      <!-- Expense Table -->
+      <div class="u-card overflow-hidden">
+        <div class="p-4 bg-[#151926] border-b border-[#2d3548] flex items-center justify-between">
+          <span class="text-xs font-bold text-white uppercase tracking-wider font-baloo">Chi Tiết Từng Khoản Tiền</span>
+          <span class="text-xs text-[#9499b3]">Có thể chỉnh sửa hoặc xóa bất kỳ lúc nào</span>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-xs text-left">
-            <thead class="bg-gray-50 text-[#6B635B] font-bold uppercase tracking-wider border-b border-[#EADBCE]">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#0f1219] border-b border-[#2d3548] text-[#9499b3] uppercase font-bold text-[10px] tracking-wider">
               <tr>
                 <th class="py-3 px-4">Hạng Mục</th>
-                <th class="py-3 px-4">Mức Tiết Kiệm</th>
-                <th class="py-3 px-4">Mức Thoải Mái</th>
-                <th class="py-3 px-4">Tính theo</th>
-                <th class="py-3 px-4">Mẹo Cho Team HCM</th>
+                <th class="py-3 px-4">Phân Loại</th>
+                <th class="py-3 px-4 text-right">Mỗi Người</th>
+                <th class="py-3 px-4 text-right">Cả Nhóm (x8)</th>
+                <th class="py-3 px-4 text-center">Trạng Thái</th>
+                <th class="py-3 px-4 text-right">Thao Tác</th>
               </tr>
             </thead>
-            <tbody id="budget-table-body" class="divide-y divide-[#EADBCE]/60">
-              <!-- Rendered by JS -->
+            <tbody id="expense-table-rows" class="divide-y divide-[#2d3548]/60">
+              <!-- Rendered dynamically -->
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Money tips for HCM people in Hanoi -->
-      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-amber-900 text-xs space-y-2">
-        <h5 class="font-bold text-sm flex items-center gap-1.5 text-amber-950">
-          <span>💡</span> Kinh nghiệm tài chính cho nhóm Sài Gòn ra Hà Nội lần đầu:
-        </h5>
-        <ul class="list-disc list-inside space-y-1 text-amber-800">
-          <li><strong>Tiền mặt:</strong> Bắt buộc mỗi người nên có sẵn 1-2 triệu tiền mặt hoặc trong ví thủ quỹ. Các quán vỉa hè nổi tiếng (Phở Bát Đàn, bún chả ngõ) hoặc gửi xe không nhận thẻ/chuyển khoản lúc đông.</li>
-          <li><strong>Thuê xe:</strong> Nhóm 8 người thuê xe 16 chỗ đón tiễn sân bay Nội Bài chỉ khoảng 500k - 600k/chuyến (chia ra chưa tới 75k/người), tiện hơn nhiều book 2 xe taxi rời.</li>
-          <li><strong>Airbnb nguyên căn:</strong> Thuê 1 căn nhà cổ hoặc villa nguyên căn 4 phòng ngủ ở khu Hoàn Kiếm/Tây Hồ giá tầm 1.8tr - 2.5tr/đêm, vừa rẻ vừa có phòng sinh hoạt chung chơi boardgame!</li>
-        </ul>
-      </div>
+    </section>
 
-    </div>
-
-    <!-- ----------------- TAB 6: PACKING CHECKLIST ----------------- -->
-    <div id="panel-checklist" class="space-y-6 hidden">
-      <div class="bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- =========================================================================
+         SECTION 3: KHO ĐỊA ĐIỂM HÀ NỘI 2026 (QUICK PROPOSE DRAWER)
+         ========================================================================= -->
+    <section id="section-attractions" class="space-y-6 pt-6 border-t border-[#2d3548]">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 class="text-base font-bold text-[#1E1B18] flex items-center gap-2">
-            <span>✅</span> Checklist Chuẩn Bị Trước Giờ Bay
-          </h3>
-          <p class="text-xs text-[#6B635B]">Đặc biệt chú ý khí hậu mùa đông Hà Nội tháng 11 rất khác miền Nam!</p>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span>
+            <h3 class="text-xl font-baloo font-extrabold text-white">Kho Gợi Ý Địa Điểm & Ẩm Thực 2026</h3>
+          </div>
+          <p class="text-xs text-[#9499b3]">Bấm <strong>[+ Đề xuất vào khung giờ]</strong> để đưa ngay địa điểm vào danh sách vote của nhóm!</p>
         </div>
-        <!-- Overall checklist progress -->
-        <div class="w-full sm:w-64 bg-[#FAF7F2] border border-[#EADBCE] rounded-xl p-3">
-          <div class="flex justify-between text-xs font-bold mb-1">
-            <span>Đã chuẩn bị:</span>
-            <span id="checklist-progress-text" class="text-[#B9382A]">0/0</span>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2">
-            <div id="checklist-progress-bar" class="bg-[#B9382A] h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-          </div>
+
+        <!-- Filter pills -->
+        <div class="flex flex-wrap gap-1.5" id="att-filter-pills">
+          <button onclick="filterCatalog('all')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#ff5a1f] text-white">Tất Cả</button>
+          <button onclick="filterCatalog('food')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:border-[#ff5a1f]">🍜 Ẩm Thực</button>
+          <button onclick="filterCatalog('history')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:border-[#ff5a1f]">🏛️ Di Tích</button>
+          <button onclick="filterCatalog('photo')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:border-[#ff5a1f]">📸 Check-in</button>
+          <button onclick="filterCatalog('night')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:border-[#ff5a1f]">🌙 Cú Đêm</button>
+          <button onclick="filterCatalog('new2026')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:border-[#ff5a1f]">✨ Mới 2026</button>
         </div>
       </div>
 
-      <!-- Checklist Categories -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="checklist-container">
+      <!-- Bento Cards Grid -->
+      <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Rendered by JS -->
       </div>
-    </div>
+
+    </section>
+
+    <!-- =========================================================================
+         SECTION 4: Ý KIẾN & CHECKLIST (URANUS COMMUNITY)
+         ========================================================================= -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 border-t border-[#2d3548]">
+      
+      <!-- Left: Opinion Stream -->
+      <div class="lg:col-span-7 space-y-4">
+        <div class="u-card p-5">
+          <h4 class="text-base font-baloo font-extrabold text-white mb-1 flex items-center gap-2">
+            <span>💬</span> Bảng Tin Ý Kiến & Đóng Góp Nhóm
+          </h4>
+          <p class="text-xs text-[#9499b3] mb-4">Các thành viên để lại lời nhắn, lưu ý hoặc dặn dò</p>
+
+          <form onsubmit="handleSendComment(event)" class="space-y-2.5 mb-4">
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="cmt-name" required placeholder="Tên bạn..." class="px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:outline-none focus:border-[#ff5a1f]"/>
+              <select id="cmt-tag" class="px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:outline-none focus:border-[#ff5a1f]">
+                <option value="quán ăn">🍜 Gợi ý quán ăn</option>
+                <option value="chỗ ở">🏨 Chỗ ở / Homestay</option>
+                <option value="đi lại">🚕 Xe cộ / Đi lại</option>
+                <option value="lưu ý">⚠️ Nhắc nhở lưu ý</option>
+              </select>
+            </div>
+            <textarea id="cmt-content" required rows="2" placeholder="Nội dung thảo luận..." class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:outline-none focus:border-[#ff5a1f] resize-none"></textarea>
+            <button type="submit" class="w-full py-2 btn-uranus text-xs">Gửi Lên Bảng Tin</button>
+          </form>
+
+          <div id="comments-feed" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Checklist -->
+      <div class="lg:col-span-5 space-y-4">
+        <div class="u-card p-5">
+          <div class="flex items-center justify-between mb-1">
+            <h4 class="text-base font-baloo font-extrabold text-white flex items-center gap-2">
+              <span>✅</span> Checklist Chuẩn Bị Hành Lý
+            </h4>
+            <span class="text-xs font-bold text-[#ffc53d]" id="checklist-stat">0/0</span>
+          </div>
+          <p class="text-xs text-[#9499b3] mb-4">Áo ấm 20°C, CCCD, sạc dự phòng</p>
+
+          <div id="checklist-items" class="space-y-2.5">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+    </section>
 
   </main>
 
-  <!-- ================= DETAIL MODAL ================= -->
-  <div id="modal-container" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeModalOnBackdrop(event)">
-    <div class="bg-white border border-[#EADBCE] rounded-3xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl relative" onclick="event.stopPropagation()">
-      <button onclick="closeModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center text-sm font-bold">✕</button>
-      <div id="modal-content">
-        <!-- Injected -->
+  <!-- ================= PROPOSE / EDIT OPTION MODAL ================= -->
+  <div id="proposal-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#1a1f2e] border border-[#2d3548] rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+      <button onclick="closeProposalModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-[#232938] text-gray-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
+      
+      <div class="flex items-center gap-2 mb-1">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#ff5a1f]"></span>
+        <h3 id="prop-modal-title" class="text-lg font-baloo font-extrabold text-white">Đề Xuất Địa Điểm / Kèo Đi</h3>
       </div>
-    </div>
-  </div>
+      <p class="text-xs text-[#9499b3] mb-4">Nhập thông tin chi phí, địa chỉ để cả nhóm cùng vote</p>
 
-  <!-- ================= ADD CUSTOM ACTIVITY MODAL ================= -->
-  <div id="custom-act-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeCustomModalOnBackdrop(event)">
-    <div class="bg-white border border-[#EADBCE] rounded-3xl max-w-md w-full p-6 shadow-2xl relative" onclick="event.stopPropagation()">
-      <button onclick="closeCustomModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center text-sm font-bold">✕</button>
-      <h3 class="text-base font-bold text-[#1E1B18] mb-1">Thêm Hoạt Động Mới Vào Plan</h3>
-      <p class="text-xs text-[#6B635B] mb-4">Tự do thêm điểm hẹn hoặc quán ăn nhóm bạn muốn ghé</p>
+      <form onsubmit="handleSaveProposal(event)" class="space-y-3.5">
+        <input type="hidden" id="prop-id" />
 
-      <form onsubmit="saveCustomActivity(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-bold text-[#6B635B] mb-1">Ngày nào?</label>
-          <select id="new-act-day" class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl font-medium text-[#1E1B18]">
-            <option value="22">Ngày 22/11 (Thứ 7)</option>
-            <option value="23">Ngày 23/11 (Chủ Nhật)</option>
-            <option value="24">Ngày 24/11 (Thứ 2)</option>
-          </select>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Ngày Đi *</label>
+            <select id="prop-day" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" onchange="updateModalSlotOptions()">
+              <option value="22">Ngày 1: 22/11 (Thứ 7)</option>
+              <option value="23">Ngày 2: 23/11 (Chủ Nhật)</option>
+              <option value="24">Ngày 3: 24/11 (Thứ 2)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Khung Giờ *</label>
+            <select id="prop-slot" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]">
+              <!-- Filled dynamically based on day -->
+            </select>
+          </div>
         </div>
+
         <div>
-          <label class="block text-xs font-bold text-[#6B635B] mb-1">Khung giờ (VD: 15:30)</label>
-          <input type="text" id="new-act-time" required placeholder="14:00" class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl font-medium text-[#1E1B18]"/>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Tên Địa Điểm / Quán Muốn Đi *</label>
+          <input type="text" id="prop-title" required placeholder="VD: Bún Chả Obama Hương Liên..." class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
         </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Chi Phí Dự Tính (VNĐ/người) *</label>
+            <input type="number" id="prop-cost" required placeholder="VD: 70000" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium font-mono focus:border-[#ff5a1f]" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Người Đề Xuất *</label>
+            <input type="text" id="prop-author" required placeholder="VD: Tuấn, Vy, Huy..." class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
+          </div>
+        </div>
+
         <div>
-          <label class="block text-xs font-bold text-[#6B635B] mb-1">Tên hoạt động / địa điểm</label>
-          <input type="text" id="new-act-title" required placeholder="Ghé quán cà phê view phố cổ..." class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl font-medium text-[#1E1B18]"/>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Địa Chỉ / Khu Vực Cụ Thể</label>
+          <input type="text" id="prop-location" placeholder="VD: 24 Lê Văn Hưu, Hoàn Kiếm" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
         </div>
+
         <div>
-          <label class="block text-xs font-bold text-[#6B635B] mb-1">Loại hoạt động</label>
-          <select id="new-act-type" class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl font-medium text-[#1E1B18]">
-            <option value="food">🍜 Ăn uống</option>
-            <option value="sight">🏛️ Tham quan</option>
-            <option value="photo">📸 Check-in</option>
-            <option value="night">🌙 Vui chơi tối</option>
-            <option value="transport">🚕 Di chuyển</option>
-          </select>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Lý Do Đề Xuất / Mẹo Ăn Chơi</label>
+          <textarea id="prop-notes" rows="2" placeholder="Quán nổi tiếng, nướng than hoa thơm, có thể đi bộ từ hồ..." class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f] resize-none"></textarea>
         </div>
-        <div>
-          <label class="block text-xs font-bold text-[#6B635B] mb-1">Ghi chú thêm</label>
-          <textarea id="new-act-desc" rows="2" placeholder="Địa chỉ hoặc lưu ý..." class="w-full px-3 py-2 text-xs bg-[#FAF7F2] border border-[#EADBCE] rounded-xl font-medium text-[#1E1B18] resize-none"></textarea>
-        </div>
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-[#B9382A] text-white text-xs font-bold hover:bg-[#8E2519] transition mt-2">
-          Thêm Vào Thời Khóa Biểu
+
+        <button type="submit" class="w-full py-2.5 btn-uranus text-xs mt-2">
+          Lưu Đề Xuất & Mở Bình Chọn
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ================= TOAST NOTIFICATION ================= -->
-  <div id="toast" class="toast-anim fixed bottom-6 right-6 z-50 bg-[#1E1B18] text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/10 text-xs font-semibold">
+  <!-- ================= ADD / EDIT EXPENSE MODAL ================= -->
+  <div id="expense-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#1a1f2e] border border-[#2d3548] rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeExpenseModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-[#232938] text-gray-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
+      
+      <h3 id="exp-modal-title" class="text-base font-baloo font-extrabold text-white mb-1">Khoản Chi Phí</h3>
+      <p class="text-xs text-[#9499b3] mb-4">Cập nhật vào bảng tổng chi tiêu 8 bạn</p>
+
+      <form onsubmit="handleSaveCustomExpense(event)" class="space-y-3">
+        <input type="hidden" id="custom-exp-id" />
+
+        <div>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Tên Khoản Chi *</label>
+          <input type="text" id="custom-exp-title" required placeholder="VD: Tiền phòng Airbnb..." class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Phân Loại</label>
+            <select id="custom-exp-cat" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium">
+              <option value="flight">✈️ Vé máy bay</option>
+              <option value="stay">🏨 Homestay/KS</option>
+              <option value="food">🍜 Ăn uống chính</option>
+              <option value="transit">🚕 Xe cộ đi lại</option>
+              <option value="ticket">🎟️ Vé tham quan</option>
+              <option value="gift">🎁 Quà mang về</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Số Tiền / Bạn (VNĐ) *</label>
+            <input type="number" id="custom-exp-amount" required placeholder="550000" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-mono font-medium" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Trạng Thái</label>
+          <select id="custom-exp-status" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium">
+            <option value="planned">⏳ Dự trù</option>
+            <option value="deposit">💳 Đã cọc</option>
+            <option value="paid">✓ Đã thanh toán</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 btn-uranus text-xs mt-2">
+          Lưu Vào Bảng Tính
+        </button>
+      </form>
+    </div>
+  </div>
+
+    <!-- ================= EDIT DAY MODAL ================= -->
+  <div id="day-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#1a1f2e] border border-[#2d3548] rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeDayModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-[#232938] text-gray-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
+      
+      <div class="flex items-center gap-2 mb-1">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#ff5a1f]"></span>
+        <h3 id="day-modal-title" class="text-base font-baloo font-extrabold text-white">Chỉnh Sửa Thông Tin Ngày</h3>
+      </div>
+      <p class="text-xs text-[#9499b3] mb-4">Thay đổi tiêu đề và trọng tâm hoạt động trong ngày</p>
+
+      <form onsubmit="handleSaveDay(event)" class="space-y-3">
+        <input type="hidden" id="edit-day-id" />
+
+        <div>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Tiêu Đề Ngày *</label>
+          <input type="text" id="edit-day-title" required placeholder="VD: Ngày 1: Thứ Bảy • 22/11/2026" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Mô Tả / Trọng Tâm Điểm Đến</label>
+          <input type="text" id="edit-day-subtitle" required placeholder="VD: Bay đêm 2h SA, Phố Cổ & Bia Tạ Hiện" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
+        </div>
+
+        <button type="submit" class="w-full py-2.5 btn-uranus text-xs mt-2">
+          Lưu Thông Tin Ngày
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= ADD / EDIT TIME SLOT MODAL ================= -->
+  <div id="slot-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#1a1f2e] border border-[#2d3548] rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeSlotModal()" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-[#232938] text-gray-400 hover:text-white flex items-center justify-center font-bold text-sm">✕</button>
+      
+      <div class="flex items-center gap-2 mb-1">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#ffc53d]"></span>
+        <h3 id="slot-modal-title" class="text-base font-baloo font-extrabold text-white">Khung Giờ Lịch Trình</h3>
+      </div>
+      <p class="text-xs text-[#9499b3] mb-4">Thêm hoặc chỉnh sửa khung giờ hoạt động trong ngày</p>
+
+      <form onsubmit="handleSaveSlot(event)" class="space-y-3">
+        <input type="hidden" id="edit-slot-id" />
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Ngày Áp Dụng *</label>
+            <select id="edit-slot-day" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]">
+              <option value="22">Ngày 1: 22/11 (Thứ 7)</option>
+              <option value="23">Ngày 2: 23/11 (Chủ Nhật)</option>
+              <option value="24">Ngày 3: 24/11 (Thứ 2)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#9499b3] mb-1">Icon</label>
+            <input type="text" id="edit-slot-icon" placeholder="⏰" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white text-center font-medium focus:border-[#ff5a1f]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Khung Giờ & Tên Sự Kiện *</label>
+          <input type="text" id="edit-slot-name" required placeholder="VD: 15:00 - 17:00 • Bánh Tôm Hồ Tây" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-[#9499b3] mb-1">Gợi Ý / Trọng Tâm</label>
+          <input type="text" id="edit-slot-focus" placeholder="VD: Bánh tôm đường Thanh Niên view hồ Trúc Bạch" class="w-full px-3 py-2 text-xs bg-[#151926] border border-[#2d3548] rounded-xl text-white font-medium focus:border-[#ff5a1f]" />
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <button type="submit" class="flex-1 py-2.5 btn-uranus text-xs">
+            Lưu Khung Giờ
+          </button>
+          <button type="button" id="btn-delete-slot" onclick="handleDeleteSlot()" class="px-3 py-2.5 rounded-xl bg-red-950/40 text-red-400 hover:bg-red-900/60 border border-red-800/40 text-xs font-bold hidden">
+            Xóa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<!-- ================= TOAST ================= -->
+  <div id="toast" class="toast-anim fixed bottom-6 right-6 z-50 bg-[#1a1f2e] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-[#ff5a1f]/40 text-xs font-bold">
     <span id="toast-icon">✨</span>
-    <span id="toast-msg">Thông báo thành công!</span>
+    <span id="toast-msg">Thông báo</span>
   </div>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="mt-auto border-t border-[#EADBCE] bg-[#FAF7F2] py-8 text-center text-xs text-[#6B635B]">
+  <footer class="mt-auto border-t border-[#2d3548] bg-[#0f1219] py-8 text-center text-xs text-[#9499b3]">
     <div class="max-w-7xl mx-auto px-4">
-      <p class="font-serif italic text-base text-[#1E1B18] mb-1">"Hà Nội đẹp nhất về đêm và lúc sáng sớm mùa đông..."</p>
-      <p>© 2026 Hành trình Hà Nội của 8 người bạn TP.HCM • Thiết kế tối ưu theo chuẩn UI/UX Travel Magazine</p>
+      <p class="font-baloo text-base text-white mb-1">Uranus Trip Planner • Hà Nội 2026</p>
+      <p>© 2026 Thiết kế giao diện lấy cảm hứng trực tiếp từ Uranus Center (Baloo 2 & Be Vietnam Pro)</p>
     </div>
   </footer>
 
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <!-- ================= JAVASCRIPT ENGINE ================= -->
   <script>
-    /* =====================================================================
-       CRAWLED DATA HANOI 2026 (Attractions, Food, Michelin, Costs)
-       ===================================================================== */
-    const HANOI_DATABASE = [
-      // 1. Phở Bò Bát Đàn
-      {
-        id: 'pho-bat-dan',
-        title: 'Phở Bò Gia Truyền Bát Đàn',
-        category: 'food',
-        badge: 'Huyền Thoại Phố Cổ',
-        price: '60.000 - 85.000đ',
-        hours: '06:00 - 10:00 & 18:00 - 20:30',
-        location: '49 Bát Đàn, Hoàn Kiếm',
-        tags: ['Ăn sáng', 'Phở bò', 'Xếp hàng'],
-        desc: 'Nước dùng trong veo, ngọt thanh tự nhiên từ xương bò hầm nguyên chất, thơm mùi gừng nướng và thảo quả. Không ngọt đường như phở miền Nam.',
-        tips: 'Phải xếp hàng tự bưng bê trả tiền trước. Đi sáng sớm 6:30 - 7:00 đỡ đông hơn.',
-        recommendedFor: 'Bữa sáng ngày đầu tiên 22/11 vừa hạ cánh!'
-      },
-      // 2. Bún Chả Hương Liên (Obama)
-      {
-        id: 'bun-cha-obama',
-        title: 'Bún Chả Hương Liên (Obama)',
-        category: 'food',
-        badge: 'Michelin Selected',
-        price: '60.000 - 95.000đ',
-        hours: '08:00 - 20:30',
-        location: '24 Lê Văn Hưu, Hai Bà Trưng',
-        tags: ['Ăn trưa', 'Bún chả', 'Combo Obama'],
-        desc: 'Nơi cựu Tổng thống Obama và đầu bếp Anthony Bourdain từng dùng bữa năm 2016. Chả viên nướng than hoa thơm lừng ăn kèm nem cua bể giòn rụm.',
-        tips: 'Gọi Combo Obama (1 bún chả + 1 nem hải sản + 1 bia Hà Nội) khoảng 120.000đ.',
-        recommendedFor: 'Trưa ngày 22/11'
-      },
-      // 3. Chả Cá Lã Vọng
-      {
-        id: 'cha-ca-la-vong',
-        title: 'Chả Cá Lã Vọng Gia Truyền',
-        category: 'food',
-        badge: 'Đặc Sản Độc Bản HN',
-        price: '170.000 - 200.000đ/suất',
-        hours: '11:00 - 14:00 & 17:00 - 21:00',
-        location: '14 Phố Chả Cá, Hoàn Kiếm',
-        tags: ['Ăn trưa', 'Ăn tối', 'Món truyền thống'],
-        desc: 'Cá lăng thái miếng tẩm ướp nghệ, nướng sơ rồi đảo nóng trên chảo mỡ sôi cùng thì là và hành hoa, ăn cùng bún, đậu phộng và chấm mắm tôm đánh sủi bọt.',
-        tips: 'Nếu ai không ăn được mắm tôm nhớ xin nước mắm chanh tỏi ớt riêng.',
-        recommendedFor: 'Trưa ngày 23/11'
-      },
-      // 4. Phở Gà Trộn Nguyệt
-      {
-        id: 'pho-ga-nguyet',
-        title: 'Phở Gà Trộn Nguyệt',
-        category: 'food',
-        badge: 'Michelin Bib Gourmand',
-        price: '50.000 - 75.000đ',
-        hours: '06:00 - 13:00 & 17:30 - 01:00',
-        location: '5B Phủ Đoan, Hoàn Kiếm',
-        tags: ['Ăn đêm', 'Phở gà', 'Michelin'],
-        desc: 'Bánh phở mềm dai trộn sốt tương đen bí truyền, thịt gà ta da vàng giòn ngọt thịt, rắc hành phi thơm nức và lạc rang.',
-        tips: 'Mở đến tận 1h sáng, cực kỳ hợp cho 8 anh em đói bụng đi dạo đêm.',
-        recommendedFor: 'Tối muộn hoặc ăn trưa'
-      },
-      // 5. Cà Phê Trứng Giảng 1946
-      {
-        id: 'cafe-trung-giang',
-        title: 'Cà Phê Trứng Giảng',
-        category: 'food',
-        badge: 'Cái Nôi Cà Phê Trứng',
-        price: '35.000 - 50.000đ',
-        hours: '07:00 - 22:30',
-        location: '39 Nguyễn Hữu Huân, Hoàn Kiếm',
-        tags: ['Cà phê', 'Món ngọt', 'Ghé chiều'],
-        desc: 'Do cụ Nguyễn Văn Giảng sáng tạo năm 1946. Lớp bọt kem trứng vàng óng sánh mịn như bánh Tiramisu phủ trên nền cà phê phin đậm đà thơm ngát.',
-        tips: 'Nên uống nóng (cốc được ngâm trong bát nước ấm). Có cả ca cao trứng hoặc matcha trứng.',
-        recommendedFor: 'Buổi chiều sau khi dạo phố cổ'
-      },
-      // 6. Văn Miếu - Quốc Tử Giám & Tour Đêm
-      {
-        id: 'van-mieu',
-        title: 'Văn Miếu – Quốc Tử Giám',
-        category: 'history',
-        badge: 'Tour Đêm 3D Mapping',
-        price: '70.000đ (Ban ngày) | 199.000đ (Tour Đêm)',
-        hours: '08:00 - 17:00 | Tour Đêm: T4, T7, CN 18:30-21:30',
-        location: '58 Quốc Tử Giám, Đống Đa',
-        tags: ['Di tích', 'Tour đêm 2026', '82 Bia Tiến Sĩ'],
-        desc: 'Trường đại học đầu tiên của Việt Nam từ năm 1070. Tour đêm "Tinh hoa Đạo học" sử dụng công nghệ chiếu 3D Mapping lên Khuê Văn Các và hồ Thiên Quang cực kỳ mãn nhãn.',
-        tips: 'Vì nhóm ở HN đúng tối thứ Bảy 22/11 và Chủ Nhật 23/11, nên book vé tour đêm trước trên website!',
-        recommendedFor: 'Chiều hoặc Tối Thứ 7 (22/11)'
-      },
-      // 7. Hoàng Thành Thăng Long
-      {
-        id: 'hoang-thanh',
-        title: 'Hoàng Thành Thăng Long',
-        category: 'history',
-        badge: 'Di Sản UNESCO',
-        price: '100.000đ/người lớn (Vé mới cập nhật)',
-        hours: '08:00 - 17:00 (Hàng ngày)',
-        location: '19C Hoàng Diệu, Ba Đình',
-        tags: ['Di sản', 'Lịch sử 1000 năm', 'Hầm D67'],
-        desc: 'Quần thể di tích lịch sử hơn 13 thế kỷ. Khám phá Đoan Môn, điện Kính Thiên và hầm chỉ huy tác chiến D67 thời kỳ kháng chiến.',
-        tips: 'Con đường Hoàng Diệu phía trước là một trong những con đường rợp bóng cây đẹp nhất Hà Nội.',
-        recommendedFor: 'Sáng ngày 24/11 trước khi về'
-      },
-      // 8. Di Tích Nhà Tù Hỏa Lò
-      {
-        id: 'hoa-lo',
-        title: 'Di Tích Lịch Sử Nhà Tù Hỏa Lò',
-        category: 'history',
-        badge: 'Top Review 4.9*',
-        price: '50.000đ (Ngày) | Tour đêm đặt trước',
-        hours: '08:00 - 17:00 (Tất cả các ngày)',
-        location: '1 Hỏa Lò, Trần Hưng Đạo, Hoàn Kiếm',
-        tags: ['Di tích', 'Audio guide', 'Cực kỳ xúc động'],
-        desc: '"Hanoi Hilton" nổi tiếng với cách trưng bày hiện đại, tái hiện chân thực tinh thần kiên trung của các chiến sĩ cách mạng. Nội dung fanpage & thuyết minh rất chạm đến cảm xúc.',
-        tips: 'Nhất định nên thuê máy thuyết minh Audio Guide (50k) để nghe từng câu chuyện chi tiết.',
-        recommendedFor: 'Sáng hoặc Chiều ngày 23/11'
-      },
-      // 9. Lăng Bác & Quảng Trường Ba Đình
-      {
-        id: 'lang-bac',
-        title: 'Lăng Chủ Tịch Hồ Chí Minh',
-        category: 'history',
-        badge: 'Địa Điểm Thiêng Liêng',
-        price: 'Miễn phí vào Lăng | Nhà Sàn: 40.000đ',
-        hours: 'Sáng: T3-T5 (08:00-11:00); T7-CN (08:00-11:30); Đóng T2, T6',
-        location: '1 Hùng Vương, Ba Đình',
-        tags: ['Lăng Bác', 'Chùa Một Cột', 'Quảng trường'],
-        desc: 'Nơi an nghỉ của Chủ tịch Hồ Chí Minh. Tham quan Quảng trường Ba Đình lịch sử, Nhà sàn ao cá Bác Hồ và Chùa Một Cột bên cạnh.',
-        tips: 'Quy định trang phục nghiêm túc: áo có tay, quần/váy dài qua đầu gối. Không chụp ảnh trong phòng viếng.',
-        recommendedFor: 'Sáng Chủ Nhật 23/11 (08:00)'
-      },
-      // 10. Hồ Gươm, Cầu Thê Húc & Phố Đi Bộ
-      {
-        id: 'ho-guom',
-        title: 'Hồ Hoàn Kiếm & Phố Đi Bộ Cuối Tuần',
-        category: 'photo',
-        badge: 'Trái Tim Thủ Đô',
-        price: 'Miễn phí dạo hồ | Đền Ngọc Sơn: 50.000đ',
-        hours: 'Hồ: 24/7 | Phố đi bộ: Tối Thứ 6 đến hết Chủ Nhật',
-        location: 'Quận Hoàn Kiếm',
-        tags: ['Check-in', 'Phố đi bộ', 'Tháp Rùa', 'Kem Tràng Tiền'],
-        desc: 'Cầu Thê Húc màu đỏ son uốn cong dẫn vào đền Ngọc Sơn giữa lòng hồ trong xanh. Cuối tuần toàn bộ khu vực thành phố đi bộ nhộn nhịp biểu diễn nghệ thuật, nhảy múa, trò chơi dân gian.',
-        tips: 'Mua 1 cây kem ốc quế Tràng Tiền vừa ăn vừa đi dạo ngắm Tháp Rùa lên đèn.',
-        recommendedFor: 'Sáng sớm 22/11 và Tối Thứ 7 / Chủ Nhật'
-      },
-      // 11. Cầu Long Biên Hoàng Hôn
-      {
-        id: 'cau-long-bien',
-        title: 'Cầu Long Biên Lịch Sử',
-        category: 'photo',
-        badge: 'Điểm Check-in Triệu View',
-        price: 'Miễn phí tham quan',
-        hours: '24/7 (Đẹp nhất lúc 16:30 - 17:30)',
-        location: 'Cầu Long Biên nối Hoàn Kiếm và Long Biên',
-        tags: ['Hoàng hôn', 'Sống ảo', 'Kiến trúc Pháp 1902'],
-        desc: 'Cây cầu thép trăm tuổi bắc qua sông Hồng do Pháp xây dựng. Hoàng hôn buông xuống ánh cam rực rỡ chiếu qua khung sắt cổ kính là góc chụp OOTD đỉnh cao.',
-        tips: 'Ghé quán cafe Serein Cafe & Lounge trên cao nhìn thẳng ra cầu Long Biên chụp toàn cảnh.',
-        recommendedFor: 'Chiều 16:30 ngày 23/11'
-      },
-      // 12. Phố Bia Tạ Hiện & Lương Ngọc Quyến
-      {
-        id: 'ta-hien',
-        title: 'Phố Bia Không Ngủ Tạ Hiện',
-        category: 'night',
-        badge: 'Thiên Đường Tụ Tập',
-        price: '12.000 - 20.000đ/cốc bia hơi',
-        hours: '18:00 - 02:00 sáng',
-        location: 'Phố Tạ Hiện, Hàng Buồm, Hoàn Kiếm',
-        tags: ['Bia hơi', 'Cú đêm', 'Mồi nhậu phố cổ'],
-        desc: 'Ngã tư quốc tế sầm uất bậc nhất thủ đô. Hàng trăm bạn trẻ và du khách ngồi ghế nhựa san sát vỉa hè, cụng cốc bia hơi Hà Nội mát lạnh cùng nem chua rán, chim cút nướng, phô mai que.',
-        tips: 'Nhóm 8 người đi thì nên tới lúc 19:30 để ghép được bàn dài ngồi chung.',
-        recommendedFor: 'Tối Thứ Bảy 22/11'
-      },
-      // 13. Phố Ẩm Thực Đêm Tống Duy Tân
-      {
-        id: 'tong-duy-tan',
-        title: 'Phố Ăn Đêm Tống Duy Tân',
-        category: 'night',
-        badge: 'Phố Xuyên Đêm',
-        price: '60.000 - 120.000đ',
-        hours: 'Mở cửa 24/24',
-        location: 'Phố Tống Duy Tân & Ngõ Cấm Chỉ',
-        tags: ['Mỳ gà tần', 'Cơm đảo gà rang', 'Ăn khuya'],
-        desc: 'Phố ẩm thực sáng đèn thâu đêm nổi tiếng nhất Hà Nội. Đặc sản mỳ gà tần lon bồi bổ thuốc bắc thơm nức, cơm đảo gà rang giòn tan béo ngậy.',
-        tips: 'Nếu chuyến bay đến sớm lúc 4:30 sáng đói bụng có thể ghé ngay đây nạp năng lượng!',
-        recommendedFor: 'Ăn khuya hoặc sáng sớm ngày 22/11'
-      },
-      // 14. Mega Grand World Hà Nội (Ocean City)
-      {
-        id: 'grand-world',
-        title: 'Mega Grand World Hà Nội (Ocean City)',
-        category: 'new2026',
-        badge: 'Siêu Quần Thể Hot Nhất 2026',
-        price: 'Vào cổng Miễn Phí | Thuyền Gondola: 150.000đ',
-        hours: '24/7 | Show The Grand Voyage: 20:30 hàng ngày',
-        location: 'Ocean City (Vinhomes Ocean Park 2-3)',
-        tags: ['Venice thu nhỏ', 'Show 3D Mapping', 'Tọa độ mới 2026'],
-        desc: 'Tọa độ giải trí bùng nổ của Hà Nội với dòng sông Venice rực rỡ sắc màu, dãy shophouse phong cách Ý & Hàn Quốc K-Town, đi thuyền Gondola và xem show diễn thực cảnh ánh sáng trên sông.',
-        tips: 'Có xe điện VinBus miễn phí chạy thẳng từ trung tâm Hà Nội (Hồ Gươm/Nhà Hát Lớn) sang.',
-        recommendedFor: 'Chiều - Tối Chủ Nhật 23/11 nếu muốn đổi gió ngoại ô'
-      },
-      // 15. Lotte Mall West Lake Hanoi
-      {
-        id: 'lotte-west-lake',
-        title: 'Lotte Mall West Lake & Hồ Tây',
-        category: 'new2026',
-        badge: 'Tổ Hợp Sang Xịn Mịn',
-        price: 'Vào cửa miễn phí | Thủy cung: ~280.000đ',
-        hours: '09:30 - 22:00',
-        location: '272 Võ Chí Công, Tây Hồ',
-        tags: ['Tây Hồ', 'Thủy cung trong nhà', 'View hoàng hôn'],
-        desc: 'Tổ hợp thương mại - giải trí lớn nhất khu Tây Hồ với kiến trúc hiện đại, thủy cung Lotte World Aquarium và view ngắm trọn vẹn Hồ Tây mênh mông.',
-        tips: 'Kết hợp thuê xe đạp đạp 1 vòng đường ven Hồ Tây (Thanh Niên - Nhật Chiêu).',
-        recommendedFor: 'Sáng Chủ Nhật 23/11'
-      },
-      // 16. Mua Quà: Cốm Mễ Trì & Ô Mai Hàng Đường
-      {
-        id: 'qua-ha-noi',
-        title: 'Đặc Sản Cốm Làng Vòng & Ô Mai Hồng Lam',
-        category: 'shop',
-        badge: 'Quà Hà Nội Mang Về',
-        price: '40.000 - 250.000đ',
-        hours: '08:00 - 21:00',
-        location: 'Phố Hàng Đường (Ô mai) & Chợ Đồng Xuân / Mễ Trì (Cốm)',
-        tags: ['Quà biếu', 'Cốm xào', 'Ô mai sấu chua cay'],
-        desc: 'Cốm tươi gói lá sen thơm dịu dàng của mùa thu đông Hà Nội, chả cốm chiên giòn, cùng các hộp ô mai sấu bao tử, ô mai mơ gừng cay ngọt đặc trưng không thể tìm thấy ở Sài Gòn.',
-        tips: 'Mua cốm tươi vào sáng ngày 24/11 để đem lên máy bay về Sài Gòn vẫn còn dẻo thơm.',
-        recommendedFor: 'Sáng ngày 24/11 trước giờ check-out'
-      }
-    ];
-
-    /* =====================================================================
-       DEFAULT ITINERARY (TIME-TABLE 22/11 -> 24/11)
-       ===================================================================== */
-    const DEFAULT_ITINERARY = [
+    /* =========================================================================
+       DEFAULT TIME SLOTS STRUCTURE FOR THE 3 DAYS
+       ========================================================================= */
+    const TIME_SLOTS_DEFINITION = [
       // Ngày 22/11
-      {
-        id: 'act-1',
-        day: '22',
-        time: '02:00',
-        title: 'Tập trung tại sân bay Tân Sơn Nhất (SGN)',
-        type: 'transport',
-        badge: 'Bay đêm',
-        desc: 'Tập trung tại ga quốc nội Tân Sơn Nhất. Check-in online trước, gửi hành lý và qua an ninh. Chuyến bay cất cánh ~3:00 - 3:30 AM.',
-        done: false
-      },
-      {
-        id: 'act-2',
-        day: '22',
-        time: '05:00',
-        title: 'Hạ cánh Nội Bài & Đón xe về Phố Cổ',
-        type: 'transport',
-        badge: 'Đón bình minh',
-        desc: 'Xe 16 chỗ đón cả nhóm 8 người từ sân bay về trung tâm Hoàn Kiếm (mất ~45 phút). Cảm nhận cái lạnh se se đầu đông 20°C!',
-        done: false
-      },
-      {
-        id: 'act-3',
-        day: '22',
-        time: '06:30',
-        title: 'Ăn sáng: Phở Bò Bát Đàn / Phở Thìn Lò Đúc',
-        type: 'food',
-        badge: 'Món kinh điển',
-        desc: 'Thưởng thức bát phở bò nóng hổi nghi ngút khói đầu tiên tại đất Hà Thành. Ăn cùng quẩy giòn và chút dấm tỏi ớt Bắc.',
-        done: false
-      },
-      {
-        id: 'act-4',
-        day: '22',
-        time: '07:45',
-        title: 'Check-in gửi đồ khách sạn & Dạo Hồ Gươm sớm',
-        type: 'sight',
-        badge: 'Hồ Hoàn Kiếm',
-        desc: 'Gửi hành lý tại homestay/khách sạn. Đi bộ ra Hồ Gươm ngắm Tháp Rùa trong sương sớm, chụp ảnh Cầu Thê Húc đỏ rực.',
-        done: false
-      },
-      {
-        id: 'act-5',
-        day: '22',
-        time: '09:30',
-        title: 'Khám phá 36 Phố Phường & Cà Phê Trứng Giảng',
-        type: 'food',
-        badge: 'Văn hóa',
-        desc: 'Len lỏi qua phố Hàng Mã, Hàng Bạc, Hàng Đào. Ghé Giảng 39 Nguyễn Hữu Huân thưởng thức ly cà phê trứng trứ danh.',
-        done: false
-      },
-      {
-        id: 'act-6',
-        day: '22',
-        time: '11:45',
-        title: 'Ăn trưa: Bún Chả Obama Hương Liên',
-        type: 'food',
-        badge: 'Bữa trưa',
-        desc: 'Gọi mỗi người 1 suất bún chả thịt nướng thơm lừng than hoa + nem cua bể vỏ giòn rụm.',
-        done: false
-      },
-      {
-        id: 'act-7',
-        day: '22',
-        time: '13:00',
-        title: 'Về khách sạn nhận phòng & Nghỉ ngơi trưa',
-        type: 'hotel',
-        badge: 'Nạp năng lượng',
-        desc: 'Vì bay từ 2h sáng nên giấc ngủ trưa này cực kỳ quan trọng! Ngủ 1.5 - 2 tiếng lấy lại sức chiến đấu buổi chiều tối.',
-        done: false
-      },
-      {
-        id: 'act-8',
-        day: '22',
-        time: '15:30',
-        title: 'Văn Miếu – Quốc Tử Giám & Bích Câu Đạo Quán',
-        type: 'sight',
-        badge: 'Lịch sử',
-        desc: 'Thăm trường đại học đầu tiên Việt Nam, xin chữ may mắn, chụp ảnh kiến trúc cổ kính ngũ môn.',
-        done: false
-      },
-      {
-        id: 'act-9',
-        day: '22',
-        time: '18:30',
-        title: 'Phố Đi Bộ Hồ Gươm Tối Thứ Bảy',
-        type: 'sight',
-        badge: 'Sôi động',
-        desc: 'Hòa mình vào không khí phố đi bộ thứ 7: nhảy flashmob, xem nghệ nhân biểu diễn đàn bầu, thổi sáo, ăn kem Tràng Tiền.',
-        done: false
-      },
-      {
-        id: 'act-10',
-        day: '22',
-        time: '20:30',
-        title: 'Bia Hơi Phố Tạ Hiện & Lương Ngọc Quyến',
-        type: 'night',
-        badge: 'Tụ tập nhóm',
-        desc: '8 người quây quần bên bàn ghế nhựa vỉa hè: cụng cốc bia hơi 15k, gặm chân gà chiên mắm, nem chua rán bốc khói!',
-        done: false
-      },
+      { id: 's22-1', day: '22', name: '02:00 - 05:30 • Bay Đêm & Hạ Cánh', focus: 'Tân Sơn Nhất ✈ Nội Bài', icon: '✈️' },
+      { id: 's22-2', day: '22', name: '06:00 - 09:00 • Điểm Tâm Sớm & Dạo Hồ Gươm', focus: 'Phở bò phố cổ sương sớm', icon: '🌅' },
+      { id: 's22-3', day: '22', name: '09:00 - 12:00 • Khám Phá 36 Phố Phường', focus: 'Cà phê trứng & Phố Hàng', icon: '☕' },
+      { id: 's22-4', day: '22', name: '12:00 - 14:30 • Bữa Trưa & Nghỉ Ngơi', focus: 'Bún chả & ngủ trưa hồi sức', icon: '🍜' },
+      { id: 's22-5', day: '22', name: '14:30 - 18:00 • Buổi Chiều Văn Hóa', focus: 'Văn Miếu – Quốc Tử Giám', icon: '🏛️' },
+      { id: 's22-6', day: '22', name: '18:00 - 21:00 • Phố Đi Bộ Tối Thứ Bảy', focus: 'Kem Tràng Tiền & Nghệ thuật', icon: '🎪' },
+      { id: 's22-7', day: '22', name: '21:00 - Khuya • Cú Đêm Tạ Hiện', focus: 'Bia hơi & Mồi nhậu phố cổ', icon: '🍺' },
 
       // Ngày 23/11
-      {
-        id: 'act-11',
-        day: '23',
-        time: '07:30',
-        title: 'Ăn sáng: Bánh Cuốn Thanh Vân Hàng Gà / Xôi Xéo Yến',
-        type: 'food',
-        badge: 'Món sáng HN',
-        desc: 'Bánh cuốn tráng tay mỏng tanh chấm nước mắm cà cuống hoặc gói xôi xéo đậu xanh mỡ hành thơm nức mũi.',
-        done: false
-      },
-      {
-        id: 'act-12',
-        day: '23',
-        time: '08:30',
-        title: 'Viếng Lăng Bác & Thăm Chùa Trấn Quốc (Hồ Tây)',
-        type: 'sight',
-        badge: 'Linh thiêng',
-        desc: 'Viếng Lăng Chủ tịch Hồ Chí Minh buổi sáng, dạo hồ Tây ngắm ngôi chùa cổ nhất Hà Nội (thế kỷ 6).',
-        done: false
-      },
-      {
-        id: 'act-13',
-        day: '23',
-        time: '11:45',
-        title: 'Ăn trưa: Chả Cá Lã Vọng Gia Truyền',
-        type: 'food',
-        badge: 'Đặc sản đỉnh',
-        desc: 'Món ăn nhất định phải ăn cùng nhau: chảo cá lăng sôi sùng sục thơm nức thì là, mắm tôm đánh sủi bọt cay nồng!',
-        done: false
-      },
-      {
-        id: 'act-14',
-        day: '23',
-        time: '14:00',
-        title: 'Thăm Di Tích Lịch Sử Nhà Tù Hỏa Lò',
-        type: 'sight',
-        badge: 'Xúc động',
-        desc: 'Đeo tai nghe audio guide nghe những câu chuyện cảm động và hào hùng của các chiến sĩ.',
-        done: false
-      },
-      {
-        id: 'act-15',
-        day: '23',
-        time: '16:30',
-        title: 'Ngắm Hoàng Hôn Trên Cầu Long Biên Thế Kỷ',
-        type: 'photo',
-        badge: 'Sống ảo',
-        desc: 'Đi dạo trên cầu sắt 1902, đón ánh hoàng hôn vàng ươm buông xuống dòng sông Hồng. Chụp ảnh kỷ niệm cả nhóm 8 người.',
-        done: false
-      },
-      {
-        id: 'act-16',
-        day: '23',
-        time: '19:00',
-        title: 'Trải Nghiệm Tour Đêm Văn Miếu 3D Mapping',
-        type: 'night',
-        badge: 'Độc quyền 2026',
-        desc: 'Thưởng thức màn trình diễn ánh sáng 3D Mapping hoành tráng tái hiện lịch sử khoa cử Nho học tại Khuê Văn Các.',
-        done: false
-      },
-      {
-        id: 'act-17',
-        day: '23',
-        time: '21:30',
-        title: 'Phố Ẩm Thực Tống Duy Tân & Phở Gà Trộn Đêm',
-        type: 'night',
-        badge: 'Ăn đêm',
-        desc: 'Bát phở gà trộn chua ngọt Phủ Đoan hoặc thố mỳ gà tần lon nghi ngút khói xua tan cái lạnh đêm muộn.',
-        done: false
-      },
+      { id: 's23-1', day: '23', name: '07:00 - 08:30 • Ăn Sáng Đặc Trưng', focus: 'Bánh cuốn nóng / Xôi xéo', icon: '🥣' },
+      { id: 's23-2', day: '23', name: '08:30 - 11:30 • Viếng Lăng Bác & Hồ Tây', focus: 'Lăng Bác & Chùa Trấn Quốc', icon: '🛕' },
+      { id: 's23-3', day: '23', name: '11:30 - 14:00 • Bữa Trưa Chả Cá Lã Vọng', focus: 'Cá lăng nghệ mắm tôm sôi', icon: '🐟' },
+      { id: 's23-4', day: '23', name: '14:00 - 16:30 • Di Tích Lịch Sử Hỏa Lò', focus: 'Hanoi Hilton xúc động', icon: '🔒' },
+      { id: 's23-5', day: '23', name: '16:30 - 18:30 • Hoàng Hôn Cầu Long Biên', focus: 'Check-in cafe view sông Hồng', icon: '📸' },
+      { id: 's23-6', day: '23', name: '18:30 - 21:00 • Trải Nghiệm Tour Đêm 3D', focus: 'Văn Miếu 3D Mapping 2026', icon: '✨' },
+      { id: 's23-7', day: '23', name: '21:00 - Khuya • Phố Ăn Đêm Tống Duy Tân', focus: 'Phở gà trộn Nguyệt / Mỳ gà tần', icon: '🌙' },
 
       // Ngày 24/11
+      { id: 's24-1', day: '24', name: '07:30 - 08:45 • Ăn Sáng Bún Thang', focus: 'Bún hoàng gia đất Tràng An', icon: '🍜' },
+      { id: 's24-2', day: '24', name: '08:45 - 11:00 • Hoàng Thành Thăng Long', focus: 'Di sản thế giới & Hầm D67', icon: '⚔️' },
+      { id: 's24-3', day: '24', name: '11:00 - 12:30 • Mua Quà Cốm & Ô Mai', focus: 'Cốm Làng Vòng & Hàng Đường', icon: '🎁' },
+      { id: 's24-4', day: '24', name: '12:30 - 13:45 • Bữa Cơm Niêu Chia Tay', focus: 'Cơm gia đình Bắc Bộ ấm cúng', icon: '🍱' },
+      { id: 's24-5', day: '24', name: '13:45 - 17:15 • Xe Ra Nội Bài & Bay Về', focus: 'Chuyến bay về lại Tân Sơn Nhất', icon: '🛫' }
+    ];
+
+    /* Default Proposals with built-in Voting */
+    const DEFAULT_PROPOSALS = [
+      // Slot 22-2 (Sáng sớm 22/11)
       {
-        id: 'act-18',
-        day: '24',
-        time: '07:30',
-        title: 'Ăn sáng: Bún Thang Bà Đức / Bún Ốc Cổ Ngư',
-        type: 'food',
-        badge: 'Tinh tế',
-        desc: 'Tô bún thang như một bức tranh nghệ thuật với trứng tráng mỏng, thịt gà xé, giò lụa thái chỉ và tinh dầu cà cuống.',
-        done: false
+        id: 'prop-1', slotId: 's22-2', title: 'Phở Bò Gia Truyền Bát Đàn', cost: 75000,
+        author: 'Tuấn', location: '49 Bát Đàn, Hoàn Kiếm',
+        notes: 'Phở nước trong ngọt tủy, phải xếp hàng tự bưng, ăn xong đi bộ ra Hồ Gươm.', votes: 6
       },
       {
-        id: 'act-19',
-        day: '24',
-        time: '08:45',
-        title: 'Thăm Hoàng Thành Thăng Long & Đường Hoàng Diệu',
-        type: 'sight',
-        badge: 'Di sản thế giới',
-        desc: 'Check-in Đoan Môn, chụp ảnh lá vàng rụng trên đường Phan Đình Phùng & Hoàng Diệu tuyệt đẹp.',
-        done: false
+        id: 'prop-2', slotId: 's22-2', title: 'Phở Thìn Lò Đúc (Tái Lăn)', cost: 85000,
+        author: 'Huy', location: '13 Lò Đúc, Hai Bà Trưng',
+        notes: 'Thịt bò xào lăn nhiều hành thơm nức, nước dùng béo ngậy đậm đà.', votes: 2
+      },
+
+      // Slot 22-3 (Cà phê)
+      {
+        id: 'prop-3', slotId: 's22-3', title: 'Cà Phê Trứng Giảng 1946', cost: 45000,
+        author: 'Vy', location: '39 Nguyễn Hữu Huân',
+        notes: 'Cái nôi cà phê trứng hơn 70 năm tuổi, lớp bọt trứng mịn thơm ngon.', votes: 7
       },
       {
-        id: 'act-20',
-        day: '24',
-        time: '10:45',
-        title: 'Mua Quà Hà Nội: Cốm Mễ Trì, Ô Mai & Trà Sen',
-        type: 'shop',
-        badge: 'Mua sắm',
-        desc: 'Ghé Chợ Đồng Xuân và phố Hàng Đường mua ô mai, bánh cốm, chè lam xách tay về cho người thân, bạn bè ở Sài Gòn.',
-        done: false
+        id: 'prop-4', slotId: 's22-3', title: 'Đinh Café (View thẳng Hồ Gươm)', cost: 40000,
+        author: 'Minh', location: '13 Đinh Tiên Hoàng (tầng 2)',
+        notes: 'Quán của con gái cụ Giảng, ban công nhìn ngắm Tháp Rùa cổ kính.', votes: 3
+      },
+
+      // Slot 22-4 (Trưa 22/11)
+      {
+        id: 'prop-5', slotId: 's22-4', title: 'Bún Chả Hương Liên (Obama)', cost: 80000,
+        author: 'Hoàng', location: '24 Lê Văn Hưu',
+        notes: 'Có combo Obama (bún chả + nem cua bể + bia), thịt nướng than thơm lừng.', votes: 7
       },
       {
-        id: 'act-21',
-        day: '24',
-        time: '12:00',
-        title: 'Bữa trưa chia tay: Cơm Niêu & Canh Cua Rau Đay',
-        type: 'food',
-        badge: 'Bữa cơm sum vầy',
-        desc: 'Bữa cơm chuẩn vị đồng bằng Bắc Bộ ấm cúng trước khi dọn hành lý ra sân bay.',
-        done: false
+        id: 'prop-6', slotId: 's22-4', title: 'Bún Chả Đắc Kim Hàng Mành', cost: 90000,
+        author: 'Nam', location: '1 Hàng Mành, Hoàn Kiếm',
+        notes: 'Suất rất đầy đặn, nem rán giòn rụm, ngay trung tâm phố cổ.', votes: 2
+      },
+
+      // Slot 22-7 (Tối Bia Tạ Hiện)
+      {
+        id: 'prop-7', slotId: 's22-7', title: 'Bia Hơi Ngã Tư Tạ Hiện & Lương Ngọc Quyến', cost: 120000,
+        author: 'Tuấn', location: 'Phố Tạ Hiện',
+        notes: 'Ngồi ghế nhựa vỉa hè cụng cốc bia hơi 15k, nhắm nem chua rán, chim nướng.', votes: 8
+      },
+
+      // Slot 23-3 (Trưa Chả cá 23/11)
+      {
+        id: 'prop-8', slotId: 's23-3', title: 'Chả Cá Lã Vọng Gia Truyền', cost: 180000,
+        author: 'Huy', location: '14 Phố Chả Cá',
+        notes: 'Món độc bản của Hà Nội, cá lăng sôi thơm ngát thì là chấm mắm tôm.', votes: 6
       },
       {
-        id: 'act-22',
-        day: '24',
-        time: '13:30',
-        title: 'Check-out khách sạn & Xe 16 chỗ đón ra Nội Bài',
-        type: 'transport',
-        badge: 'Ra sân bay',
-        desc: 'Thu dọn vali, trả phòng. Xe đưa 8 bạn ra sân bay Nội Bài (có mặt lúc 14:30, trước giờ bay 2 tiếng rưỡi).',
-        done: false
+        id: 'prop-9', slotId: 's23-3', title: 'Chả Cá Thăng Long (Rộng rãi hơn)', cost: 160000,
+        author: 'Vy', location: '19-21 Đường Thành',
+        notes: 'Chỗ ngồi điều hòa mát mẻ, phục vụ nhanh, hợp nhóm đông 8 người.', votes: 3
+      },
+
+      // Slot 23-6 (Tour đêm 23/11)
+      {
+        id: 'prop-10', slotId: 's23-6', title: 'Tour Đêm Văn Miếu 3D Mapping "Tinh Hoa Đạo Học"', cost: 199000,
+        author: 'Minh', location: 'Văn Miếu – Quốc Tử Giám',
+        notes: 'Trình diễn ánh sáng 3D Mapping siêu đẹp trên Khuê Văn Các, mở tối T7 & CN.', votes: 7
       },
       {
-        id: 'act-23',
-        day: '24',
-        time: '15:15',
-        title: 'Chuyến bay Hà Nội ✈ TP. Hồ Chí Minh',
-        type: 'transport',
-        badge: 'Về lại Sài Gòn',
-        desc: 'Chuyến bay cất cánh từ Nội Bài, ngắm nhìn Hà Nội từ trên cao.',
-        done: false
-      },
-      {
-        id: 'act-24',
-        day: '24',
-        time: '17:15',
-        title: 'Hạ cánh Tân Sơn Nhất • Kết thúc chuyến đi trọn vẹn!',
-        type: 'transport',
-        badge: 'Về nhà bình an',
-        desc: 'Đáp xuống Sài Gòn, chia sẻ album ảnh kỷ niệm trong group chat! Hẹn chuyến đi tiếp theo.',
-        done: false
+        id: 'prop-11', slotId: 's23-6', title: 'Tour Đêm "Đêm Thiêng Liêng" Nhà Tù Hỏa Lò', cost: 300000,
+        author: 'Vy', location: '1 Hỏa Lò',
+        notes: 'Rất xúc động và sâu sắc nhưng cần săn vé trước vì cực kỳ hot.', votes: 4
       }
     ];
 
-    /* =====================================================================
-       DEFAULT POLLS FOR 8 PEOPLE
-       ===================================================================== */
-    const DEFAULT_POLLS = [
-      {
-        id: 'poll-stay',
-        question: '🏨 Nhóm mình 8 người nên chốt ở loại chỗ nào?',
-        desc: 'Khoản chi lớn cần thống nhất trước khi book vé!',
-        options: [
-          { text: 'Thuê Homestay/Airbnb nguyên căn phố cổ (vừa rẻ vừa chơi chung vui)', votes: 5 },
-          { text: 'Khách sạn 3-4 sao trung tâm Hoàn Kiếm (chia 4 phòng riêng tư)', votes: 2 },
-          { text: 'Dorm cao cấp / Hostel kiểu boutique tiết kiệm tối đa', votes: 1 }
-        ]
-      },
-      {
-        id: 'poll-transit',
-        question: '🚕 Phương án di chuyển nội đô cho nhóm 8?',
-        desc: '8 người thì đi 2 xe Grab hay thuê xe trọn gói?',
-        options: [
-          { text: 'Thuê xe 16 chỗ có tài xế trọn gói theo ngày (~700k-900k/ngày chia 8)', votes: 4 },
-          { text: 'Cứ book 2 xe Grab 4 chỗ hoặc 2 xe 7 chỗ mỗi khi di chuyển xa', votes: 3 },
-          { text: 'Chủ yếu đi bộ quanh phố cổ + thuê xe máy lượn lờ', votes: 1 }
-        ]
-      },
-      {
-        id: 'poll-night',
-        question: '🌙 Tối Thứ Bảy (22/11) trải nghiệm điểm nhấn nào?',
-        desc: 'Tối đầu tiên sung sức nhất của chuyến đi!',
-        options: [
-          { text: 'Ngồi bia hơi vỉa hè Tạ Hiện ngắm dòng người nhộn nhịp đến khuya', votes: 5 },
-          { text: 'Đi Tour Đêm Văn Miếu 3D Mapping rồi mới về ăn nhậu', votes: 2 },
-          { text: 'Lên 1 quán Rooftop Bar ngắm trọn vẹn Hồ Gươm lung linh', votes: 1 }
-        ]
-      },
-      {
-        id: 'poll-foodie',
-        question: '🍲 Bữa trưa đắt nhất nhóm sẵn sàng chi bao nhiêu?',
-        desc: 'VD bữa Chả Cá Lã Vọng gia truyền',
-        options: [
-          { text: 'Tầm 150.000đ - 200.000đ/người (ăn ngon hết cỡ, không tiếc tiền)', votes: 6 },
-          { text: 'Dưới 100.000đ/người (tập trung ăn quán dân dã vỉa hè)', votes: 2 }
-        ]
-      }
+    /* Default Base Expenses */
+    const DEFAULT_BASE_EXPENSES = [
+      { id: 'b-1', title: 'Vé máy bay khứ hồi SGN ⇄ HAN (Bay đêm)', cat: 'flight', amount: 1850000, status: 'paid' },
+      { id: 'b-2', title: 'Homestay nguyên căn phố cổ 4 phòng (2 đêm chia 8)', cat: 'stay', amount: 550000, status: 'deposit' },
+      { id: 'b-3', title: 'Xe 16 chỗ đón tiễn sân bay Nội Bài 2 chiều', cat: 'transit', amount: 150000, status: 'planned' },
+      { id: 'b-4', title: 'Chi phí Grab di chuyển linh hoạt nội đô', cat: 'transit', amount: 100000, status: 'planned' }
     ];
 
-    /* =====================================================================
-       DEFAULT COMMENTS
-       ===================================================================== */
-    const DEFAULT_COMMENTS = [
-      {
-        id: 1,
-        author: 'Tuấn (Trưởng đoàn)',
-        tag: 'hotel',
-        tagLabel: 'Chỗ Ở',
-        content: 'Anh em ơi, mình tìm được 1 căn Airbnb ở ngõ Hàng Buồm có 4 phòng ngủ giường đôi, giá 2tr1/đêm. Chia 8 đứa có ~260k/đêm/người thôi, vị trí ngay cạnh phố đi bộ luôn! Mọi người thấy sao?',
-        time: '15 phút trước',
-        likes: 6
-      },
-      {
-        id: 2,
-        author: 'Vy',
-        tag: 'warn',
-        tagLabel: 'Lưu Ý',
-        content: 'Mấy bạn nam nhớ chuẩn bị ít nhất 1 quần dài lịch sự nha! Vào viếng Lăng Bác họ kiểm tra trang phục rất nghiêm, mặc quần đùi hay áo ba lỗ là không được vào đâu á.',
-        time: '45 phút trước',
-        likes: 8
-      },
-      {
-        id: 3,
-        author: 'Hoàng Huy',
-        tag: 'food',
-        tagLabel: 'Món Ăn',
-        content: 'Ra HN nhất định phải ăn chả cá Lã Vọng nha! Mình thèm mắm tôm ngoài đó từ lâu lắm rồi, ai không ăn được thì xin nước mắm trước nha.',
-        time: '2 giờ trước',
-        likes: 5
-      },
-      {
-        id: 4,
-        author: 'Minh Thảo',
-        tag: 'night',
-        tagLabel: 'Đi Chơi Tối',
-        content: 'Tối thứ 7 mình ghé Tạ Hiện sớm tầm 7h30 kẻo trễ là không ghép được bàn 8 người đâu. Với lại ai muốn đi tour đêm Văn Miếu báo sớm để mình đặt vé web trước nha.',
-        time: '4 giờ trước',
-        likes: 7
-      }
+    /* 2026 Curated Catalog */
+    const CATALOG_ITEMS = [
+      { id: 'c-1', title: 'Phở Bò Bát Đàn', category: 'food', price: '75.000đ', location: '49 Bát Đàn', desc: 'Phở bò gia truyền nước trong ngọt tủy xương.' },
+      { id: 'c-2', title: 'Bún Chả Hương Liên (Obama)', category: 'food', price: '80.000đ', location: '24 Lê Văn Hưu', desc: 'Thịt nướng than hoa, nem cua bể giòn tan.' },
+      { id: 'c-3', title: 'Chả Cá Lã Vọng', category: 'food', price: '180.000đ', location: '14 Phố Chả Cá', desc: 'Cá lăng sôi sùng sục mắm tôm thì là trứ danh.' },
+      { id: 'c-4', title: 'Cà Phê Trứng Giảng', category: 'food', price: '45.000đ', location: '39 Nguyễn Hữu Huân', desc: 'Lớp bọt kem trứng vàng béo ngậy ngọt ngào.' },
+      { id: 'c-5', title: 'Tour Đêm Văn Miếu 3D Mapping', category: 'history', price: '199.000đ', location: '58 Quốc Tử Giám', desc: 'Show ánh sáng 3D Mapping hiện đại trên di tích.' },
+      { id: 'c-6', title: 'Hoàng Thành Thăng Long', category: 'history', price: '100.000đ', location: '19C Hoàng Diệu', desc: 'Di sản thế giới UNESCO và hầm D67 lịch sử.' },
+      { id: 'c-7', title: 'Nhà Tù Hỏa Lò', category: 'history', price: '50.000đ', location: '1 Hỏa Lò', desc: 'Review 4.9 sao, tai nghe Audio Guide cảm động.' },
+      { id: 'c-8', title: 'Cầu Long Biên Hoàng Hôn', category: 'photo', price: 'Miễn phí', location: 'Cầu Long Biên', desc: 'Ngắm hoàng hôn sông Hồng qua khung thép 1902.' },
+      { id: 'c-9', title: 'Bia Hơi Phố Tạ Hiện', category: 'night', price: '15.000đ/cốc', location: 'Phố Tạ Hiện', desc: 'Không khí vỉa hè sầm uất bậc nhất thủ đô.' },
+      { id: 'c-10', title: 'Mega Grand World Hà Nội', category: 'new2026', price: 'Miễn phí vào', location: 'Ocean City', desc: 'Venice thu nhỏ và show thực cảnh The Grand Voyage.' }
     ];
 
-    /* =====================================================================
-       PACKING CHECKLIST DATA
-       ===================================================================== */
     const DEFAULT_CHECKLIST = [
-      {
-        category: '📄 Giấy Tờ & Vé Máy Bay',
-        items: [
-          'CCCD / Hộ chiếu bản gốc còn hạn (bắt buộc check-in)',
-          'Code vé máy bay khứ hồi (chụp màn hình offline)',
-          'Thông tin xác nhận phòng khách sạn / Airbnb',
-          'Thẻ BHYT phòng trường hợp phát sinh'
-        ]
-      },
-      {
-        category: '🧥 Quần Áo Thu Đông (20°C - 24°C)',
-        items: [
-          '1-2 áo khoác gió / áo len mỏng (buổi tối và sáng sớm lạnh)',
-          'Quần dài lịch sự kín đáo để vào Lăng Bác & chùa',
-          'Giày thể thao êm chân (Hà Nội đi bộ rất nhiều!)',
-          'Khăn choàng cổ mỏng / mũ len nhẹ sống ảo',
-          'Tất/vớ dày giữ ấm ban đêm'
-        ]
-      },
-      {
-        category: '💊 Sức Khỏe & Thuốc Men',
-        items: [
-          'Thuốc đau bụng / men tiêu hóa (phòng lạ bụng đồ ăn Bắc)',
-          'Thuốc cảm cúm, đau đầu, sổ mũi (dễ sốc nhiệt do lạnh)',
-          'Dầu gió, băng cá nhân, thuốc say tàu xe',
-          'Kem dưỡng ẩm / son dưỡng môi (HN mùa này hanh khô)'
-        ]
-      },
-      {
-        category: '🔌 Đồ Công Nghệ & Tiền Mặt',
-        items: [
-          'Sạc dự phòng dung lượng lớn (chụp ảnh cả ngày)',
-          'Rút sẵn 1.5 - 2 triệu tiền mặt (vỉa hè HN chuộng tiền mặt)',
-          'Tải sẵn bản đồ Google Maps offline khu vực Hà Nội',
-          'Gậy selfie hoặc chân máy chụp ảnh chung cả nhóm 8 người'
-        ]
-      }
+      { text: 'CCCD bản gốc còn hạn (bắt buộc check-in sân bay)' },
+      { text: '1-2 áo khoác gió / áo len mỏng (ban đêm 19°C - 20°C)' },
+      { text: '1 quần dài lịch sự để viếng Lăng Bác' },
+      { text: 'Giày thể thao êm chân (đi bộ phố cổ nhiều)' },
+      { text: 'Thuốc men cá nhân (đau bụng, cảm cúm, dầu gió)' },
+      { text: 'Rút sẵn 1.5 - 2 triệu tiền mặt (quán vỉa hè thích tiền mặt)' },
+      { text: 'Pin sạc dự phòng 10.000 - 20.000 mAh' }
     ];
 
-    /* =====================================================================
-       BUDGET ESTIMATE ROWS
-       ===================================================================== */
-    const BUDGET_BREAKDOWN = [
-      { item: '✈️ Vé máy bay khứ hồi SGN - HAN', low: '1.400.000đ', high: '2.400.000đ', type: 'Mỗi người', note: 'Săn vé sớm bay đêm 2h sáng giá siêu tốt' },
-      { item: '🏨 Chỗ ở (2 đêm Airbnb/KS)', low: '500.000đ', high: '900.000đ', type: 'Mỗi người', note: 'Thuê nguyên căn villa/homestay chia 8 rất rẻ' },
-      { item: '🚕 Xe đưa đón sân bay Nội Bài (2 lượt)', low: '150.000đ', high: '200.000đ', type: 'Mỗi người', note: 'Xe 16 chỗ đón tiễn chỉ ~1.2tr khứ hồi cả nhóm' },
-      { item: '🚕 Grab & di chuyển nội đô 3 ngày', low: '120.000đ', high: '250.000đ', type: 'Mỗi người', note: 'Chủ yếu đi bộ phố cổ, chỉ đi xe khi xa' },
-      { item: '🍜 Ăn uống chính & vỉa hè (3 ngày)', low: '650.000đ', high: '1.200.000đ', type: 'Mỗi người', note: 'Bao gồm phở, bún chả, Lã Vọng, cà phê trứng' },
-      { item: '🍺 Bia Tạ Hiện & Ăn khuya 2 tối', low: '150.000đ', high: '350.000đ', type: 'Mỗi người', note: 'Bia hơi vỉa hè 15k/cốc, nem chua rán, mồi' },
-      { item: '🏛️ Vé tham quan (Văn Miếu, Hỏa Lò, HTTL)', low: '150.000đ', high: '350.000đ', type: 'Mỗi người', note: 'Cộng thêm nếu đi Tour đêm 3D Mapping (~199k)' },
-      { item: '🎁 Mua quà về Sài Gòn (Cốm, Ô mai)', low: '150.000đ', high: '500.000đ', type: 'Mỗi người', note: 'Tùy nhu cầu biếu người thân' }
+    /* =========================================================================
+       STATE PERSISTENCE
+       ========================================================================= */
+    let timeSlots = JSON.parse(localStorage.getItem('u_slots')) || TIME_SLOTS_DEFINITION;
+    let proposals = JSON.parse(localStorage.getItem('u_proposals')) || DEFAULT_PROPOSALS;
+    let baseExpenses = JSON.parse(localStorage.getItem('u_base_expenses')) || DEFAULT_BASE_EXPENSES;
+    let userVotedMap = JSON.parse(localStorage.getItem('u_user_voted_map')) || {};
+    let commentsList = JSON.parse(localStorage.getItem('u_comments')) || [
+      { user: 'Tuấn (Leader)', tag: 'quán ăn', text: 'Mọi người cứ đề xuất quán mình thích vào từng khung giờ nha, ai được vote nhiều nhất sẽ đi quán đó!', time: 'Vừa xong' },
+      { user: 'Vy', tag: 'lưu ý', text: 'Nhớ mang áo ấm nha, sáng sớm bay tới lạnh 20 độ đó!', time: '1 giờ trước' }
     ];
-
-    /* =====================================================================
-       APP STATE & LOCAL STORAGE
-       ===================================================================== */
-    let currentCategory = 'all';
+    let checklistState = JSON.parse(localStorage.getItem('u_checklist')) || {};
     let currentDayFilter = 'all';
-    let itineraryList = JSON.parse(localStorage.getItem('hn_itinerary')) || DEFAULT_ITINERARY;
-    let commentsList = JSON.parse(localStorage.getItem('hn_comments')) || DEFAULT_COMMENTS;
-    let pollsList = JSON.parse(localStorage.getItem('hn_polls')) || DEFAULT_POLLS;
-    let userVoted = JSON.parse(localStorage.getItem('hn_user_voted')) || {};
-    let checklistChecked = JSON.parse(localStorage.getItem('hn_checklist_state')) || {};
+    const DEFAULT_DAYS = {
+      '22': {
+        title: 'Ngày 1: Thứ Bảy • 22/11/2026',
+        subtitle: 'Bay đêm 2h SA, Phố Cổ & Bia Tạ Hiện'
+      },
+      '23': {
+        title: 'Ngày 2: Chủ Nhật • 23/11/2026',
+        subtitle: 'Lăng Bác, Chả Cá Lã Vọng & Tour Đêm'
+      },
+      '24': {
+        title: 'Ngày 3: Thứ Hai • 24/11/2026',
+        subtitle: 'Hoàng Thành, Mua Cốm Làng Vòng & Bay Về'
+      }
+    };
+    let dayInfo = JSON.parse(localStorage.getItem('u_days')) || DEFAULT_DAYS;
 
-    /* =====================================================================
+    /* =========================================================================
        INITIALIZATION
-       ===================================================================== */
+       ========================================================================= */
     window.addEventListener('DOMContentLoaded', () => {
       startCountdown();
-      renderCards();
-      renderItinerary();
+      renderScheduleSlots();
+      renderExpensesTable();
+      renderCatalog('all');
       renderComments();
-      renderPolls();
-      renderBudgetTable();
       renderChecklist();
-      updateTripProgressBar();
     });
 
-    /* =====================================================================
-       COUNTDOWN TIMER (TARGET: 02:00 SA 22/11/2026)
-       ===================================================================== */
+    /* =========================================================================
+       COUNTDOWN
+       ========================================================================= */
     function startCountdown() {
-      const targetDate = new Date('2026-11-22T02:00:00+07:00');
-
+      const target = new Date('2026-11-22T02:00:00+07:00');
       function update() {
-        const now = new Date();
-        const diff = targetDate - now;
-
+        const diff = target - new Date();
         if (diff <= 0) {
-          document.getElementById('cd-days').textContent = '00';
-          document.getElementById('cd-hours').textContent = '00';
-          document.getElementById('cd-mins').textContent = '00';
-          document.getElementById('cd-secs').textContent = '00';
+          ['days', 'hours', 'mins', 'secs'].forEach(id => document.getElementById(`cd-${id}`).textContent = '00');
           return;
         }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / 1000 / 60) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-
-        document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
-        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
-        document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+        document.getElementById('cd-days').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
       }
-
       update();
       setInterval(update, 1000);
     }
 
-    function updateTripProgressBar() {
-      const start = new Date('2026-11-22T02:00:00+07:00');
-      const end = new Date('2026-11-24T17:00:00+07:00');
-      const now = new Date();
+    /* =========================================================================
+       FEATURE 1: RENDER TIME SLOTS + PROPOSALS + DIRECT VOTING
+       ========================================================================= */
+    
+    /* =========================================================================
+       DAY MODAL & SLOT MODAL HANDLERS
+       ========================================================================= */
+    function openDayModal(day) {
+      const data = dayInfo[day] || { title: `Ngày ${day}`, subtitle: '' };
+      document.getElementById('edit-day-id').value = day;
+      document.getElementById('edit-day-title').value = data.title;
+      document.getElementById('edit-day-subtitle').value = data.subtitle;
+      document.getElementById('day-modal').classList.remove('hidden');
+    }
 
-      const bar = document.getElementById('trip-progress-bar');
-      const txt = document.getElementById('trip-progress-text');
+    function closeDayModal() {
+      document.getElementById('day-modal').classList.add('hidden');
+    }
 
-      if (now < start) {
-        bar.style.width = '0%';
-        txt.textContent = 'Chưa cất cánh';
-      } else if (now >= end) {
-        bar.style.width = '100%';
-        txt.textContent = 'Đã hoàn thành chuyến đi! 🎉';
+    function handleSaveDay(e) {
+      e.preventDefault();
+      const day = document.getElementById('edit-day-id').value;
+      const title = document.getElementById('edit-day-title').value.trim();
+      const subtitle = document.getElementById('edit-day-subtitle').value.trim();
+
+      if (!dayInfo[day]) dayInfo[day] = {};
+      dayInfo[day].title = title;
+      dayInfo[day].subtitle = subtitle;
+
+      saveAppState();
+      closeDayModal();
+      renderScheduleSlots();
+      showToast('Đã lưu thông tin ngày!');
+    }
+
+    function openSlotModal(day, slotId = null) {
+      document.getElementById('edit-slot-day').value = day || '22';
+      const delBtn = document.getElementById('btn-delete-slot');
+
+      if (slotId) {
+        const slot = timeSlots.find(s => s.id === slotId);
+        if (!slot) return;
+        document.getElementById('slot-modal-title').textContent = 'Chỉnh Sửa Khung Giờ';
+        document.getElementById('edit-slot-id').value = slot.id;
+        document.getElementById('edit-slot-day').value = slot.day;
+        document.getElementById('edit-slot-icon').value = slot.icon || '⏰';
+        document.getElementById('edit-slot-name').value = slot.name;
+        document.getElementById('edit-slot-focus').value = slot.focus || '';
+        delBtn.classList.remove('hidden');
       } else {
-        const pct = Math.min(100, Math.max(0, ((now - start) / (end - start)) * 100));
-        bar.style.width = `${pct.toFixed(1)}%`;
-        txt.textContent = `Đang diễn ra (${pct.toFixed(0)}%)`;
+        document.getElementById('slot-modal-title').textContent = 'Thêm Khung Giờ Mới';
+        document.getElementById('edit-slot-id').value = '';
+        document.getElementById('edit-slot-icon').value = '⏰';
+        document.getElementById('edit-slot-name').value = '';
+        document.getElementById('edit-slot-focus').value = '';
+        delBtn.classList.add('hidden');
       }
+      document.getElementById('slot-modal').classList.remove('hidden');
     }
 
-    /* =====================================================================
-       TAB SWITCHING
-       ===================================================================== */
-    function switchTab(tabId) {
-      const tabs = ['explore', 'plan', 'discussion', 'polls', 'budget', 'checklist'];
-      tabs.forEach(t => {
-        const panel = document.getElementById(`panel-${t}`);
-        const tabBtn = document.getElementById(`tab-${t}`);
-        if (panel) panel.classList.toggle('hidden', t !== tabId);
-        if (tabBtn) tabBtn.classList.toggle('active', t === tabId);
-      });
-      window.scrollTo({ top: 400, behavior: 'smooth' });
+    function closeSlotModal() {
+      document.getElementById('slot-modal').classList.add('hidden');
     }
 
-    /* =====================================================================
-       RENDER EXPLORE CARDS (2026 CRAWLED DATA)
-       ===================================================================== */
-    function setCategoryFilter(cat) {
-      currentCategory = cat;
-      document.querySelectorAll('#filter-pills .filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-      renderCards();
-    }
+    function handleSaveSlot(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-slot-id').value;
+      const day = document.getElementById('edit-slot-day').value;
+      const icon = document.getElementById('edit-slot-icon').value.trim() || '⏰';
+      const name = document.getElementById('edit-slot-name').value.trim();
+      const focus = document.getElementById('edit-slot-focus').value.trim();
 
-    function filterCards() {
-      renderCards();
-    }
-
-    function renderCards() {
-      const query = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
-      const container = document.getElementById('cards-grid');
-      container.innerHTML = '';
-
-      const filtered = HANOI_DATABASE.filter(item => {
-        const matchCat = currentCategory === 'all' || item.category === currentCategory;
-        const matchQuery = !query || 
-          item.title.toLowerCase().includes(query) ||
-          item.desc.toLowerCase().includes(query) ||
-          item.tags.some(t => t.toLowerCase().includes(query));
-        return matchCat && matchQuery;
-      });
-
-      document.getElementById('items-count').textContent = filtered.length;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-12 text-center text-gray-500 text-sm">
-            Không tìm thấy địa điểm phù hợp với từ khóa "${query}". Hãy thử tìm món khác nhé!
-          </div>
-        `;
-        return;
-      }
-
-      filtered.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'bento-card p-5 flex flex-col justify-between';
-        
-        // Category tag color
-        const catMap = {
-          food: { name: 'Ẩm thực', color: 'bg-orange-100 text-orange-800' },
-          history: { name: 'Di tích', color: 'bg-amber-100 text-amber-800' },
-          photo: { name: 'Check-in', color: 'bg-emerald-100 text-emerald-800' },
-          night: { name: 'Cú đêm', color: 'bg-indigo-100 text-indigo-800' },
-          new2026: { name: 'Hot 2026', color: 'bg-rose-100 text-rose-800' },
-          shop: { name: 'Mua quà', color: 'bg-teal-100 text-teal-800' }
+      if (id) {
+        const slot = timeSlots.find(s => s.id === id);
+        if (slot) {
+          slot.day = day;
+          slot.icon = icon;
+          slot.name = name;
+          slot.focus = focus;
+        }
+        showToast('Đã cập nhật khung giờ!');
+      } else {
+        const newSlot = {
+          id: 's' + day + '-' + Date.now(),
+          day: day,
+          icon: icon,
+          name: name,
+          focus: focus
         };
-        const catInfo = catMap[item.category] || { name: 'Khám phá', color: 'bg-gray-100 text-gray-800' };
+        timeSlots.push(newSlot);
+        showToast('Đã thêm khung giờ mới!');
+      }
 
-        card.innerHTML = `
-          <div>
-            <div class="flex items-start justify-between gap-2 mb-3">
-              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase ${catInfo.color}">
-                ${item.badge}
-              </span>
-              <span class="text-xs font-bold text-[#B9382A] font-mono whitespace-nowrap">
-                ${item.price}
-              </span>
-            </div>
-
-            <h4 class="text-base font-bold text-[#1E1B18] mb-1.5 leading-snug group-hover:text-[#B9382A] transition">
-              ${item.title}
-            </h4>
-
-            <p class="text-xs text-[#6B635B] line-clamp-2 leading-relaxed mb-3">
-              ${item.desc}
-            </p>
-
-            <div class="flex items-center gap-1.5 text-[11px] text-gray-500 mb-3">
-              <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-              <span class="truncate">${item.location}</span>
-            </div>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-1 mb-4">
-              ${item.tags.map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-gray-100 text-gray-600 font-medium">#${t}</span>`).join('')}
-            </div>
-          </div>
-
-          <div class="pt-3 border-t border-[#EADBCE] flex items-center justify-between gap-2">
-            <button onclick="openDetailModal('${item.id}')" class="text-xs font-bold text-[#B9382A] hover:underline flex items-center gap-1">
-              <span>Xem chi tiết</span> &rarr;
-            </button>
-            <button onclick="addToItineraryFromCard('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FAF7F2] hover:bg-[#B9382A] hover:text-white border border-[#EADBCE] transition flex items-center gap-1">
-              <span>+ Vào Plan</span>
-            </button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+      saveAppState();
+      closeSlotModal();
+      renderScheduleSlots();
     }
 
-    /* =====================================================================
-       CARD DETAIL MODAL
-       ===================================================================== */
-    function openDetailModal(id) {
-      const item = HANOI_DATABASE.find(x => x.id === id);
-      if (!item) return;
-
-      const content = document.getElementById('modal-content');
-      content.innerHTML = `
-        <div class="space-y-4">
-          <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#B9382A]/10 text-[#B9382A]">
-            ${item.badge}
-          </div>
-          <h3 class="text-xl font-bold font-serif text-[#1E1B18]">${item.title}</h3>
-
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <div class="p-3 bg-[#FAF7F2] rounded-xl border border-[#EADBCE]">
-              <span class="text-gray-500 font-bold block mb-0.5">💰 Chi phí:</span>
-              <span class="font-bold text-[#B9382A]">${item.price}</span>
-            </div>
-            <div class="p-3 bg-[#FAF7F2] rounded-xl border border-[#EADBCE]">
-              <span class="text-gray-500 font-bold block mb-0.5">⏰ Giờ mở cửa:</span>
-              <span class="font-bold text-gray-800">${item.hours}</span>
-            </div>
-          </div>
-
-          <div>
-            <span class="text-xs font-bold text-gray-500 block mb-1">📍 Địa chỉ:</span>
-            <p class="text-xs font-medium text-gray-800">${item.location}</p>
-          </div>
-
-          <div>
-            <span class="text-xs font-bold text-gray-500 block mb-1">📖 Giới thiệu:</span>
-            <p class="text-xs text-gray-700 leading-relaxed">${item.desc}</p>
-          </div>
-
-          <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs">
-            <span class="font-bold block mb-1">💡 Kinh nghiệm / Mẹo hay:</span>
-            <p class="leading-relaxed">${item.tips}</p>
-          </div>
-
-          <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-900 text-xs">
-            <span class="font-bold block mb-0.5">🎯 Phù hợp nhất cho nhóm:</span>
-            <p>${item.recommendedFor}</p>
-          </div>
-
-          <div class="pt-2 flex gap-3">
-            <button onclick="addToItineraryFromCard('${item.id}'); closeModal();" class="flex-1 py-2.5 rounded-xl bg-[#B9382A] text-white text-xs font-bold hover:bg-[#8E2519] transition">
-              Thêm Điểm Này Vào Lịch Trình
-            </button>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('modal-container').classList.remove('hidden');
+    function handleDeleteSlot() {
+      const id = document.getElementById('edit-slot-id').value;
+      if (!id) return;
+      if (confirm('Bạn có chắc muốn xóa khung giờ này và các đề xuất bên trong?')) {
+        timeSlots = timeSlots.filter(s => s.id !== id);
+        proposals = proposals.filter(p => p.slotId !== id);
+        saveAppState();
+        closeSlotModal();
+        renderScheduleSlots();
+        showToast('Đã xóa khung giờ!');
+      }
     }
 
-    function closeModal() {
-      document.getElementById('modal-container').classList.add('hidden');
-    }
-    function closeModalOnBackdrop(e) {
-      if (e.target.id === 'modal-container') closeModal();
-    }
-
-    /* =====================================================================
-       TIME-TABLE / ITINERARY
-       ===================================================================== */
-    function filterDayPlan(day) {
+    function setDayFilter(day) {
       currentDayFilter = day;
       ['all', '22', '23', '24'].forEach(d => {
-        const btn = document.getElementById(`btn-day-${d}`);
-        if (!btn) return;
-        if (d === day) {
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-[#B9382A] text-white transition';
-        } else {
-          btn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FAF7F2] border border-[#EADBCE] text-[#6B635B] hover:border-[#B9382A] transition';
-        }
+        const btn = document.getElementById(`pill-${d}`);
+        if (btn) btn.classList.toggle('active', d === day);
       });
-      renderItinerary();
+      renderScheduleSlots();
     }
 
-    function renderItinerary() {
-      const container = document.getElementById('timeline-container');
+    function renderScheduleSlots() {
+      const container = document.getElementById('schedule-slots-container');
       container.innerHTML = '';
 
       const daysToShow = currentDayFilter === 'all' ? ['22', '23', '24'] : [currentDayFilter];
-      const dayMeta = {
-        '22': { title: 'Thứ Bảy • Ngày 22/11/2026', subtitle: 'Khởi hành 02:00 AM SGN ✈ Phố Cổ Hà Nội, Cà Phê Trứng & Phố Bia Tạ Hiện' },
-        '23': { title: 'Chủ Nhật • Ngày 23/11/2026', subtitle: 'Viếng Lăng Bác, Chả Cá Lã Vọng, Cầu Long Biên & Tour Đêm Văn Miếu' },
-        '24': { title: 'Thứ Hai • Ngày 24/11/2026', subtitle: 'Hoàng Thành Thăng Long, Mua Quà Cốm Làng Vòng & Bay Về 17:00 CH' }
+      const dayNames = {
+        '22': 'Ngày 1: Thứ Bảy • 22/11/2026 (Bay đêm 2h SA, Phố Cổ & Bia Tạ Hiện)',
+        '23': 'Ngày 2: Chủ Nhật • 23/11/2026 (Lăng Bác, Chả Cá Lã Vọng & Tour Đêm)',
+        '24': 'Ngày 3: Thứ Hai • 24/11/2026 (Hoàng Thành, Mua Cốm Làng Vòng & Bay Về)'
       };
 
       daysToShow.forEach(day => {
+        const dayData = dayInfo[day] || { title: `Ngày ${day}`, subtitle: '' };
         const daySection = document.createElement('div');
         daySection.className = 'space-y-4';
 
-        const dayItems = itineraryList.filter(item => item.day === day);
-
         daySection.innerHTML = `
-          <div class="flex items-center gap-3 pb-2 border-b-2 border-[#B9382A]/30">
-            <span class="w-8 h-8 rounded-xl bg-[#B9382A] text-white flex items-center justify-center font-bold text-xs shadow-sm">
-              ${day}
-            </span>
-            <div>
-              <h4 class="text-sm sm:text-base font-extrabold text-[#1E1B18] font-serif">${dayMeta[day].title}</h4>
-              <p class="text-xs text-[#6B635B]">${dayMeta[day].subtitle}</p>
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-2.5 border-b border-[#2d3548]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#ff5a1f] to-[#ffc53d] text-[#0f1219] font-baloo font-extrabold flex items-center justify-center text-sm shadow-md">
+                ${day}
+              </span>
+              <div>
+                <h4 class="text-base sm:text-lg font-baloo font-extrabold text-white flex items-center gap-2">
+                  <span>${dayData.title}</span>
+                  <button onclick="openDayModal('${day}')" title="Sửa tên ngày và hoạt động" class="text-[11px] px-2 py-0.5 rounded-lg bg-[#232938] hover:bg-[#3d4760] text-gray-300 hover:text-white border border-[#2d3548] font-sans font-medium flex items-center gap-1">
+                    <span>✏️</span> <span>Sửa Ngày</span>
+                  </button>
+                </h4>
+                <p class="text-xs text-[#9499b3]">${dayData.subtitle}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openSlotModal('${day}', null)" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#ffc53d] hover:border-[#ffc53d] hover:bg-[#ffc53d]/10 transition flex items-center gap-1 shadow-sm">
+                <span>+</span> <span>Thêm Khung Giờ</span>
+              </button>
+              <button onclick="openProposalModal('${day}', null)" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#ff5a1f]/15 border border-[#ff5a1f]/30 text-[#ff5a1f] hover:bg-[#ff5a1f] hover:text-white transition flex items-center gap-1 shadow-sm">
+                <span>+</span> <span>Đề Xuất Kèo Ngày ${day}</span>
+              </button>
             </div>
           </div>
-          <div class="relative pl-6 sm:pl-8 space-y-4 pt-1" id="timeline-list-${day}">
-            <!-- Timeline Line -->
-            <div class="timeline-stem"></div>
-          </div>
+          <div class="grid grid-cols-1 gap-4" id="slots-list-${day}"></div>
         `;
 
         container.appendChild(daySection);
+        const slotsListEl = daySection.querySelector(`#slots-list-${day}`);
 
-        const listContainer = daySection.querySelector(`#timeline-list-${day}`);
+        const daySlots = timeSlots.filter(s => s.day === day);
 
-        dayItems.forEach((act, idx) => {
-          const itemEl = document.createElement('div');
-          itemEl.className = 'relative flex items-start gap-3.5 group';
+        daySlots.forEach(slot => {
+          const slotProps = proposals.filter(p => p.slotId === slot.id);
+          const totalSlotVotes = slotProps.reduce((sum, p) => sum + p.votes, 0) || 1;
 
-          // Type icon map
-          const typeIcons = {
-            transport: '✈️',
-            food: '🍜',
-            sight: '🏛️',
-            hotel: '🏨',
-            night: '🍺',
-            photo: '📸',
-            shop: '🎁'
-          };
-          const icon = typeIcons[act.type] || '📍';
+          // Find the winning proposal (highest votes)
+          let topVote = -1;
+          let winningId = null;
+          if (slotProps.length > 0) {
+            slotProps.forEach(p => {
+              if (p.votes > topVote) {
+                topVote = p.votes;
+                winningId = p.id;
+              }
+            });
+          }
 
-          itemEl.innerHTML = `
-            <!-- Timeline Dot -->
-            <div class="absolute -left-6 sm:-left-8 top-1.5 w-6 h-6 rounded-full bg-white border-2 ${act.done ? 'border-emerald-500 bg-emerald-50' : 'border-[#B9382A]'} flex items-center justify-center text-[10px] shadow-sm z-10">
-              ${act.done ? '✓' : icon}
-            </div>
+          const slotCard = document.createElement('div');
+          slotCard.className = 'u-card p-4 sm:p-5 space-y-3.5 border-l-4 border-l-[#ff5a1f]';
 
-            <!-- Content Card -->
-            <div class="flex-1 bg-white border border-[#EADBCE] rounded-2xl p-4 shadow-sm hover:border-[#B9382A] transition ${act.done ? 'opacity-60 bg-gray-50' : ''}">
-              <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
-                <div class="flex items-center gap-2">
-                  <span class="font-mono text-xs font-black text-[#B9382A] bg-red-50 px-2 py-0.5 rounded-md">${act.time}</span>
-                  <h5 class="text-xs sm:text-sm font-bold text-[#1E1B18] ${act.done ? 'line-through text-gray-500' : ''}">
-                    ${act.title}
-                  </h5>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-600">${act.badge || 'Hoạt động'}</span>
-                  <button onclick="toggleActDone('${act.id}')" title="Đánh dấu hoàn thành" class="text-xs text-gray-400 hover:text-emerald-600 transition">
-                    ${act.done ? '↩ Hủy tick' : '✓ Xong'}
-                  </button>
-                  <button onclick="deleteAct('${act.id}')" title="Xóa" class="text-xs text-gray-400 hover:text-red-500 transition">✕</button>
+          slotCard.innerHTML = `
+            <!-- Slot Header with + Add Button -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#2d3548]">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">${slot.icon || '⏰'}</span>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h5 class="text-sm font-baloo font-extrabold text-white">${slot.name}</h5>
+                    <button onclick="openSlotModal('${day}', '${slot.id}')" title="Sửa khung giờ này" class="text-[10px] text-gray-400 hover:text-white px-1.5 py-0.5 rounded bg-[#232938] hover:bg-[#3d4760] border border-[#2d3548]">
+                      ✏️ Sửa
+                    </button>
+                  </div>
+                  <p class="text-[11px] text-[#9499b3]">${slot.focus || 'Khung giờ hoạt động'}</p>
                 </div>
               </div>
-              <p class="text-xs text-[#6B635B] leading-relaxed">
-                ${act.desc}
-              </p>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#9499b3] bg-[#0f1219] px-2 py-0.5 rounded-md border border-[#2d3548]">
+                  ${slotProps.length} Lựa Chọn
+                </span>
+                <button onclick="openProposalModal('${day}', '${slot.id}')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#ff5a1f]/15 hover:bg-[#ff5a1f] text-[#ff5a1f] hover:text-white border border-[#ff5a1f]/30 transition flex items-center gap-1">
+                  <span>+</span> <span>Đề Xuất Kèo</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Proposals / Options Grid inside this slot -->
+            <div class="space-y-3" id="props-container-${slot.id}">
+              ${slotProps.length === 0 ? `
+                <div class="py-4 text-center text-xs text-[#9499b3] bg-[#0f1219]/50 rounded-xl border border-dashed border-[#2d3548]">
+                  Chưa có đề xuất nào cho khung giờ này. Hãy bấm <strong>[+ Đề Xuất Kèo]</strong> để rủ anh em!
+                </div>
+              ` : ''}
             </div>
           `;
-          listContainer.appendChild(itemEl);
+
+          slotsListEl.appendChild(slotCard);
+
+          if (slotProps.length > 0) {
+            const propsContainer = slotCard.querySelector(`#props-container-${slot.id}`);
+
+            slotProps.forEach(prop => {
+              const isWinner = prop.id === winningId && prop.votes > 0;
+              const pct = Math.round((prop.votes / totalSlotVotes) * 100);
+              const hasUserVoted = userVotedMap[slot.id] === prop.id;
+
+              const propEl = document.createElement('div');
+              propEl.className = `u-card-inner p-3.5 transition ${isWinner ? 'border-[#ffc53d]/50 bg-[#232938]' : 'bg-[#151926]'}`;
+
+              propEl.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <div class="space-y-0.5">
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs sm:text-sm font-bold text-white">${prop.title}</span>
+                      ${isWinner ? `<span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-[#ffc53d]/20 text-[#ffc53d] border border-[#ffc53d]/40 flex items-center gap-1">👑 Kèo Chốt</span>` : ''}
+                    </div>
+                    <div class="text-[11px] text-[#9499b3] flex flex-wrap items-center gap-3">
+                      <span>📍 ${prop.location || 'Chưa cập nhật địa chỉ'}</span>
+                      <span class="text-[#ffc53d] font-mono font-bold">~${Number(prop.cost || 0).toLocaleString()}đ/người</span>
+                      <span>Bởi: <strong>${prop.author || 'Thành viên'}</strong></span>
+                    </div>
+                  </div>
+
+                  <!-- Action Buttons: Vote & Edit & Delete -->
+                  <div class="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                    <button onclick="voteProposal('${slot.id}', '${prop.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${hasUserVoted ? 'bg-[#ff5a1f] text-white shadow-md shadow-orange-950/40' : 'bg-[#2d3548] text-[#9499b3] hover:text-white'}">
+                      <span>👍</span>
+                      <span>${prop.votes} Phiếu</span>
+                    </button>
+                    <button onclick="openEditProposalModal('${prop.id}')" title="Chỉnh sửa chi phí, địa chỉ" class="p-1.5 rounded-lg bg-[#2d3548] hover:bg-[#3d4760] text-gray-300 hover:text-white text-xs font-bold">
+                      ✏️ Sửa
+                    </button>
+                    <button onclick="deleteProposal('${prop.id}')" title="Xóa đề xuất" class="p-1.5 rounded-lg bg-[#2d3548] hover:bg-red-900/60 text-gray-400 hover:text-red-400 text-xs">
+                      ✕
+                    </button>
+                  </div>
+                </div>
+
+                ${prop.notes ? `<p class="text-xs text-[#9499b3] leading-relaxed mb-2.5 font-normal">${prop.notes}</p>` : ''}
+
+                <!-- Vote Percentage Bar -->
+                <div>
+                  <div class="flex justify-between text-[10px] font-bold text-[#9499b3] mb-1">
+                    <span>Tỷ lệ biểu quyết nhóm</span>
+                    <span class="font-mono text-[#ffc53d]">${pct}%</span>
+                  </div>
+                  <div class="w-full bg-[#0f1219] rounded-full h-1.5 overflow-hidden">
+                    <div class="vote-bar h-full rounded-full ${isWinner ? 'bg-gradient-to-r from-[#ff5a1f] to-[#ffc53d]' : 'bg-[#3b82f6]'}" style="width: ${pct}%"></div>
+                  </div>
+                </div>
+              `;
+
+              propsContainer.appendChild(propEl);
+            });
+          }
         });
       });
+
+      // Also refresh the budget calculator because winning proposals affect total budget!
+      renderExpensesTable();
     }
 
-    function toggleActDone(id) {
-      const act = itineraryList.find(a => a.id === id);
-      if (act) {
-        act.done = !act.done;
-        saveItinerary();
-        renderItinerary();
-        showToast(act.done ? 'Đã đánh dấu hoàn thành!' : 'Đã bỏ đánh dấu');
-      }
-    }
+    /* =========================================================================
+       VOTING LOGIC
+       ========================================================================= */
+    function voteProposal(slotId, propId) {
+      const prevVotedPropId = userVotedMap[slotId];
 
-    function deleteAct(id) {
-      if (confirm('Bạn có chắc muốn xóa hoạt động này khỏi lịch trình?')) {
-        itineraryList = itineraryList.filter(a => a.id !== id);
-        saveItinerary();
-        renderItinerary();
-        showToast('Đã xóa hoạt động');
-      }
-    }
-
-    function addToItineraryFromCard(cardId) {
-      const item = HANOI_DATABASE.find(x => x.id === cardId);
-      if (!item) return;
-
-      const newAct = {
-        id: 'act-' + Date.now(),
-        day: '23', // Default to day 2
-        time: '14:30',
-        title: item.title,
-        type: item.category,
-        badge: item.badge,
-        desc: `${item.desc} (Địa chỉ: ${item.location})`,
-        done: false
-      };
-
-      itineraryList.push(newAct);
-      saveItinerary();
-      renderItinerary();
-      showToast(`Đã thêm "${item.title}" vào ngày 23/11!`);
-    }
-
-    function saveItinerary() {
-      localStorage.setItem('hn_itinerary', JSON.stringify(itineraryList));
-    }
-
-    /* =====================================================================
-       CUSTOM ACTIVITY MODAL
-       ===================================================================== */
-    function openCustomActivityModal() {
-      document.getElementById('custom-act-modal').classList.remove('hidden');
-    }
-    function closeCustomModal() {
-      document.getElementById('custom-act-modal').classList.add('hidden');
-    }
-    function closeCustomModalOnBackdrop(e) {
-      if (e.target.id === 'custom-act-modal') closeCustomModal();
-    }
-
-    function saveCustomActivity(e) {
-      e.preventDefault();
-      const day = document.getElementById('new-act-day').value;
-      const time = document.getElementById('new-act-time').value.trim();
-      const title = document.getElementById('new-act-title').value.trim();
-      const type = document.getElementById('new-act-type').value;
-      const desc = document.getElementById('new-act-desc').value.trim() || 'Hoạt động nhóm tự thêm';
-
-      const act = {
-        id: 'act-' + Date.now(),
-        day,
-        time,
-        title,
-        type,
-        badge: 'Tự thêm',
-        desc,
-        done: false
-      };
-
-      itineraryList.push(act);
-      // Sort roughly by time
-      itineraryList.sort((a, b) => a.time.localeCompare(b.time));
-      saveItinerary();
-      renderItinerary();
-      closeCustomModal();
-      showToast('Đã thêm hoạt động mới vào lịch trình!');
-      e.target.reset();
-    }
-
-    /* =====================================================================
-       OPINION / COMMENTS SYSTEM
-       ===================================================================== */
-    function renderComments() {
-      const container = document.getElementById('comments-feed');
-      container.innerHTML = '';
-
-      document.getElementById('comment-count-badge').textContent = commentsList.length;
-
-      if (commentsList.length === 0) {
-        container.innerHTML = `<div class="p-8 text-center text-gray-500 text-xs">Chưa có ý kiến nào. Hãy mở bát gửi ý kiến đầu tiên!</div>`;
-        return;
+      if (prevVotedPropId === propId) {
+        // Toggle off
+        const prop = proposals.find(p => p.id === propId);
+        if (prop) prop.votes = Math.max(0, prop.votes - 1);
+        delete userVotedMap[slotId];
+      } else {
+        // Decrease previous
+        if (prevVotedPropId) {
+          const oldProp = proposals.find(p => p.id === prevVotedPropId);
+          if (oldProp) oldProp.votes = Math.max(0, oldProp.votes - 1);
+        }
+        // Increase new
+        const newProp = proposals.find(p => p.id === propId);
+        if (newProp) newProp.votes += 1;
+        userVotedMap[slotId] = propId;
       }
 
-      commentsList.forEach(cmt => {
-        const item = document.createElement('div');
-        item.className = 'bg-white border border-[#EADBCE] rounded-2xl p-4 shadow-sm';
-        
-        const tagMap = {
-          hotel: 'bg-purple-100 text-purple-800',
-          food: 'bg-orange-100 text-orange-800',
-          transport: 'bg-blue-100 text-blue-800',
-          night: 'bg-indigo-100 text-indigo-800',
-          warn: 'bg-red-100 text-red-800',
-          general: 'bg-gray-100 text-gray-800'
-        };
-
-        item.innerHTML = `
-          <div class="flex items-start justify-between gap-2 mb-2">
-            <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-full bg-[#B9382A]/10 text-[#B9382A] font-bold text-xs flex items-center justify-center">
-                ${cmt.author.charAt(0)}
-              </div>
-              <div>
-                <span class="text-xs font-bold text-[#1E1B18] block leading-none">${cmt.author}</span>
-                <span class="text-[10px] text-gray-400">${cmt.time}</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tagMap[cmt.tag] || 'bg-gray-100 text-gray-800'}">
-              ${cmt.tagLabel || 'Ý kiến'}
-            </span>
-          </div>
-
-          <p class="text-xs text-[#1E1B18] leading-relaxed mb-3 font-normal">
-            ${cmt.content}
-          </p>
-
-          <div class="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
-            <button onclick="likeComment(${cmt.id})" class="flex items-center gap-1.5 hover:text-[#B9382A] transition font-medium">
-              <span>👍 Đồng tình</span>
-              <span class="font-bold">(${cmt.likes || 0})</span>
-            </button>
-            <button onclick="replyComment('${cmt.author}')" class="hover:text-[#B9382A] transition">
-              💬 Trả lời
-            </button>
-          </div>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    function submitComment(e) {
-      e.preventDefault();
-      const author = document.getElementById('cmt-author').value.trim();
-      const tagSelect = document.getElementById('cmt-tag');
-      const tag = tagSelect.value;
-      const tagLabel = tagSelect.options[tagSelect.selectedIndex].text.split(' ')[1];
-      const content = document.getElementById('cmt-content').value.trim();
-
-      const newCmt = {
-        id: Date.now(),
-        author,
-        tag,
-        tagLabel,
-        content,
-        time: 'Vừa xong',
-        likes: 1
-      };
-
-      commentsList.unshift(newCmt);
-      localStorage.setItem('hn_comments', JSON.stringify(commentsList));
-      renderComments();
-      e.target.reset();
-      showToast('Đã gửi ý kiến lên bảng tin!');
-    }
-
-    function likeComment(id) {
-      const c = commentsList.find(x => x.id === id);
-      if (c) {
-        c.likes = (c.likes || 0) + 1;
-        localStorage.setItem('hn_comments', JSON.stringify(commentsList));
-        renderComments();
-      }
-    }
-
-    function replyComment(author) {
-      const textarea = document.getElementById('cmt-content');
-      textarea.value = `@${author}: `;
-      textarea.focus();
-    }
-
-    /* =====================================================================
-       POLLS / VOTING SYSTEM
-       ===================================================================== */
-    function renderPolls() {
-      const container = document.getElementById('polls-container');
-      container.innerHTML = '';
-
-      pollsList.forEach(poll => {
-        const card = document.createElement('div');
-        card.className = 'bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm flex flex-col justify-between';
-
-        const totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0) || 1;
-        const userChoice = userVoted[poll.id];
-
-        card.innerHTML = `
-          <div>
-            <h4 class="text-sm font-bold text-[#1E1B18] mb-1">${poll.question}</h4>
-            <p class="text-xs text-[#6B635B] mb-4">${poll.desc}</p>
-
-            <div class="space-y-2.5 mb-4">
-              ${poll.options.map((opt, idx) => {
-                const pct = Math.round((opt.votes / totalVotes) * 100);
-                const isSelected = userChoice === idx;
-                return `
-                  <button onclick="votePoll('${poll.id}', ${idx})" class="w-full text-left p-3 rounded-xl border ${isSelected ? 'border-[#B9382A] bg-red-50/50' : 'border-[#EADBCE] bg-[#FAF7F2]'} hover:border-[#B9382A] transition relative overflow-hidden group">
-                    <div class="flex items-center justify-between text-xs font-semibold mb-1 relative z-10">
-                      <span class="${isSelected ? 'text-[#B9382A] font-bold' : 'text-[#1E1B18]'}">${opt.text}</span>
-                      <span class="font-mono text-gray-500 ml-2">${pct}% (${opt.votes} phiếu)</span>
-                    </div>
-                    <!-- Percentage Bar -->
-                    <div class="w-full bg-gray-200/80 rounded-full h-1.5 overflow-hidden">
-                      <div class="${isSelected ? 'bg-[#B9382A]' : 'bg-gray-400'} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
-                    </div>
-                  </button>
-                `;
-              }).join('')}
-            </div>
-          </div>
-          <div class="text-[11px] text-gray-400 text-right">
-            Tổng cộng: <strong>${totalVotes} phiếu</strong>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function votePoll(pollId, optionIdx) {
-      const poll = pollsList.find(p => p.id === pollId);
-      if (!poll) return;
-
-      const prev = userVoted[pollId];
-      if (prev !== undefined) {
-        poll.options[prev].votes = Math.max(0, poll.options[prev].votes - 1);
-      }
-      poll.options[optionIdx].votes += 1;
-      userVoted[pollId] = optionIdx;
-
-      localStorage.setItem('hn_polls', JSON.stringify(pollsList));
-      localStorage.setItem('hn_user_voted', JSON.stringify(userVoted));
-      renderPolls();
+      saveAppState();
+      renderScheduleSlots();
       showToast('Đã ghi nhận phiếu bầu!');
     }
 
-    /* =====================================================================
-       BUDGET ESTIMATION TABLE
-       ===================================================================== */
-    function renderBudgetTable() {
-      const tbody = document.getElementById('budget-table-body');
+    /* =========================================================================
+       FEATURE 2: PROPOSAL MODAL (ADD & EDIT PROPOSAL)
+       ========================================================================= */
+    function updateModalSlotOptions(selectedSlotId = null) {
+      const day = document.getElementById('prop-day').value;
+      const slotSelect = document.getElementById('prop-slot');
+      slotSelect.innerHTML = '';
+
+      const matchingSlots = timeSlots.filter(s => s.day === day);
+      matchingSlots.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name;
+        if (selectedSlotId === s.id) opt.selected = true;
+        slotSelect.appendChild(opt);
+      });
+    }
+
+    function openProposalModal(day = null, slotId = null) {
+      document.getElementById('prop-modal-title').textContent = 'Đề Xuất Địa Điểm / Kèo Đi Mới';
+      document.getElementById('prop-id').value = '';
+      document.getElementById('prop-title').value = '';
+      document.getElementById('prop-cost').value = '';
+      document.getElementById('prop-author').value = '';
+      document.getElementById('prop-location').value = '';
+      document.getElementById('prop-notes').value = '';
+
+      if (day) document.getElementById('prop-day').value = day;
+      updateModalSlotOptions(slotId);
+
+      document.getElementById('proposal-modal').classList.remove('hidden');
+    }
+
+    function openEditProposalModal(id) {
+      const prop = proposals.find(p => p.id === id);
+      if (!prop) return;
+
+      const slot = timeSlots.find(s => s.id === prop.slotId);
+      document.getElementById('prop-modal-title').textContent = 'Chỉnh Sửa Chi Phí & Địa Chỉ Kèo';
+      document.getElementById('prop-id').value = prop.id;
+      document.getElementById('prop-day').value = slot ? slot.day : '22';
+      updateModalSlotOptions(prop.slotId);
+
+      document.getElementById('prop-title').value = prop.title || '';
+      document.getElementById('prop-cost').value = prop.cost || '';
+      document.getElementById('prop-author').value = prop.author || '';
+      document.getElementById('prop-location').value = prop.location || '';
+      document.getElementById('prop-notes').value = prop.notes || '';
+
+      document.getElementById('proposal-modal').classList.remove('hidden');
+    }
+
+    function closeProposalModal() {
+      document.getElementById('proposal-modal').classList.add('hidden');
+    }
+
+    function handleSaveProposal(e) {
+      e.preventDefault();
+      const propId = document.getElementById('prop-id').value;
+      const slotId = document.getElementById('prop-slot').value;
+      const title = document.getElementById('prop-title').value.trim();
+      const cost = Number(document.getElementById('prop-cost').value) || 0;
+      const author = document.getElementById('prop-author').value.trim();
+      const location = document.getElementById('prop-location').value.trim();
+      const notes = document.getElementById('prop-notes').value.trim();
+
+      if (propId) {
+        // Edit existing
+        const p = proposals.find(x => x.id === propId);
+        if (p) {
+          p.slotId = slotId;
+          p.title = title;
+          p.cost = cost;
+          p.author = author;
+          p.location = location;
+          p.notes = notes;
+        }
+        showToast('Đã lưu thay đổi đề xuất!');
+      } else {
+        // Create new
+        const newP = {
+          id: 'prop-' + Date.now(),
+          slotId,
+          title,
+          cost,
+          author,
+          location,
+          notes,
+          votes: 1
+        };
+        proposals.push(newP);
+        userVotedMap[slotId] = newP.id;
+        showToast('Đã tạo đề xuất mới và bỏ phiếu!');
+      }
+
+      saveAppState();
+      closeProposalModal();
+      renderScheduleSlots();
+    }
+
+    function deleteProposal(id) {
+      if (confirm('Bạn có chắc muốn xóa đề xuất này?')) {
+        proposals = proposals.filter(p => p.id !== id);
+        saveAppState();
+        renderScheduleSlots();
+        showToast('Đã xóa đề xuất');
+      }
+    }
+
+    /* =========================================================================
+       FEATURE 3: EXPENSES & BUDGET CALCULATOR (DYNAMIC SYNC)
+       ========================================================================= */
+    function renderExpensesTable() {
+      const tbody = document.getElementById('expense-table-rows');
       tbody.innerHTML = '';
 
-      BUDGET_BREAKDOWN.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-gray-50/80 transition';
-        tr.innerHTML = `
-          <td class="py-3 px-4 font-bold text-[#1E1B18]">${row.item}</td>
-          <td class="py-3 px-4 font-mono font-bold text-emerald-600">${row.low}</td>
-          <td class="py-3 px-4 font-mono font-bold text-[#B9382A]">${row.high}</td>
-          <td class="py-3 px-4 text-gray-500">${row.type}</td>
-          <td class="py-3 px-4 text-gray-600 leading-snug">${row.note}</td>
-        `;
-        tbody.appendChild(tr);
+      // 1. Calculate costs from winning time-slot proposals
+      const winningProposalsCosts = [];
+      timeSlots.forEach(slot => {
+        const slotProps = proposals.filter(p => p.slotId === slot.id);
+        if (slotProps.length > 0) {
+          let topVote = -1;
+          let winner = null;
+          slotProps.forEach(p => {
+            if (p.votes > topVote) {
+              topVote = p.votes;
+              winner = p;
+            }
+          });
+          if (winner && Number(winner.cost) > 0) {
+            winningProposalsCosts.push({
+              title: `${winner.title} (${slot.name.split('•')[0].trim()})`,
+              cat: 'food',
+              amount: Number(winner.cost),
+              status: 'planned',
+              isFromSlot: true
+            });
+          }
+        }
       });
+
+      let totalPerPerson = 0;
+      let fixedCosts = 0;
+      let foodCosts = 0;
+
+      // Render base fixed expenses
+      baseExpenses.forEach(exp => {
+        const amt = Number(exp.amount) || 0;
+        totalPerPerson += amt;
+        if (exp.cat === 'flight' || exp.cat === 'stay') fixedCosts += amt;
+        if (exp.cat === 'food') foodCosts += amt;
+
+        appendExpenseRow(tbody, exp.id, exp.title, exp.cat, amt, exp.status, false);
+      });
+
+      // Render slot activities expenses
+      winningProposalsCosts.forEach((exp, idx) => {
+        totalPerPerson += exp.amount;
+        foodCosts += exp.amount;
+        appendExpenseRow(tbody, `slot-cost-${idx}`, exp.title, 'food', exp.amount, 'planned', true);
+      });
+
+      const totalGroup = totalPerPerson * 8;
+      document.getElementById('stat-per-person').textContent = `${(totalPerPerson / 1000000).toFixed(2)} tr`;
+      document.getElementById('stat-group-total').textContent = `${(totalGroup / 1000000).toFixed(1)} tr`;
+      document.getElementById('stat-fixed-costs').textContent = `~${(fixedCosts / 1000000).toFixed(1)} tr`;
+      document.getElementById('stat-food-costs').textContent = `~${(foodCosts / 1000).toFixed(0)}k/bạn`;
+      document.getElementById('header-total-cost').textContent = `~${(totalPerPerson / 1000000).toFixed(1)}tr/bạn`;
     }
 
-    /* =====================================================================
-       CHECKLIST RENDER & PROGRESS
-       ===================================================================== */
-    function renderChecklist() {
-      const container = document.getElementById('checklist-container');
+    function appendExpenseRow(tbody, id, title, cat, amount, status, isFromSlot) {
+      const catMap = {
+        flight: { name: 'Vé máy bay', bg: 'bg-blue-900/40 text-blue-300' },
+        stay: { name: 'Chỗ ở', bg: 'bg-purple-900/40 text-purple-300' },
+        food: { name: 'Ẩm thực', bg: 'bg-orange-900/40 text-orange-300' },
+        transit: { name: 'Xe cộ', bg: 'bg-teal-900/40 text-teal-300' },
+        ticket: { name: 'Vé tham quan', bg: 'bg-rose-900/40 text-rose-300' },
+        gift: { name: 'Quà biếu', bg: 'bg-emerald-900/40 text-emerald-300' }
+      };
+      const catInfo = catMap[cat] || { name: 'Khác', bg: 'bg-gray-800 text-gray-300' };
+
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-[#1a1f2e]/60 transition';
+
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+          <span>${title}</span>
+          ${isFromSlot ? `<span class="text-[9px] font-bold text-[#ffc53d] bg-[#ffc53d]/15 px-1.5 py-0.5 rounded">Kèo Lịch</span>` : ''}
+        </td>
+        <td class="py-3 px-4">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold ${catInfo.bg}">${catInfo.name}</span>
+        </td>
+        <td class="py-3 px-4 text-right font-mono font-bold text-[#ff5a1f]">${amount.toLocaleString()}đ</td>
+        <td class="py-3 px-4 text-right font-mono font-bold text-[#ffc53d]">${(amount * 8).toLocaleString()}đ</td>
+        <td class="py-3 px-4 text-center">
+          <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800/40">Dự trù</span>
+        </td>
+        <td class="py-3 px-4 text-right whitespace-nowrap">
+          ${!isFromSlot ? `
+            <button onclick="openExpenseModal('${id}')" class="p-1 text-gray-400 hover:text-white font-bold text-xs">✏️ Sửa</button>
+            <button onclick="deleteBaseExpense('${id}')" class="p-1 text-gray-400 hover:text-red-400 font-bold text-xs">✕</button>
+          ` : `<span class="text-[10px] text-gray-500 italic">Sửa trong Lịch</span>`}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function openExpenseModal(id = null) {
+      if (id) {
+        const exp = baseExpenses.find(x => x.id === id);
+        if (!exp) return;
+        document.getElementById('exp-modal-title').textContent = 'Sửa Khoản Chi Phí';
+        document.getElementById('custom-exp-id').value = exp.id;
+        document.getElementById('custom-exp-title').value = exp.title;
+        document.getElementById('custom-exp-cat').value = exp.cat;
+        document.getElementById('custom-exp-amount').value = exp.amount;
+        document.getElementById('custom-exp-status').value = exp.status || 'planned';
+      } else {
+        document.getElementById('exp-modal-title').textContent = 'Thêm Khoản Chi Mới';
+        document.getElementById('custom-exp-id').value = '';
+        document.getElementById('custom-exp-title').value = '';
+        document.getElementById('custom-exp-cat').value = 'food';
+        document.getElementById('custom-exp-amount').value = '';
+        document.getElementById('custom-exp-status').value = 'planned';
+      }
+      document.getElementById('expense-modal').classList.remove('hidden');
+    }
+
+    function closeExpenseModal() {
+      document.getElementById('expense-modal').classList.add('hidden');
+    }
+
+    function handleSaveCustomExpense(e) {
+      e.preventDefault();
+      const id = document.getElementById('custom-exp-id').value;
+      const title = document.getElementById('custom-exp-title').value.trim();
+      const cat = document.getElementById('custom-exp-cat').value;
+      const amount = Number(document.getElementById('custom-exp-amount').value) || 0;
+      const status = document.getElementById('custom-exp-status').value;
+
+      if (id) {
+        const exp = baseExpenses.find(x => x.id === id);
+        if (exp) {
+          exp.title = title;
+          exp.cat = cat;
+          exp.amount = amount;
+          exp.status = status;
+        }
+        showToast('Đã cập nhật khoản chi!');
+      } else {
+        baseExpenses.push({
+          id: 'b-' + Date.now(),
+          title,
+          cat,
+          amount,
+          status
+        });
+        showToast('Đã thêm khoản chi mới!');
+      }
+
+      saveAppState();
+      closeExpenseModal();
+      renderExpensesTable();
+    }
+
+    function deleteBaseExpense(id) {
+      if (confirm('Bạn có chắc muốn xóa khoản chi này?')) {
+        baseExpenses = baseExpenses.filter(x => x.id !== id);
+        saveAppState();
+        renderExpensesTable();
+        showToast('Đã xóa khoản chi');
+      }
+    }
+
+    /* =========================================================================
+       FEATURE 4: CATALOG OF PLACES & FOOD 2026
+       ========================================================================= */
+    function filterCatalog(cat) {
+      document.querySelectorAll('#att-filter-pills button').forEach(b => {
+        b.className = 'px-3 py-1 rounded-xl text-xs font-bold bg-[#1a1f2e] border border-[#2d3548] text-[#9499b3] hover:border-[#ff5a1f]';
+      });
+      event.target.className = 'px-3 py-1 rounded-xl text-xs font-bold bg-[#ff5a1f] text-white';
+      renderCatalog(cat);
+    }
+
+    function renderCatalog(cat = 'all') {
+      const container = document.getElementById('catalog-grid');
       container.innerHTML = '';
 
-      let totalItems = 0;
-      let checkedItems = 0;
+      const items = cat === 'all' ? CATALOG_ITEMS : CATALOG_ITEMS.filter(x => x.category === cat);
 
-      DEFAULT_CHECKLIST.forEach((grp, grpIdx) => {
+      items.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'bg-white border border-[#EADBCE] rounded-2xl p-5 shadow-sm space-y-3';
-        card.innerHTML = `<h4 class="text-sm font-bold text-[#1E1B18] pb-2 border-b border-gray-100">${grp.category}</h4>`;
+        card.className = 'u-card p-4 flex flex-col justify-between';
 
-        const list = document.createElement('div');
-        list.className = 'space-y-2';
-
-        grp.items.forEach((itemText, itemIdx) => {
-          totalItems++;
-          const key = `chk_${grpIdx}_${itemIdx}`;
-          const isChecked = !!checklistChecked[key];
-          if (isChecked) checkedItems++;
-
-          const row = document.createElement('label');
-          row.className = 'flex items-start gap-2.5 cursor-pointer text-xs group select-none';
-          row.innerHTML = `
-            <input type="checkbox" onchange="toggleChecklistItem('${key}')" ${isChecked ? 'checked' : ''} 
-              class="mt-0.5 rounded text-[#B9382A] focus:ring-[#B9382A] w-4 h-4 cursor-pointer accent-[#B9382A]"/>
-            <span class="${isChecked ? 'line-through text-gray-400' : 'text-[#1E1B18]'} group-hover:text-[#B9382A] transition">
-              ${itemText}
-            </span>
-          `;
-          list.appendChild(row);
-        });
-
-        card.appendChild(list);
+        card.innerHTML = `
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <span class="text-xs font-bold text-[#ff5a1f] font-mono">${item.price}</span>
+              <span class="text-[10px] text-[#9499b3]">${item.location}</span>
+            </div>
+            <h4 class="text-sm font-baloo font-extrabold text-white mb-1">${item.title}</h4>
+            <p class="text-xs text-[#9499b3] leading-relaxed mb-3">${item.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-[#2d3548] flex justify-end">
+            <button onclick="proposeFromCatalog('${item.id}')" class="px-3 py-1 rounded-xl text-xs font-bold bg-[#ff5a1f]/15 hover:bg-[#ff5a1f] text-[#ff5a1f] hover:text-white border border-[#ff5a1f]/30 transition">
+              + Đề Xuất Vào Lịch
+            </button>
+          </div>
+        `;
         container.appendChild(card);
       });
-
-      // Update progress
-      const pct = totalItems ? Math.round((checkedItems / totalItems) * 100) : 0;
-      document.getElementById('checklist-progress-text').textContent = `${checkedItems}/${totalItems} (${pct}%)`;
-      document.getElementById('checklist-progress-bar').style.width = `${pct}%`;
     }
 
-    function toggleChecklistItem(key) {
-      checklistChecked[key] = !checklistChecked[key];
-      localStorage.setItem('hn_checklist_state', JSON.stringify(checklistChecked));
+    function proposeFromCatalog(catalogId) {
+      const item = CATALOG_ITEMS.find(x => x.id === catalogId);
+      if (!item) return;
+
+      openProposalModal('22', null);
+      document.getElementById('prop-title').value = item.title;
+      document.getElementById('prop-location').value = item.location;
+      document.getElementById('prop-notes').value = item.desc;
+    }
+
+    /* =========================================================================
+       FEATURE 5: COMMENTS & CHECKLIST
+       ========================================================================= */
+    function renderComments() {
+      const feed = document.getElementById('comments-feed');
+      feed.innerHTML = '';
+
+      commentsList.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-[#151926] rounded-xl border border-[#2d3548] text-xs space-y-1';
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-[#ff5a1f] font-baloo text-sm">${c.user}</span>
+              <span class="px-1.5 py-0.2 rounded text-[9px] bg-[#232938] text-gray-400">#${c.tag}</span>
+            </div>
+            <span class="text-[10px] text-gray-500">${c.time}</span>
+          </div>
+          <p class="text-gray-300 leading-relaxed font-normal">${c.text}</p>
+        `;
+        feed.appendChild(div);
+      });
+    }
+
+    function handleSendComment(e) {
+      e.preventDefault();
+      const user = document.getElementById('cmt-name').value.trim();
+      const tag = document.getElementById('cmt-tag').value;
+      const text = document.getElementById('cmt-content').value.trim();
+
+      commentsList.unshift({ user, tag, text, time: 'Vừa xong' });
+      saveAppState();
+      renderComments();
+      e.target.reset();
+      showToast('Đã đăng ý kiến lên bảng tin!');
+    }
+
+    function renderChecklist() {
+      const container = document.getElementById('checklist-items');
+      container.innerHTML = '';
+
+      let checked = 0;
+      DEFAULT_CHECKLIST.forEach((item, idx) => {
+        const key = `ck_${idx}`;
+        const isDone = !!checklistState[key];
+        if (isDone) checked++;
+
+        const label = document.createElement('label');
+        label.className = 'flex items-start gap-2.5 text-xs text-gray-300 cursor-pointer select-none p-2 rounded-lg hover:bg-[#151926] transition';
+        label.innerHTML = `
+          <input type="checkbox" onchange="toggleChecklist('${key}')" ${isDone ? 'checked' : ''} class="mt-0.5 rounded text-[#ff5a1f] accent-[#ff5a1f]"/>
+          <span class="${isDone ? 'line-through text-gray-500' : 'text-gray-200'}">${item.text}</span>
+        `;
+        container.appendChild(label);
+      });
+
+      document.getElementById('checklist-stat').textContent = `${checked}/${DEFAULT_CHECKLIST.length} Đã Chuẩn Bị`;
+    }
+
+    function toggleChecklist(key) {
+      checklistState[key] = !checklistState[key];
+      saveAppState();
       renderChecklist();
     }
 
-    /* =====================================================================
-       SHARE / COPY SUMMARY TO CLIPBOARD
-       ===================================================================== */
+    /* =========================================================================
+       SHARE PLAN
+       ========================================================================= */
     function sharePlan() {
       const text = `
-🗺️ KẾ HOẠCH HÀ NỘI 2026 - 8 NGƯỜI HCM
-⏱️ Thời gian: 02:00 SA 22/11 -> 17:00 CH 24/11 (~63 giờ)
-🌤️ Khí hậu: 20-24°C se lạnh đầu đông
+🗺️ KẾ HOẠCH HÀ NỘI 2026 • 8 NGƯỜI HCM (URANUS PLANNER)
+⏱️ 02:00 SA 22/11 ➔ 17:00 CH 24/11 (~63 giờ)
+💰 Dự toán mỗi bạn: ~3.5tr - 4.2tr trọn gói
 
-📅 Lịch trình vắn tắt:
-- Ngày 22/11: Bay đêm 2h sáng -> Hạ cánh 5h -> Phở Bát Đàn -> Dạo Hồ Gươm sớm -> Cà phê Giảng trứng -> Trưa Bún chả Obama -> Chiều Văn Miếu -> Tối phố đi bộ & Bia hơi Tạ Hiện!
-- Ngày 23/11: Sáng Bánh cuốn nóng -> Viếng Lăng Bác & Chùa Trấn Quốc Hồ Tây -> Trưa Chả Cá Lã Vọng -> Chiều Hỏa Lò & Hoàng hôn Cầu Long Biên -> Tối Tour đêm 3D Mapping & Mỳ gà tần!
-- Ngày 24/11: Sáng Bún thang -> Thăm Hoàng Thành Thăng Long -> Mua cốm Làng Vòng & Ô mai Hàng Đường -> Cơm trưa -> 13:30 ra sân bay Nội Bài -> 17:15 đáp Sài Gòn.
-
-💰 Dự toán mỗi bạn: ~3.5tr - 4.5tr trọn gói (Vé bay + Airbnb + Ăn ngon + Vé tour).
-Nhớ mang theo áo khoác và CCCD nhé cả nhóm!
+🔥 Mỗi khung giờ đều có nút đề xuất và vote kèo chốt dân chủ!
+Anh em vào vote quán ăn & điểm đi tại: https://sugoi-hn.vercel.app
       `.trim();
 
       navigator.clipboard.writeText(text).then(() => {
-        showToast('📋 Đã copy tóm tắt vào clipboard! Giờ hãy paste vào Zalo nhóm nhé!');
+        showToast('📋 Đã copy link & tóm tắt gửi Zalo nhóm!');
       }).catch(() => {
-        showToast('Vui lòng copy thủ công từ màn hình!');
+        showToast('Vui lòng copy thủ công!');
       });
     }
 
-    /* =====================================================================
-       TOAST UTILITY
-       ===================================================================== */
-    let toastTimeout;
+    /* =========================================================================
+       PERSISTENCE & TOAST
+       ========================================================================= */
+    function saveAppState() {
+      localStorage.setItem('u_days', JSON.stringify(dayInfo));
+      localStorage.setItem('u_slots', JSON.stringify(timeSlots));
+      localStorage.setItem('u_proposals', JSON.stringify(proposals));
+      localStorage.setItem('u_base_expenses', JSON.stringify(baseExpenses));
+      localStorage.setItem('u_user_voted_map', JSON.stringify(userVotedMap));
+      localStorage.setItem('u_comments', JSON.stringify(commentsList));
+      localStorage.setItem('u_checklist', JSON.stringify(checklistState));
+    }
+
+    let toastTimer;
     function showToast(msg, icon = '✨') {
       const el = document.getElementById('toast');
       document.getElementById('toast-msg').textContent = msg;
       document.getElementById('toast-icon').textContent = icon;
       el.classList.add('show');
-
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        el.classList.remove('show');
-      }, 3000);
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
     }
   </script>
 </body>
