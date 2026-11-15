@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
 
     const followRedirect = (url, depth = 0) => {
       return new Promise((resolve) => {
-        if (depth > 5) return resolve(url);
+        if (depth > 6) return resolve(url);
 
         const u = new URL(url);
         const client = u.protocol === 'https:' ? https : http;
@@ -58,6 +58,7 @@ module.exports = async (req, res) => {
 
     let placeName = '';
     let coords = '';
+    let address = '';
 
     const placeMatch = finalUrl.match(/\/place\/([^\/@?#]+)/);
     if (placeMatch && placeMatch[1]) {
@@ -68,9 +69,49 @@ module.exports = async (req, res) => {
       }
     }
 
-    const coordsMatch = finalUrl.match(/@([0-9.-]+,[0-9.-]+)/);
-    if (coordsMatch && coordsMatch[1]) {
-      coords = coordsMatch[1];
+    // Try exact coordinates in data (!3dLAT!4dLNG) or fallback to @LAT,LNG
+    const exactCoords = finalUrl.match(/!3d([0-9.-]+)!4d([0-9.-]+)/);
+    if (exactCoords && exactCoords[1] && exactCoords[2]) {
+      coords = `${exactCoords[1]},${exactCoords[2]}`;
+    } else {
+      const coordsMatch = finalUrl.match(/@([0-9.-]+,[0-9.-]+)/);
+      if (coordsMatch && coordsMatch[1]) {
+        coords = coordsMatch[1];
+      }
+    }
+
+    // Reverse geocode via OpenStreetMap Nominatim for clean Vietnamese address
+    if (coords) {
+      try {
+        const [lat, lon] = coords.split(',');
+        const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
+        
+        address = await new Promise((resolve) => {
+          const nr = https.get(
+            nominatimUrl,
+            { headers: { 'User-Agent': 'SugoiHanoiTrip/2.0 (trip-planner-app)' } },
+            (nres) => {
+              let body = '';
+              nres.on('data', c => body += c);
+              nres.on('end', () => {
+                try {
+                  const p = JSON.parse(body);
+                  resolve(p.display_name || '');
+                } catch (e) {
+                  resolve('');
+                }
+              });
+            }
+          );
+          nr.on('error', () => resolve(''));
+          nr.setTimeout(2500, () => {
+            nr.destroy();
+            resolve('');
+          });
+        });
+      } catch (e) {
+        // ignore geocode error
+      }
     }
 
     res.statusCode = 200;
@@ -81,7 +122,8 @@ module.exports = async (req, res) => {
         originalUrl: targetUrl,
         finalUrl,
         placeName,
-        coords
+        coords,
+        address
       })
     );
   } catch (err) {
