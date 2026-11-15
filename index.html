@@ -771,8 +771,8 @@
           </div>
 
           <!-- Ảnh quán từ Google Maps -->
-          <div id="card-fetched-img-wrap" class="hidden w-full h-36 rounded-xl overflow-hidden relative border border-emerald-200 bg-slate-100">
-            <img id="card-fetched-img" src="" alt="Ảnh Google Maps" class="w-full h-full object-cover" />
+          <div id="card-fetched-img-wrap" class="hidden w-full h-40 rounded-xl overflow-hidden relative border border-emerald-200 bg-slate-100 shadow-2xs">
+            <img id="card-fetched-img" src="" alt="Ảnh Google Maps" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/70 text-white backdrop-blur-xs">Ảnh quán từ Google Maps</span>
           </div>
 
@@ -1119,27 +1119,12 @@
               ev.mapUrl = 'https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%9F+B%C3%A1t+%C4%90%C3%A0n+49+B%C3%A1t+%C4%90%C3%A0n+H%C3%A0+N%E1%BB%99i';
               if (!ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80';
             }
-            if (ev.location && ev.location.includes('3JZRwykMDKkVWdAG9')) {
-              ev.title = 'Hủ Tiếu Gõ Vị Xưa';
-              ev.mapPlace = 'Hủ Tiếu Gõ Vị Xưa';
-              ev.mapCoords = '10.9014631,106.7607699';
-              ev.address = '174 Đường số 11, Khu Phố Nhị Đồng 1, Dĩ An, Hồ Chí Minh';
-              ev.phone = '+84 383 787 890';
-              ev.rating = '4.9 ★';
-              ev.reviews = '8 đánh giá';
-              ev.mapUrl = 'https://www.google.com/maps/place/H%E1%BB%A7+Ti%E1%BA%BFu+G%C3%B5+V%E1%BB%8B+X%C6%B0a/@10.896231,106.7600898,17z/data=!4m6!3m5!1s0x3174d900576f860d:0x99bd2e7b261d3e6d!8m2!3d10.9014631!4d106.7607699!16s%2Fg%2F11z4sx9nxc';
-              if (!ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80';
+            // Đảm bảo ảnh hiển thị đẹp cho mọi địa điểm
+            if (!ev.imageUrl && ev.mapCoords) {
+              ev.imageUrl = `https://maps.google.com/maps/api/staticmap?center=${ev.mapCoords}&zoom=17&size=600x350&language=vi`;
             }
-            if (ev.location && ev.location.includes('FW4wLDtvy2BeNUn69')) {
-              ev.title = 'Công ty Cổ Phần ARC Bình Dương';
-              ev.mapPlace = 'Công ty Cổ Phần ARC Bình Dương';
-              ev.mapCoords = '10.8963587,106.7590747';
-              ev.address = 'Lô G7 Đường Số 6, KCN Sóng Thần, Dĩ An, Hồ Chí Minh';
-              ev.phone = '+84 919 909 828';
-              ev.rating = '4.9 ★';
-              ev.reviews = '8 đánh giá';
-              ev.imageUrl = 'https://lh3.googleusercontent.com/grass-cs/AABkmLcl5gaiOWjnRG3rh_vpDcrNPLf--yot3oKxNNOS3lTL4X-bcTjJFmSTawQvA-pBtFjcu4Seldlpd7okEGBXVFk6HdE7toNp0UTCPdxxolOqdleVuP8zJvxqY4Zjki6efZSnUG1c-r5zRBw=w408-h544-k-no';
-              ev.mapUrl = 'https://maps.app.goo.gl/FW4wLDtvy2BeNUn69';
+            if (!ev.imageUrl) {
+              ev.imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
             }
           });
           return;
@@ -1449,6 +1434,14 @@
 
               return `
                 <div class="p-3 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-2 mb-2 relative">
+                  <!-- Ảnh trực tiếp trên thẻ kèo lịch trình (Theo yêu cầu: tôi cần cả hình ở đây) -->
+                  ${displayImg ? `
+                    <div class="w-full h-24 rounded-lg overflow-hidden border border-slate-100 bg-slate-50 relative group/cardimg mb-1.5 shadow-2xs">
+                      <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover/cardimg:scale-105" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
+                      <span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[8px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh quán</span>
+                    </div>
+                  ` : ''}
+
                   <div class="flex items-start justify-between gap-1.5">
                     <span class="text-xs font-bold text-slate-900 leading-tight">${item.title}</span>
                     <button onclick="voteEvent('${item.id}')" class="px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1 shrink-0 transition ${hasVoted ? 'bg-[#dc2626] text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
@@ -1879,8 +1872,9 @@
         
         const imgWrap = document.getElementById('card-fetched-img-wrap');
         const imgEl = document.getElementById('card-fetched-img');
-        if (imgWrap && imgEl && item.imageUrl) {
-          imgEl.src = item.imageUrl;
+        const itemImg = item.imageUrl || (item.mapCoords ? `https://maps.google.com/maps/api/staticmap?center=${item.mapCoords}&zoom=17&size=600x350&language=vi` : '');
+        if (imgWrap && imgEl && itemImg) {
+          imgEl.src = itemImg;
           imgWrap.classList.remove('hidden');
         } else if (imgWrap) {
           imgWrap.classList.add('hidden');
