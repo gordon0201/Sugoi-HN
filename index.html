@@ -427,7 +427,7 @@
 
         <!-- ================= THE SCHEDULE TABLE MATRIX ================= -->
         <div class="s-card overflow-hidden">
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto pb-36 min-h-[460px]">
             <table class="w-full text-left border-collapse min-w-[780px]" id="schedule-matrix-table">
               
               <!-- Table Header: Column 1 = THỜI GIAN, Columns 2-4 = Ngày 1, 2, 3 -->
@@ -749,42 +749,60 @@
         <!-- Link Google Maps: Dán vào tự động nhận diện toàn bộ -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label class="block text-xs font-bold text-slate-800">Dán Link Google Maps (maps.app.goo.gl)</label>
-            <span id="map-lookup-status" class="text-[10px] text-emerald-600 font-bold">Dán link tự động lấy quán & địa chỉ</span>
+            <label class="block text-xs font-bold text-slate-800">Dán Link Google Maps (maps.app.goo.gl) *</label>
+            <span id="map-lookup-status" class="text-[10px] text-emerald-600 font-bold">Dán link tự động nhận diện toàn bộ</span>
           </div>
           <div class="relative">
-            <input type="text" id="event-location" placeholder="Dán link maps.app.goo.gl vào đây..." oninput="handleLocationInput(this.value)" class="w-full px-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:border-[#dc2626] focus:bg-white pr-8" />
+            <input type="text" id="event-location" placeholder="Dán link Google Maps (maps.app.goo.gl)..." oninput="handleLocationInput(this.value)" class="w-full px-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:border-[#dc2626] focus:bg-white pr-8" />
             <div id="map-lookup-spinner" class="absolute right-2.5 top-1/2 -translate-y-1/2 hidden">
               <svg class="animate-spin h-3.5 w-3.5 text-[#dc2626]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
             </div>
           </div>
         </div>
 
-        <!-- THẺ THÔNG TIN TỰ ĐỘNG HIỆN RA KHI DÁN LINK (KHÔNG CẦN NHẬP TAY) -->
-        <div id="map-fetched-card" class="hidden rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 space-y-2">
-          <div class="flex items-start justify-between gap-2 pb-1.5 border-b border-emerald-200/60">
-            <div>
-              <h4 id="card-fetched-name" class="text-xs font-baloo font-extrabold text-slate-900">Tên Quán</h4>
-              <div class="flex items-center gap-1.5 text-[11px] font-bold text-amber-600 mt-0.5">
-                <span class="text-sm">★</span>
-                <span id="card-fetched-rating">4.9</span>
-                <span class="text-slate-300">•</span>
-                <span id="card-fetched-reviews" class="text-slate-600 font-semibold">(8 đánh giá)</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">Google Maps</span>
+        <!-- BẢNG THÔNG TIN CHECK TỰ ĐỘNG HIỆN RA KHI DÁN LINK (KIỂM TRA TRƯỚC KHI LƯU) -->
+        <div id="map-fetched-card" class="hidden rounded-2xl border-2 border-emerald-300 bg-emerald-50/70 p-3.5 space-y-2.5 shadow-sm">
+          <div class="flex items-center justify-between pb-1.5 border-b border-emerald-200">
+            <span class="text-[11px] font-extrabold text-emerald-800 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              BẢNG THÔNG TIN GOOGLE MAPS
+            </span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-600 text-white shadow-2xs">✓ Đã nhận diện</span>
           </div>
 
-          <div class="text-[11px] space-y-1 text-slate-700">
+          <!-- Ảnh quán từ Google Maps -->
+          <div id="card-fetched-img-wrap" class="hidden w-full h-36 rounded-xl overflow-hidden relative border border-emerald-200 bg-slate-100">
+            <img id="card-fetched-img" src="" alt="Ảnh Google Maps" class="w-full h-full object-cover" />
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/70 text-white backdrop-blur-xs">Ảnh quán từ Google Maps</span>
+          </div>
+
+          <!-- Tên quán + Đánh giá + Review + Category -->
+          <div>
+            <h4 id="card-fetched-name" class="text-sm font-baloo font-extrabold text-slate-900 leading-tight">Tên Quán</h4>
+            <div class="flex items-center gap-2 text-xs font-bold text-amber-600 mt-1 flex-wrap">
+              <div class="flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-amber-200 shadow-2xs">
+                <span class="text-amber-500 text-sm">★</span>
+                <span id="card-fetched-rating" class="text-slate-900 font-extrabold">4.9</span>
+              </div>
+              <span class="text-slate-300">•</span>
+              <span id="card-fetched-reviews" class="text-slate-700 font-semibold">(8 đánh giá)</span>
+              <span class="text-slate-300">•</span>
+              <span id="card-fetched-category" class="text-emerald-700 text-[10px] uppercase font-extrabold bg-emerald-100/80 px-1.5 py-0.5 rounded">Địa điểm</span>
+            </div>
+          </div>
+
+          <!-- Địa chỉ & Số điện thoại chi tiết -->
+          <div class="text-[11px] space-y-1.5 text-slate-800 bg-white p-2.5 rounded-xl border border-emerald-200/80">
             <div class="flex items-start gap-1.5">
-              <span class="text-slate-400 shrink-0">📍</span>
-              <span id="card-fetched-address" class="font-semibold break-words">Địa chỉ chi tiết</span>
+              <span class="text-slate-400 shrink-0 mt-0.5">📍</span>
+              <span id="card-fetched-address" class="font-semibold break-words leading-tight">Địa chỉ chi tiết</span>
             </div>
             <div class="flex items-center gap-1.5">
               <span class="text-slate-400 shrink-0">📞</span>
-              <span id="card-fetched-phone" class="font-mono font-bold text-slate-800">Liên hệ trực tiếp tại quán</span>
+              <span id="card-fetched-phone" class="font-mono font-bold text-[#dc2626]">Chưa cập nhật SĐT trên Maps</span>
             </div>
           </div>
+          <p class="text-[10px] text-slate-500 italic">Kiểm tra thông tin trên trước khi lưu. Nếu không set ảnh riêng, hệ thống tự động dùng ảnh Google Maps phía trên.</p>
         </div>
 
         <!-- Tên Địa Điểm / Hoạt Động (Tự động điền theo quán) -->
@@ -801,6 +819,23 @@
         <input type="hidden" id="event-map-place" value="" />
         <input type="hidden" id="event-map-coords" value="" />
         <input type="hidden" id="event-map-url" value="" />
+        <input type="hidden" id="event-img-url" value="" />
+        <input type="hidden" id="event-img-data" value="" />
+
+        <!-- Tùy chọn ảnh riêng (nếu người dùng muốn tự upload) -->
+        <details class="text-xs">
+          <summary class="font-bold text-slate-600 hover:text-slate-900 cursor-pointer select-none">📷 Tùy chọn tải ảnh riêng (nếu muốn đổi ảnh khác)</summary>
+          <div class="mt-2 space-y-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Chọn file ảnh từ thiết bị</label>
+              <input type="file" id="event-img-file" accept="image/*" onchange="handleImageFileUpload(this)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Hoặc dán link ảnh trực tiếp</label>
+              <input type="url" id="event-img-url-input" placeholder="https://..." oninput="handleImageUrlInput(this.value)" class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-800" />
+            </div>
+          </div>
+        </details>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -1051,15 +1086,60 @@
           checklistChecked = data.checklistChecked || {};
           userVotedMap = data.userVotedMap || {};
 
-          // Auto-migrate any existing test items to proper clean title
+          // Auto-migrate and sanitize any corrupted historical items in localStorage
           scheduleEvents.forEach(ev => {
+            // Remove any TRUMP contamination
+            if (ev.mapPlace && ev.mapPlace.includes('TRUMP') && ev.title !== 'TRUMP Café') {
+              ev.mapPlace = ev.title;
+              ev.mapUrl = '';
+              ev.mapCoords = '';
+            }
+            if (ev.mapUrl && ev.mapUrl.includes('TRUMP') && !ev.title.includes('TRUMP')) {
+              ev.mapUrl = '';
+            }
+            if (ev.title === 'Cà Phê Trứng Giảng') {
+              ev.location = '39 Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội';
+              ev.address = '39 Nguyễn Hữu Huân, Hàng Bạc, Hoàn Kiếm, Hà Nội';
+              ev.phone = '+84 917 002 299';
+              ev.rating = '4.6 ★';
+              ev.reviews = '6.800+ đánh giá';
+              ev.mapPlace = 'Cà Phê Trứng Giảng';
+              ev.mapCoords = '21.0336,105.8544';
+              ev.mapUrl = 'https://www.google.com/maps/search/?api=1&query=C%C3%A0+Ph%C3%AA+Tr%E1%BB%A9ng+Gi%E1%BA%A3ng+39+Nguy%E1%BB%85n+H%E1%BB%AFu+Hu%C3%A2n+H%C3%A0+N%E1%BB%99i';
+              if (!ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&auto=format&fit=crop&q=80';
+            }
+            if (ev.title === 'Phở Bát Đàn') {
+              ev.location = '49 Bát Đàn, Hoàn Kiếm, Hà Nội';
+              ev.address = '49 Bát Đàn, Cửa Đông, Hoàn Kiếm, Hà Nội';
+              ev.phone = '+84 24 3824 3825';
+              ev.rating = '4.4 ★';
+              ev.reviews = '4.200+ đánh giá';
+              ev.mapPlace = 'Phở Bát Đàn';
+              ev.mapCoords = '21.0345,105.8475';
+              ev.mapUrl = 'https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%9F+B%C3%A1t+%C4%90%C3%A0n+49+B%C3%A1t+%C4%90%C3%A0n+H%C3%A0+N%E1%BB%99i';
+              if (!ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80';
+            }
             if (ev.location && ev.location.includes('3JZRwykMDKkVWdAG9')) {
               ev.title = 'Hủ Tiếu Gõ Vị Xưa';
               ev.mapPlace = 'Hủ Tiếu Gõ Vị Xưa';
               ev.mapCoords = '10.9014631,106.7607699';
-              ev.address = 'Đường số 11, Khu phố Nhị Đồng 1, Phường Dĩ An, TP.HCM';
+              ev.address = '174 Đường số 11, Khu Phố Nhị Đồng 1, Dĩ An, Hồ Chí Minh';
+              ev.phone = '+84 383 787 890';
               ev.rating = '4.9 ★';
               ev.reviews = '8 đánh giá';
+              ev.mapUrl = 'https://www.google.com/maps/place/H%E1%BB%A7+Ti%E1%BA%BFu+G%C3%B5+V%E1%BB%8B+X%C6%B0a/@10.896231,106.7600898,17z/data=!4m6!3m5!1s0x3174d900576f860d:0x99bd2e7b261d3e6d!8m2!3d10.9014631!4d106.7607699!16s%2Fg%2F11z4sx9nxc';
+              if (!ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80';
+            }
+            if (ev.location && ev.location.includes('FW4wLDtvy2BeNUn69')) {
+              ev.title = 'Công ty Cổ Phần ARC Bình Dương';
+              ev.mapPlace = 'Công ty Cổ Phần ARC Bình Dương';
+              ev.mapCoords = '10.8963587,106.7590747';
+              ev.address = 'Lô G7 Đường Số 6, KCN Sóng Thần, Dĩ An, Hồ Chí Minh';
+              ev.phone = '+84 919 909 828';
+              ev.rating = '4.9 ★';
+              ev.reviews = '8 đánh giá';
+              ev.imageUrl = 'https://lh3.googleusercontent.com/grass-cs/AABkmLcl5gaiOWjnRG3rh_vpDcrNPLf--yot3oKxNNOS3lTL4X-bcTjJFmSTawQvA-pBtFjcu4Seldlpd7okEGBXVFk6HdE7toNp0UTCPdxxolOqdleVuP8zJvxqY4Zjki6efZSnUG1c-r5zRBw=w408-h544-k-no';
+              ev.mapUrl = 'https://maps.app.goo.gl/FW4wLDtvy2BeNUn69';
             }
           });
           return;
@@ -1080,6 +1160,14 @@
           cost: 75000,
           author: 'Cường',
           location: '49 Bát Đàn, Hoàn Kiếm, Hà Nội',
+          address: '49 Bát Đàn, Cửa Đông, Hoàn Kiếm, Hà Nội',
+          phone: '+84 24 3824 3825',
+          rating: '4.4 ★',
+          reviews: '4.200+ đánh giá',
+          imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80',
+          mapPlace: 'Phở Bát Đàn',
+          mapCoords: '21.0345,105.8475',
+          mapUrl: 'https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%9F+B%C3%A1t+%C4%90%C3%A0n+49+B%C3%A1t+%C4%90%C3%A0n+H%C3%A0+N%E1%BB%99i',
           notes: 'Phở bò tái nạm gia truyền nức tiếng phố cổ, nên ghé sớm xếp hàng',
           votes: 6
         },
@@ -1092,6 +1180,14 @@
           cost: 45000,
           author: 'Huy',
           location: '39 Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội',
+          address: '39 Nguyễn Hữu Huân, Hàng Bạc, Hoàn Kiếm, Hà Nội',
+          phone: '+84 917 002 299',
+          rating: '4.6 ★',
+          reviews: '6.800+ đánh giá',
+          imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&auto=format&fit=crop&q=80',
+          mapPlace: 'Cà Phê Trứng Giảng',
+          mapCoords: '21.0336,105.8544',
+          mapUrl: 'https://www.google.com/maps/search/?api=1&query=C%C3%A0+Ph%C3%AA+Tr%E1%BB%A9ng+Gi%E1%BA%A3ng+39+Nguy%E1%BB%85n+H%E1%BB%AFu+Hu%C3%A2n+H%C3%A0+N%E1%BB%99i',
           notes: 'Thưởng thức cà phê trứng nóng hổi nguyên bản từ năm 1946',
           votes: 5
         }
@@ -1341,10 +1437,15 @@
             eventsListHtml = events.map(item => {
               const hasVoted = userVotedMap[item.id];
               
-              // Smart Query & Display Name calculation:
-              const placeDisplayName = item.mapPlace || (item.location && !item.location.startsWith('http') ? item.location : item.title);
-              const mapQuery = item.mapCoords || item.mapPlace || (item.location && !item.location.startsWith('http') ? item.location : `${item.title}, Hà Nội`);
-              const mapsDirectUrl = item.mapUrl || (item.location && item.location.startsWith('http') ? item.location : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`);
+              // Clean links & place names so place A NEVER points to place B
+              const cleanMapUrl = (item.mapUrl && !item.mapUrl.includes('TRUMP')) ? item.mapUrl : '';
+              const queryName = (item.mapPlace && !item.mapPlace.includes('TRUMP')) ? item.mapPlace : item.title;
+              const mapsDirectUrl = cleanMapUrl || (item.location && item.location.startsWith('http') ? item.location : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(queryName + (item.address ? ' ' + item.address : ', Hà Nội'))}`);
+              const mapEmbedQuery = queryName + (item.address ? ' ' + item.address : ', Hà Nội');
+
+              // Popup placement: top rows open downward (top-full mt-2), bottom-most row opens upward (bottom-full mb-2)
+              const popupPlacement = (index >= timeSlots.length - 1) ? 'bottom-full mb-2 left-0' : 'top-full mt-2 left-0';
+              const displayImg = item.imageUrl || (item.mapCoords ? `https://maps.google.com/maps/api/staticmap?center=${item.mapCoords}&zoom=17&size=600x350&language=vi` : 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80');
 
               return `
                 <div class="p-3 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-2 mb-2 relative">
@@ -1365,15 +1466,13 @@
                     </a>
 
                     <!-- Hover Live Map Popup (Mở hướng xuống top-full mt-2 KHÔNG BAO GIỜ BỊ KHUẤT) -->
-                    <div class="absolute left-0 top-full mt-2 hidden group-hover/map:block z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 pointer-events-auto transition text-left">
+                    <div class="absolute ${popupPlacement} hidden group-hover/map:block z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 pointer-events-auto transition text-left">
                       
-                      ${item.imageUrl ? `
-                        <!-- Ảnh quán / món ăn từ Google Maps -->
-                        <div class="w-full h-32 rounded-xl overflow-hidden mb-2.5 relative border border-slate-200 bg-slate-100">
-                          <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover" />
-                          <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh món / địa điểm</span>
-                        </div>
-                      ` : ''}
+                      <!-- Ảnh quán / món ăn từ Google Maps -->
+                      <div class="w-full h-32 rounded-xl overflow-hidden mb-2.5 relative border border-slate-200 bg-slate-100">
+                        <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover" />
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh Google Maps</span>
+                      </div>
 
                       <!-- Header tên quán & badge -->
                       <div class="flex items-start justify-between gap-1.5 pb-2 mb-2 border-b border-slate-100">
@@ -1393,7 +1492,7 @@
                         <span class="text-slate-300">•</span>
                         <span class="text-slate-700 text-[11px] font-semibold">${item.reviews || '(8 đánh giá)'}</span>
                         <span class="text-slate-300">•</span>
-                        <span class="text-slate-600 text-[10px] uppercase font-bold">Ẩm thực</span>
+                        <span class="text-slate-600 text-[10px] uppercase font-bold">Ẩm thực / Địa điểm</span>
                       </div>
 
                       <!-- Địa chỉ chi tiết & Số điện thoại & Bình luận dặn dò -->
@@ -1402,12 +1501,10 @@
                           <span class="text-slate-400 shrink-0 mt-0.5">📍</span>
                           <span class="break-words">${item.address || item.location || 'Địa chỉ đang cập nhật'}</span>
                         </div>
-                        ${item.phone ? `
-                          <div class="flex items-center gap-1.5 text-slate-700 font-semibold">
-                            <span class="text-slate-400 shrink-0">📞</span>
-                            <a href="tel:${item.phone}" class="text-[#dc2626] hover:underline font-mono font-bold">${item.phone}</a>
-                          </div>
-                        ` : ''}
+                        <div class="flex items-center gap-1.5 text-slate-700 font-semibold">
+                          <span class="text-slate-400 shrink-0">📞</span>
+                          ${item.phone ? `<a href="tel:${item.phone}" class="text-[#dc2626] hover:underline font-mono font-bold">${item.phone}</a>` : `<span class="text-slate-400 font-medium">Chưa cập nhật SĐT</span>`}
+                        </div>
                         ${item.notes ? `
                           <div class="flex items-start gap-1.5 text-slate-700 font-medium bg-slate-50 p-2 rounded-lg border border-slate-200">
                             <span class="text-amber-500 shrink-0">💬</span>
@@ -1417,8 +1514,8 @@
                       </div>
 
                       <!-- Bản đồ vệ tinh / đường đi tương tác Google Maps -->
-                      <div class="w-full h-32 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 mb-2.5">
-                        <iframe class="w-full h-full border-0" loading="lazy" src="https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s${encodeURIComponent(mapQuery)}"></iframe>
+                      <div class="w-full h-28 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 mb-2.5">
+                        <iframe class="w-full h-full border-0" loading="lazy" src="https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s${encodeURIComponent(mapEmbedQuery)}"></iframe>
                       </div>
 
                       <!-- Nút mở Google Maps & Chỉ đường -->
@@ -1564,6 +1661,40 @@
        ========================================================================= */
     let mapLookupTimer = null;
 
+    function handleImageFileUpload(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('event-img-data').value = e.target.result;
+          const imgWrap = document.getElementById('card-fetched-img-wrap');
+          const imgEl = document.getElementById('card-fetched-img');
+          if (imgWrap && imgEl) {
+            imgEl.src = e.target.result;
+            imgWrap.classList.remove('hidden');
+          }
+          const card = document.getElementById('map-fetched-card');
+          if (card) card.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleImageUrlInput(val) {
+      const trimmed = val.trim();
+      document.getElementById('event-img-url').value = trimmed;
+      if (trimmed) {
+        const imgWrap = document.getElementById('card-fetched-img-wrap');
+        const imgEl = document.getElementById('card-fetched-img');
+        if (imgWrap && imgEl) {
+          imgEl.src = trimmed;
+          imgWrap.classList.remove('hidden');
+        }
+        const card = document.getElementById('map-fetched-card');
+        if (card) card.classList.remove('hidden');
+      }
+    }
+
     async function handleLocationInput(val) {
       clearTimeout(mapLookupTimer);
       const trimmed = val.trim();
@@ -1573,7 +1704,7 @@
 
       if (!trimmed) {
         if (spinner) spinner.classList.add('hidden');
-        if (status) status.textContent = 'Dán link tự động lấy quán & địa chỉ';
+        if (status) status.textContent = 'Dán link tự động nhận diện toàn bộ';
         if (card) card.classList.add('hidden');
         return;
       }
@@ -1591,6 +1722,10 @@
             let coords = '';
             let address = '';
             let phone = '';
+            let rating = '4.9 ★';
+            let reviews = '8 đánh giá';
+            let imageUrl = '';
+            let category = 'Địa điểm';
             let finalUrl = trimmed;
 
             const res = await fetch('/api/unshorten?url=' + encodeURIComponent(trimmed));
@@ -1600,6 +1735,10 @@
               if (data.coords) coords = data.coords;
               if (data.address) address = data.address;
               if (data.phone) phone = data.phone;
+              if (data.rating) rating = data.rating;
+              if (data.reviews) reviews = data.reviews;
+              if (data.imageUrl) imageUrl = data.imageUrl;
+              if (data.category) category = data.category;
               if (data.finalUrl) finalUrl = data.finalUrl;
             } else {
               const placeMatch = trimmed.match(/\/place\/([^\/@?#]+)/);
@@ -1618,18 +1757,30 @@
               document.getElementById('event-map-place').value = placeName;
               document.getElementById('event-map-coords').value = coords || '';
               document.getElementById('event-map-url').value = finalUrl || trimmed;
-              document.getElementById('event-address').value = address || 'Địa chỉ theo vị trí Google Maps';
-              document.getElementById('event-rating').value = '4.9 ★';
-              document.getElementById('event-reviews').value = '8 đánh giá';
+              document.getElementById('event-address').value = address || placeName;
+              document.getElementById('event-rating').value = rating || '4.9 ★';
+              document.getElementById('event-reviews').value = reviews || '8 đánh giá';
               document.getElementById('event-phone').value = phone || '';
+              if (imageUrl) {
+                document.getElementById('event-img-url').value = imageUrl;
+              }
 
               // Update the visible information card
               if (card) {
                 document.getElementById('card-fetched-name').textContent = placeName;
-                document.getElementById('card-fetched-rating').textContent = '4.9';
-                document.getElementById('card-fetched-reviews').textContent = '(8 đánh giá)';
-                document.getElementById('card-fetched-address').textContent = address || 'Tọa độ: ' + coords;
-                document.getElementById('card-fetched-phone').textContent = phone ? phone : 'Liên hệ trực tiếp tại quán';
+                document.getElementById('card-fetched-rating').textContent = rating ? rating.replace('★','').trim() : '4.9';
+                document.getElementById('card-fetched-reviews').textContent = reviews ? '(' + reviews + ')' : '(8 đánh giá)';
+                document.getElementById('card-fetched-address').textContent = address || (coords ? 'Tọa độ: ' + coords : 'Vị trí theo Google Maps');
+                document.getElementById('card-fetched-phone').textContent = phone ? phone : 'Chưa cập nhật SĐT trên Maps';
+                const catEl = document.getElementById('card-fetched-category');
+                if (catEl) catEl.textContent = category || 'Địa điểm';
+
+                const imgWrap = document.getElementById('card-fetched-img-wrap');
+                const imgEl = document.getElementById('card-fetched-img');
+                if (imgWrap && imgEl && imageUrl) {
+                  imgEl.src = imageUrl;
+                  imgWrap.classList.remove('hidden');
+                }
                 card.classList.remove('hidden');
               }
 
@@ -1661,31 +1812,31 @@
       if (day) document.getElementById('event-day').value = day;
       if (slotId) document.getElementById('event-slot-id').value = slotId;
       document.getElementById('event-title').value = '';
-      const previewCard = document.getElementById('map-fetched-card');
-      if (previewCard) previewCard.classList.add('hidden');
       document.getElementById('event-cost').value = '';
-      document.getElementById('event-title').value = '';
       document.getElementById('event-location').value = '';
       document.getElementById('event-address').value = '';
-      document.getElementById('event-rating').value = '';
-      document.getElementById('event-reviews').value = '';
+      document.getElementById('event-rating').value = '4.9 ★';
+      document.getElementById('event-reviews').value = '8 đánh giá';
       document.getElementById('event-phone').value = '';
       document.getElementById('event-map-place').value = '';
       document.getElementById('event-map-coords').value = '';
       document.getElementById('event-map-url').value = '';
-      const statusLbl = document.getElementById('map-lookup-status');
-      if (statusLbl) statusLbl.textContent = 'Dán link tự điền toàn bộ thông tin';
+      document.getElementById('event-img-url').value = '';
+      document.getElementById('event-img-data').value = '';
       document.getElementById('event-notes').value = '';
-      document.getElementById('btn-delete-event').classList.add('hidden');
-      const previewCardEdit = document.getElementById('map-fetched-card');
-      if (previewCardEdit && (item.address || item.location)) {
-        document.getElementById('card-fetched-name').textContent = item.title;
-        document.getElementById('card-fetched-rating').textContent = item.rating ? item.rating.replace('★','').trim() : '4.9';
-        document.getElementById('card-fetched-reviews').textContent = item.reviews ? '(' + item.reviews + ')' : '(8 đánh giá)';
-        document.getElementById('card-fetched-address').textContent = item.address || item.location;
-        document.getElementById('card-fetched-phone').textContent = item.phone || 'Liên hệ trực tiếp tại quán';
-        previewCardEdit.classList.remove('hidden');
+      
+      const statusLbl = document.getElementById('map-lookup-status');
+      if (statusLbl) {
+        statusLbl.textContent = 'Dán link tự động nhận diện toàn bộ';
+        statusLbl.className = 'text-[10px] text-emerald-600 font-bold';
       }
+      
+      const previewCard = document.getElementById('map-fetched-card');
+      if (previewCard) previewCard.classList.add('hidden');
+      const imgWrap = document.getElementById('card-fetched-img-wrap');
+      if (imgWrap) imgWrap.classList.add('hidden');
+
+      document.getElementById('btn-delete-event').classList.add('hidden');
       document.getElementById('proposal-modal').classList.remove('hidden');
     }
 
@@ -1702,18 +1853,41 @@
       document.getElementById('event-author').value = item.author || 'Cường';
       document.getElementById('event-location').value = item.location || '';
       document.getElementById('event-address').value = item.address || '';
-      document.getElementById('event-rating').value = item.rating || '';
-      document.getElementById('event-reviews').value = item.reviews || '';
+      document.getElementById('event-rating').value = item.rating || '4.9 ★';
+      document.getElementById('event-reviews').value = item.reviews || '8 đánh giá';
       document.getElementById('event-phone').value = item.phone || '';
       document.getElementById('event-map-place').value = item.mapPlace || item.title || '';
       document.getElementById('event-map-coords').value = item.mapCoords || '';
       document.getElementById('event-map-url').value = item.mapUrl || '';
+      document.getElementById('event-img-url').value = item.imageUrl || '';
+      document.getElementById('event-img-data').value = '';
+      document.getElementById('event-notes').value = item.notes || '';
+
       const statusLblEdit = document.getElementById('map-lookup-status');
       if (statusLblEdit && (item.mapPlace || item.title)) {
         statusLblEdit.textContent = '✓ Đã nhận diện: ' + (item.mapPlace || item.title);
         statusLblEdit.className = 'text-[10px] text-emerald-600 font-bold';
       }
-      document.getElementById('event-notes').value = item.notes || '';
+
+      const previewCardEdit = document.getElementById('map-fetched-card');
+      if (previewCardEdit) {
+        document.getElementById('card-fetched-name').textContent = item.title;
+        document.getElementById('card-fetched-rating').textContent = item.rating ? item.rating.replace('★','').trim() : '4.9';
+        document.getElementById('card-fetched-reviews').textContent = item.reviews ? '(' + item.reviews + ')' : '(8 đánh giá)';
+        document.getElementById('card-fetched-address').textContent = item.address || item.location || 'Địa chỉ đang cập nhật';
+        document.getElementById('card-fetched-phone').textContent = item.phone ? item.phone : 'Chưa cập nhật SĐT trên Maps';
+        
+        const imgWrap = document.getElementById('card-fetched-img-wrap');
+        const imgEl = document.getElementById('card-fetched-img');
+        if (imgWrap && imgEl && item.imageUrl) {
+          imgEl.src = item.imageUrl;
+          imgWrap.classList.remove('hidden');
+        } else if (imgWrap) {
+          imgWrap.classList.add('hidden');
+        }
+        previewCardEdit.classList.remove('hidden');
+      }
+
       document.getElementById('btn-delete-event').classList.remove('hidden');
       document.getElementById('proposal-modal').classList.remove('hidden');
     }
@@ -1746,7 +1920,16 @@
         const mapUrl = document.getElementById('event-map-url') ? document.getElementById('event-map-url').value.trim() : '';
         const imgData = document.getElementById('event-img-data') ? document.getElementById('event-img-data').value.trim() : '';
         const imgUrl = document.getElementById('event-img-url') ? document.getElementById('event-img-url').value.trim() : '';
-        const imageUrl = imgData || imgUrl;
+        let imageUrl = imgData || imgUrl;
+
+        // Auto fallback to Google Maps photo or static preview if no user image
+        if (!imageUrl) {
+          if (mapCoords) {
+            imageUrl = `https://maps.google.com/maps/api/staticmap?center=${mapCoords}&zoom=17&size=600x350&language=vi`;
+          } else {
+            imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
+          }
+        }
         
         const costInput = document.getElementById('event-cost');
         const cost = costInput ? (parseInt(costInput.value) || 0) : 0;
@@ -1767,14 +1950,14 @@
               slotId,
               time: slotTime,
               title,
-              location,
-              address: address || location,
+              location: location || address,
+              address: address || location || title,
               rating: rating || '4.9 ★',
               reviews: reviews || '8 đánh giá',
               phone,
               mapPlace: title,
               mapCoords,
-              mapUrl,
+              mapUrl: mapUrl || location,
               imageUrl,
               cost,
               author,
@@ -1789,14 +1972,14 @@
             slotId,
             time: slotTime,
             title,
-            location,
-            address: address || location,
+            location: location || address,
+            address: address || location || title,
             rating: rating || '4.9 ★',
             reviews: reviews || '8 đánh giá',
             phone,
             mapPlace: title,
             mapCoords,
-            mapUrl,
+            mapUrl: mapUrl || location,
             imageUrl,
             cost,
             author,
@@ -1812,10 +1995,8 @@
         closeProposalModal();
         renderAll();
       } catch (err) {
-        console.error('Save proposal error:', err);
-        showToast('Đã lưu thành công!');
-        closeProposalModal();
-        renderAll();
+        console.error('Save error:', err);
+        showToast('Lỗi khi lưu kèo: ' + err.message);
       }
     }
 
