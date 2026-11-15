@@ -414,6 +414,9 @@
           </div>
 
           <div class="flex items-center gap-2 self-start md:self-auto shrink-0 flex-wrap">
+            <button onclick="confirmResetAllData()" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition border border-transparent hover:border-red-200" title="Xóa toàn bộ kèo để bắt đầu lại từ đầu">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
             <button onclick="openTimeSlotModal()" class="btn-outline-red px-3.5 py-2 text-xs flex items-center gap-1.5 shadow-xs">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               <span>+ Thêm Khung Giờ Mới</span>
@@ -760,49 +763,87 @@
           </div>
         </div>
 
-        <!-- BẢNG THÔNG TIN CHECK TỰ ĐỘNG HIỆN RA KHI DÁN LINK (KIỂM TRA TRƯỚC KHI LƯU) -->
-        <div id="map-fetched-card" class="hidden rounded-2xl border-2 border-emerald-300 bg-emerald-50/70 p-3.5 space-y-2.5 shadow-sm">
-          <div class="flex items-center justify-between pb-1.5 border-b border-emerald-200">
-            <span class="text-[11px] font-extrabold text-emerald-800 flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              BẢNG THÔNG TIN GOOGLE MAPS
-            </span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-600 text-white shadow-2xs">✓ Đã nhận diện</span>
-          </div>
-
-          <!-- Ảnh quán từ Google Maps -->
-          <div id="card-fetched-img-wrap" class="hidden w-full h-40 rounded-xl overflow-hidden relative border border-emerald-200 bg-slate-100 shadow-2xs">
+        <!-- BẢNG THÔNG TIN CHECK TỰ ĐỘNG HIỆN RA KHI DÁN LINK (GIỐNG GOOGLE MAPS 100%) -->
+        <div id="map-fetched-card" class="hidden rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-lg space-y-0 transition-all">
+          
+          <!-- 1. Hero Cover Image (Ảnh gốc quán chụp mặt tiền / biển hiệu trên Google Maps) -->
+          <div id="card-fetched-img-wrap" class="w-full h-44 relative bg-slate-900 overflow-hidden">
             <img id="card-fetched-img" src="" alt="Ảnh Google Maps" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
-            <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/70 text-white backdrop-blur-xs">Ảnh quán từ Google Maps</span>
-          </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent"></div>
+            
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-[#1a73e8] text-white shadow-md flex items-center gap-1 backdrop-blur-xs">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Google Maps
+            </span>
 
-          <!-- Tên quán + Đánh giá + Review + Category -->
-          <div>
-            <h4 id="card-fetched-name" class="text-sm font-baloo font-extrabold text-slate-900 leading-tight">Tên Quán</h4>
-            <div class="flex items-center gap-2 text-xs font-bold text-amber-600 mt-1 flex-wrap">
-              <div class="flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-amber-200 shadow-2xs">
-                <span class="text-amber-500 text-sm">★</span>
-                <span id="card-fetched-rating" class="text-slate-900 font-extrabold">4.9</span>
+            <span id="card-fetched-open-pill" class="hidden absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/60 text-emerald-400 border border-emerald-400/40 backdrop-blur-xs">
+              Mở cửa
+            </span>
+
+            <div class="absolute bottom-2.5 left-3 right-3 text-white">
+              <h4 id="card-fetched-name" class="text-base font-baloo font-extrabold leading-snug drop-shadow-md">Tên Quán</h4>
+              <div class="flex items-center gap-1.5 text-xs font-semibold text-white/90 drop-shadow flex-wrap mt-0.5">
+                <span id="card-fetched-rating" class="font-bold text-amber-300">4.2 ★</span>
+                <span id="card-fetched-reviews" class="text-white/80">(368)</span>
+                <span class="text-white/40">•</span>
+                <span id="card-fetched-category" class="text-white/90 font-medium">Nhà hàng</span>
+                <span id="card-fetched-price-bullet" class="text-white/40 hidden">•</span>
+                <span id="card-fetched-price" class="text-amber-200 font-bold hidden">100-200 N đ</span>
               </div>
-              <span class="text-slate-300">•</span>
-              <span id="card-fetched-reviews" class="text-slate-700 font-semibold">(8 đánh giá)</span>
-              <span class="text-slate-300">•</span>
-              <span id="card-fetched-category" class="text-emerald-700 text-[10px] uppercase font-extrabold bg-emerald-100/80 px-1.5 py-0.5 rounded">Địa điểm</span>
             </div>
           </div>
 
-          <!-- Địa chỉ & Số điện thoại chi tiết -->
-          <div class="text-[11px] space-y-1.5 text-slate-800 bg-white p-2.5 rounded-xl border border-emerald-200/80">
-            <div class="flex items-start gap-1.5">
-              <span class="text-slate-400 shrink-0 mt-0.5">📍</span>
-              <span id="card-fetched-address" class="font-semibold break-words leading-tight">Địa chỉ chi tiết</span>
+          <!-- 2. Action buttons (Đường đi, Gọi điện, Website) -->
+          <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
+            <a id="card-fetched-dir-btn" href="#" target="_blank" rel="noopener" class="flex-1 py-1.5 px-2 bg-[#1a73e8] hover:bg-blue-700 text-white rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 transition shadow-xs">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.71 11.29l-9-9a.996.996 0 0 0-1.41 0l-9 9a.996.996 0 0 0 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9a.996.996 0 0 0 0-1.41zm-8.71 6.3V14h-4v-4h4V6.41L18.59 12 13 17.59z"/></svg>
+              <span>Đường đi</span>
+            </a>
+            <a id="card-fetched-call-btn" href="#" class="flex-1 py-1.5 px-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 transition shadow-2xs">
+              <span>📞</span>
+              <span id="card-fetched-call-label">Gọi điện</span>
+            </a>
+            <a id="card-fetched-web-btn" href="#" target="_blank" rel="noopener" class="hidden py-1.5 px-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 transition shadow-2xs" title="Website chính thức">
+              <span>🌐</span>
+              <span>Web</span>
+            </a>
+          </div>
+
+          <!-- 3. Details list (Địa chỉ, Trạng thái, Hotline, Website, Plus Code) -->
+          <div class="p-3.5 space-y-2 text-xs text-slate-700 bg-white">
+            <div class="flex items-start gap-2.5">
+              <span class="text-slate-400 shrink-0 text-sm">📍</span>
+              <span id="card-fetched-address" class="font-medium text-slate-800 leading-relaxed">Địa chỉ chi tiết</span>
             </div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-slate-400 shrink-0">📞</span>
-              <span id="card-fetched-phone" class="font-mono font-bold text-[#dc2626]">Chưa cập nhật SĐT trên Maps</span>
+
+            <div id="card-fetched-hours-row" class="flex items-center gap-2.5 hidden">
+              <span class="text-slate-400 shrink-0 text-sm">🕒</span>
+              <span id="card-fetched-hours" class="font-medium text-slate-700">Mở cửa lúc 8:00</span>
+            </div>
+
+            <div id="card-fetched-phone-row" class="flex items-center gap-2.5">
+              <span class="text-slate-400 shrink-0 text-sm">📞</span>
+              <a id="card-fetched-phone" href="tel:" class="font-mono font-bold text-[#dc2626] hover:underline">Chưa cập nhật SĐT trên Maps</a>
+            </div>
+
+            <div id="card-fetched-web-row" class="flex items-center gap-2.5 hidden">
+              <span class="text-slate-400 shrink-0 text-sm">🌐</span>
+              <a id="card-fetched-website" href="#" target="_blank" rel="noopener" class="text-blue-600 hover:underline truncate font-medium">Website</a>
+            </div>
+
+            <div id="card-fetched-plus-row" class="flex items-center gap-2.5 text-[11px] text-slate-500 hidden">
+              <span class="text-slate-400 shrink-0 text-sm">❖</span>
+              <span id="card-fetched-pluscode" class="font-mono">Plus Code</span>
             </div>
           </div>
-          <p class="text-[10px] text-slate-500 italic">Kiểm tra thông tin trên trước khi lưu. Nếu không set ảnh riêng, hệ thống tự động dùng ảnh Google Maps phía trên.</p>
+
+          <div class="px-3.5 py-2 bg-emerald-50/70 border-t border-emerald-100 flex items-center justify-between text-[11px]">
+            <span class="text-emerald-800 font-bold flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Đã nhận diện đủ thông tin
+            </span>
+            <span class="text-emerald-700 font-semibold italic">Nhấn "Lưu Kèo" để thêm vào bảng</span>
+          </div>
         </div>
 
         <!-- Tên Địa Điểm / Hoạt Động (Tự động điền theo quán) -->
@@ -816,6 +857,11 @@
         <input type="hidden" id="event-rating" value="4.9 ★" />
         <input type="hidden" id="event-reviews" value="8 đánh giá" />
         <input type="hidden" id="event-phone" value="" />
+        <input type="hidden" id="event-category" value="" />
+        <input type="hidden" id="event-open-status" value="" />
+        <input type="hidden" id="event-price-range" value="" />
+        <input type="hidden" id="event-website" value="" />
+        <input type="hidden" id="event-plus-code" value="" />
         <input type="hidden" id="event-map-place" value="" />
         <input type="hidden" id="event-map-coords" value="" />
         <input type="hidden" id="event-map-url" value="" />
@@ -1036,7 +1082,7 @@
 
   <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
-    const STORAGE_KEY = 'sugoi_hn_v15_maps_thickfont';
+    const STORAGE_KEY = 'sugoi_hn_v25_fresh_clean';
 
     const INITIAL_SLOTS = [
       { id: 'slot-1', time: '07:00 - 09:00', label: 'Sáng sớm (Phở & Cà phê)' },
@@ -1072,7 +1118,13 @@
         try {
           const data = JSON.parse(saved);
           timeSlots = (data.timeSlots && data.timeSlots.length > 0) ? data.timeSlots : INITIAL_SLOTS;
-          scheduleEvents = data.scheduleEvents || [];
+          // Loại bỏ hoàn toàn các kèo seed mẫu
+          scheduleEvents = (data.scheduleEvents || []).filter(ev => 
+            ev.id !== 'ev-pho-bat-dan' && 
+            ev.id !== 'ev-cafe-giang' && 
+            !ev.title.includes('Bát Đàn') && 
+            !ev.title.includes('Trứng Giảng')
+          );
           baseExpenses = (data.baseExpenses && data.baseExpenses.length > 0) ? data.baseExpenses : [
             {
               id: 'exp-flight-booked',
@@ -1081,7 +1133,7 @@
               amount: 1850000
             }
           ];
-          commentsList = data.commentsList || [];
+          commentsList = (data.commentsList || []).filter(c => c.id !== 'cmt-init-1');
           checklistItems = (data.checklistItems && data.checklistItems.length > 0) ? data.checklistItems : DEFAULT_CHECKLIST;
           checklistChecked = data.checklistChecked || {};
           userVotedMap = data.userVotedMap || {};
@@ -1119,9 +1171,9 @@
               ev.mapUrl = 'https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%9F+B%C3%A1t+%C4%90%C3%A0n+49+B%C3%A1t+%C4%90%C3%A0n+H%C3%A0+N%E1%BB%99i';
               if (!ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80';
             }
-            // Đảm bảo ảnh hiển thị đẹp cho mọi địa điểm
-            if (!ev.imageUrl && ev.mapCoords) {
-              ev.imageUrl = `https://maps.google.com/maps/api/staticmap?center=${ev.mapCoords}&zoom=17&size=600x350&language=vi`;
+            // Đảm bảo ảnh hiển thị đẹp cho mọi địa điểm và loại bỏ hoàn toàn staticmap
+            if (ev.imageUrl && ev.imageUrl.includes('staticmap')) {
+              ev.imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
             }
             if (!ev.imageUrl) {
               ev.imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
@@ -1133,50 +1185,9 @@
         }
       }
 
-      // Default State
+      // Default State: Khởi tạo hoàn toàn sạch, KHÔNG chứa dữ liệu seed mẫu
       timeSlots = INITIAL_SLOTS;
-      scheduleEvents = [
-        {
-          id: 'ev-pho-bat-dan',
-          day: '22',
-          slotId: 'slot-1',
-          time: '07:00 - 09:00',
-          title: 'Phở Bát Đàn',
-          cost: 75000,
-          author: 'Cường',
-          location: '49 Bát Đàn, Hoàn Kiếm, Hà Nội',
-          address: '49 Bát Đàn, Cửa Đông, Hoàn Kiếm, Hà Nội',
-          phone: '+84 24 3824 3825',
-          rating: '4.4 ★',
-          reviews: '4.200+ đánh giá',
-          imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop&q=80',
-          mapPlace: 'Phở Bát Đàn',
-          mapCoords: '21.0345,105.8475',
-          mapUrl: 'https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%9F+B%C3%A1t+%C4%90%C3%A0n+49+B%C3%A1t+%C4%90%C3%A0n+H%C3%A0+N%E1%BB%99i',
-          notes: 'Phở bò tái nạm gia truyền nức tiếng phố cổ, nên ghé sớm xếp hàng',
-          votes: 6
-        },
-        {
-          id: 'ev-cafe-giang',
-          day: '22',
-          slotId: 'slot-2',
-          time: '09:30 - 12:00',
-          title: 'Cà Phê Trứng Giảng',
-          cost: 45000,
-          author: 'Huy',
-          location: '39 Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội',
-          address: '39 Nguyễn Hữu Huân, Hàng Bạc, Hoàn Kiếm, Hà Nội',
-          phone: '+84 917 002 299',
-          rating: '4.6 ★',
-          reviews: '6.800+ đánh giá',
-          imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&auto=format&fit=crop&q=80',
-          mapPlace: 'Cà Phê Trứng Giảng',
-          mapCoords: '21.0336,105.8544',
-          mapUrl: 'https://www.google.com/maps/search/?api=1&query=C%C3%A0+Ph%C3%AA+Tr%E1%BB%A9ng+Gi%E1%BA%A3ng+39+Nguy%E1%BB%85n+H%E1%BB%AFu+Hu%C3%A2n+H%C3%A0+N%E1%BB%99i',
-          notes: 'Thưởng thức cà phê trứng nóng hổi nguyên bản từ năm 1946',
-          votes: 5
-        }
-      ];
+      scheduleEvents = [];
       baseExpenses = [
         {
           id: 'exp-flight-booked',
@@ -1185,19 +1196,21 @@
           amount: 1850000
         }
       ];
-      commentsList = [
-        {
-          id: 'cmt-init-1',
-          name: 'Cường',
-          tag: 'nhắc nhở',
-          content: 'Sáng Chủ Nhật 22/11 đáp xong anh em ghé làm bát Phở Bát Đàn nhé!',
-          time: 'Vừa xong'
-        }
-      ];
+      commentsList = [];
       checklistItems = DEFAULT_CHECKLIST;
       checklistChecked = {};
-      userVotedMap = { 'ev-pho-bat-dan': true, 'ev-cafe-giang': true };
+      userVotedMap = {};
       saveState();
+    }
+
+    function confirmResetAllData() {
+      if (confirm('Bạn có chắc muốn xóa toàn bộ các kèo đã thêm trong lịch trình để tạo mới từ đầu không?')) {
+        scheduleEvents = [];
+        userVotedMap = {};
+        saveState();
+        renderAll();
+        showToast('Đã dọn sạch toàn bộ kèo!');
+      }
     }
 
     function saveState() {
@@ -1430,17 +1443,20 @@
 
               // Popup placement: top rows open downward (top-full mt-2), bottom-most row opens upward (bottom-full mb-2)
               const popupPlacement = (index >= timeSlots.length - 1) ? 'bottom-full mb-2 left-0' : 'top-full mt-2 left-0';
-              const displayImg = item.imageUrl || (item.mapCoords ? `https://maps.google.com/maps/api/staticmap?center=${item.mapCoords}&zoom=17&size=600x350&language=vi` : 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80');
+              const displayImg = item.imageUrl || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
 
               return `
                 <div class="p-3 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-2 mb-2 relative">
                   <!-- Ảnh trực tiếp trên thẻ kèo lịch trình (Theo yêu cầu: tôi cần cả hình ở đây) -->
-                  ${displayImg ? `
-                    <div class="w-full h-24 rounded-lg overflow-hidden border border-slate-100 bg-slate-50 relative group/cardimg mb-1.5 shadow-2xs">
-                      <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover/cardimg:scale-105" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
-                      <span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[8px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh quán</span>
-                    </div>
-                  ` : ''}
+                  <div class="w-full h-28 rounded-lg overflow-hidden border border-slate-200 bg-slate-100 relative group/cardimg mb-1.5 shadow-2xs">
+                    <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover/cardimg:scale-105" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
+                    <span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[8px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh quán</span>
+                    ${item.rating ? `
+                      <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-black/60 text-amber-300 backdrop-blur-xs flex items-center gap-0.5">
+                        ★ ${item.rating.replace('★', '').trim()}
+                      </span>
+                    ` : ''}
+                  </div>
 
                   <div class="flex items-start justify-between gap-1.5">
                     <span class="text-xs font-bold text-slate-900 leading-tight">${item.title}</span>
@@ -1719,6 +1735,10 @@
             let reviews = '8 đánh giá';
             let imageUrl = '';
             let category = 'Địa điểm';
+            let openStatus = '';
+            let priceRange = '';
+            let website = '';
+            let plusCode = '';
             let finalUrl = trimmed;
 
             const res = await fetch('/api/unshorten?url=' + encodeURIComponent(trimmed));
@@ -1732,6 +1752,10 @@
               if (data.reviews) reviews = data.reviews;
               if (data.imageUrl) imageUrl = data.imageUrl;
               if (data.category) category = data.category;
+              if (data.openStatus) openStatus = data.openStatus;
+              if (data.priceRange) priceRange = data.priceRange;
+              if (data.website) website = data.website;
+              if (data.plusCode) plusCode = data.plusCode;
               if (data.finalUrl) finalUrl = data.finalUrl;
             } else {
               const placeMatch = trimmed.match(/\/place\/([^\/@?#]+)/);
@@ -1754,26 +1778,102 @@
               document.getElementById('event-rating').value = rating || '4.9 ★';
               document.getElementById('event-reviews').value = reviews || '8 đánh giá';
               document.getElementById('event-phone').value = phone || '';
+              document.getElementById('event-category').value = category || 'Địa điểm';
+              document.getElementById('event-open-status').value = openStatus || '';
+              document.getElementById('event-price-range').value = priceRange || '';
+              document.getElementById('event-website').value = website || '';
+              document.getElementById('event-plus-code').value = plusCode || '';
               if (imageUrl) {
                 document.getElementById('event-img-url').value = imageUrl;
               }
 
-              // Update the visible information card
+              // Update the visible information card (100% Google Maps style)
               if (card) {
                 document.getElementById('card-fetched-name').textContent = placeName;
-                document.getElementById('card-fetched-rating').textContent = rating ? rating.replace('★','').trim() : '4.9';
-                document.getElementById('card-fetched-reviews').textContent = reviews ? '(' + reviews + ')' : '(8 đánh giá)';
+                document.getElementById('card-fetched-rating').textContent = rating || '4.9 ★';
+                document.getElementById('card-fetched-reviews').textContent = reviews ? '(' + reviews + ')' : '';
                 document.getElementById('card-fetched-address').textContent = address || (coords ? 'Tọa độ: ' + coords : 'Vị trí theo Google Maps');
-                document.getElementById('card-fetched-phone').textContent = phone ? phone : 'Chưa cập nhật SĐT trên Maps';
+                
                 const catEl = document.getElementById('card-fetched-category');
                 if (catEl) catEl.textContent = category || 'Địa điểm';
 
+                // Khoảng giá
+                const priceEl = document.getElementById('card-fetched-price');
+                const priceBullet = document.getElementById('card-fetched-price-bullet');
+                if (priceEl && priceRange) {
+                  priceEl.textContent = priceRange;
+                  priceEl.classList.remove('hidden');
+                  if (priceBullet) priceBullet.classList.remove('hidden');
+                } else if (priceEl) {
+                  priceEl.classList.add('hidden');
+                  if (priceBullet) priceBullet.classList.add('hidden');
+                }
+
+                // Trạng thái mở cửa
+                const openPill = document.getElementById('card-fetched-open-pill');
+                if (openPill && openStatus) {
+                  openPill.textContent = openStatus.split('·')[0].trim();
+                  openPill.classList.remove('hidden');
+                } else if (openPill) {
+                  openPill.classList.add('hidden');
+                }
+
+                // Hàng giờ mở cửa
+                const hoursRow = document.getElementById('card-fetched-hours-row');
+                const hoursEl = document.getElementById('card-fetched-hours');
+                if (hoursRow && hoursEl && openStatus) {
+                  hoursEl.textContent = openStatus;
+                  hoursRow.classList.remove('hidden');
+                } else if (hoursRow) {
+                  hoursRow.classList.add('hidden');
+                }
+
+                // Số điện thoại
+                const phoneEl = document.getElementById('card-fetched-phone');
+                if (phoneEl) {
+                  phoneEl.textContent = phone ? phone : 'Chưa cập nhật SĐT trên Maps';
+                  phoneEl.href = phone ? 'tel:' + phone.replace(/[^0-9+]/g, '') : '#';
+                }
+
+                // Website
+                const webRow = document.getElementById('card-fetched-web-row');
+                const webLink = document.getElementById('card-fetched-website');
+                const webBtn = document.getElementById('card-fetched-web-btn');
+                if (website) {
+                  if (webRow) webRow.classList.remove('hidden');
+                  if (webLink) { webLink.textContent = website; webLink.href = website; }
+                  if (webBtn) { webBtn.href = website; webBtn.classList.remove('hidden'); }
+                } else {
+                  if (webRow) webRow.classList.add('hidden');
+                  if (webBtn) webBtn.classList.add('hidden');
+                }
+
+                // Plus code
+                const plusRow = document.getElementById('card-fetched-plus-row');
+                const plusEl = document.getElementById('card-fetched-pluscode');
+                if (plusRow && plusEl && plusCode) {
+                  plusEl.textContent = plusCode;
+                  plusRow.classList.remove('hidden');
+                } else if (plusRow) {
+                  plusRow.classList.add('hidden');
+                }
+
+                // Action buttons
+                const dirBtn = document.getElementById('card-fetched-dir-btn');
+                if (dirBtn) dirBtn.href = finalUrl || trimmed;
+                const callBtn = document.getElementById('card-fetched-call-btn');
+                if (callBtn) {
+                  callBtn.href = phone ? 'tel:' + phone.replace(/[^0-9+]/g, '') : '#';
+                }
+
+                // Cover Image
                 const imgWrap = document.getElementById('card-fetched-img-wrap');
                 const imgEl = document.getElementById('card-fetched-img');
                 if (imgWrap && imgEl && imageUrl) {
                   imgEl.src = imageUrl;
                   imgWrap.classList.remove('hidden');
                 }
+
                 card.classList.remove('hidden');
               }
 
@@ -1811,6 +1911,11 @@
       document.getElementById('event-rating').value = '4.9 ★';
       document.getElementById('event-reviews').value = '8 đánh giá';
       document.getElementById('event-phone').value = '';
+      document.getElementById('event-category').value = '';
+      document.getElementById('event-open-status').value = '';
+      document.getElementById('event-price-range').value = '';
+      document.getElementById('event-website').value = '';
+      document.getElementById('event-plus-code').value = '';
       document.getElementById('event-map-place').value = '';
       document.getElementById('event-map-coords').value = '';
       document.getElementById('event-map-url').value = '';
@@ -1849,6 +1954,11 @@
       document.getElementById('event-rating').value = item.rating || '4.9 ★';
       document.getElementById('event-reviews').value = item.reviews || '8 đánh giá';
       document.getElementById('event-phone').value = item.phone || '';
+      document.getElementById('event-category').value = item.category || '';
+      document.getElementById('event-open-status').value = item.openStatus || '';
+      document.getElementById('event-price-range').value = item.priceRange || '';
+      document.getElementById('event-website').value = item.website || '';
+      document.getElementById('event-plus-code').value = item.plusCode || '';
       document.getElementById('event-map-place').value = item.mapPlace || item.title || '';
       document.getElementById('event-map-coords').value = item.mapCoords || '';
       document.getElementById('event-map-url').value = item.mapUrl || '';
@@ -1868,11 +1978,75 @@
         document.getElementById('card-fetched-rating').textContent = item.rating ? item.rating.replace('★','').trim() : '4.9';
         document.getElementById('card-fetched-reviews').textContent = item.reviews ? '(' + item.reviews + ')' : '(8 đánh giá)';
         document.getElementById('card-fetched-address').textContent = item.address || item.location || 'Địa chỉ đang cập nhật';
-        document.getElementById('card-fetched-phone').textContent = item.phone ? item.phone : 'Chưa cập nhật SĐT trên Maps';
         
+        const catEl = document.getElementById('card-fetched-category');
+        if (catEl) catEl.textContent = item.category || 'Địa điểm';
+
+        const phoneEl = document.getElementById('card-fetched-phone');
+        if (phoneEl) {
+          phoneEl.textContent = item.phone ? item.phone : 'Chưa cập nhật SĐT trên Maps';
+          phoneEl.href = item.phone ? 'tel:' + item.phone.replace(/[^0-9+]/g, '') : '#';
+        }
+
+        const priceEl = document.getElementById('card-fetched-price');
+        const priceBullet = document.getElementById('card-fetched-price-bullet');
+        if (priceEl && item.priceRange) {
+          priceEl.textContent = item.priceRange;
+          priceEl.classList.remove('hidden');
+          if (priceBullet) priceBullet.classList.remove('hidden');
+        } else if (priceEl) {
+          priceEl.classList.add('hidden');
+          if (priceBullet) priceBullet.classList.add('hidden');
+        }
+
+        const openPill = document.getElementById('card-fetched-open-pill');
+        if (openPill && item.openStatus) {
+          openPill.textContent = item.openStatus.split('·')[0].trim();
+          openPill.classList.remove('hidden');
+        } else if (openPill) {
+          openPill.classList.add('hidden');
+        }
+
+        const hoursRow = document.getElementById('card-fetched-hours-row');
+        const hoursEl = document.getElementById('card-fetched-hours');
+        if (hoursRow && hoursEl && item.openStatus) {
+          hoursEl.textContent = item.openStatus;
+          hoursRow.classList.remove('hidden');
+        } else if (hoursRow) {
+          hoursRow.classList.add('hidden');
+        }
+
+        const webRow = document.getElementById('card-fetched-web-row');
+        const webLink = document.getElementById('card-fetched-website');
+        const webBtn = document.getElementById('card-fetched-web-btn');
+        if (item.website) {
+          if (webRow) webRow.classList.remove('hidden');
+          if (webLink) { webLink.textContent = item.website; webLink.href = item.website; }
+          if (webBtn) { webBtn.href = item.website; webBtn.classList.remove('hidden'); }
+        } else {
+          if (webRow) webRow.classList.add('hidden');
+          if (webBtn) webBtn.classList.add('hidden');
+        }
+
+        const plusRow = document.getElementById('card-fetched-plus-row');
+        const plusEl = document.getElementById('card-fetched-pluscode');
+        if (plusRow && plusEl && item.plusCode) {
+          plusEl.textContent = item.plusCode;
+          plusRow.classList.remove('hidden');
+        } else if (plusRow) {
+          plusRow.classList.add('hidden');
+        }
+
+        const dirBtn = document.getElementById('card-fetched-dir-btn');
+        if (dirBtn) dirBtn.href = item.mapUrl || item.location || '#';
+        const callBtn = document.getElementById('card-fetched-call-btn');
+        if (callBtn) {
+          callBtn.href = item.phone ? 'tel:' + item.phone.replace(/[^0-9+]/g, '') : '#';
+        }
+
         const imgWrap = document.getElementById('card-fetched-img-wrap');
         const imgEl = document.getElementById('card-fetched-img');
-        const itemImg = item.imageUrl || (item.mapCoords ? `https://maps.google.com/maps/api/staticmap?center=${item.mapCoords}&zoom=17&size=600x350&language=vi` : '');
+        const itemImg = item.imageUrl || '';
         if (imgWrap && imgEl && itemImg) {
           imgEl.src = itemImg;
           imgWrap.classList.remove('hidden');
@@ -1910,19 +2084,20 @@
         const rating = document.getElementById('event-rating') ? document.getElementById('event-rating').value.trim() : '4.9 ★';
         const reviews = document.getElementById('event-reviews') ? document.getElementById('event-reviews').value.trim() : '8 đánh giá';
         const phone = document.getElementById('event-phone') ? document.getElementById('event-phone').value.trim() : '';
+        const category = document.getElementById('event-category') ? document.getElementById('event-category').value.trim() : '';
+        const openStatus = document.getElementById('event-open-status') ? document.getElementById('event-open-status').value.trim() : '';
+        const priceRange = document.getElementById('event-price-range') ? document.getElementById('event-price-range').value.trim() : '';
+        const website = document.getElementById('event-website') ? document.getElementById('event-website').value.trim() : '';
+        const plusCode = document.getElementById('event-plus-code') ? document.getElementById('event-plus-code').value.trim() : '';
         const mapCoords = document.getElementById('event-map-coords') ? document.getElementById('event-map-coords').value.trim() : '';
         const mapUrl = document.getElementById('event-map-url') ? document.getElementById('event-map-url').value.trim() : '';
         const imgData = document.getElementById('event-img-data') ? document.getElementById('event-img-data').value.trim() : '';
         const imgUrl = document.getElementById('event-img-url') ? document.getElementById('event-img-url').value.trim() : '';
         let imageUrl = imgData || imgUrl;
 
-        // Auto fallback to Google Maps photo or static preview if no user image
+        // Auto fallback to Google Maps photo or high quality travel photo
         if (!imageUrl) {
-          if (mapCoords) {
-            imageUrl = `https://maps.google.com/maps/api/staticmap?center=${mapCoords}&zoom=17&size=600x350&language=vi`;
-          } else {
-            imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
-          }
+          imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
         }
         
         const costInput = document.getElementById('event-cost');
@@ -1949,6 +2124,11 @@
               rating: rating || '4.9 ★',
               reviews: reviews || '8 đánh giá',
               phone,
+              category,
+              openStatus,
+              priceRange,
+              website,
+              plusCode,
               mapPlace: title,
               mapCoords,
               mapUrl: mapUrl || location,
@@ -1971,6 +2151,11 @@
             rating: rating || '4.9 ★',
             reviews: reviews || '8 đánh giá',
             phone,
+            category,
+            openStatus,
+            priceRange,
+            website,
+            plusCode,
             mapPlace: title,
             mapCoords,
             mapUrl: mapUrl || location,

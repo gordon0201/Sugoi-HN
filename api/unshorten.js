@@ -68,6 +68,10 @@ module.exports = async (req, res) => {
     let reviews = '';
     let imageUrl = '';
     let category = '';
+    let openStatus = '';
+    let priceRange = '';
+    let website = '';
+    let plusCode = '';
 
     // =========================================================================
     // 2. CRAWL THEO THẺ HTML (TAGS & META TAGS)
@@ -114,12 +118,11 @@ module.exports = async (req, res) => {
     }
 
     // C. Số điện thoại từ các thẻ HTML: <div class="Io6YTe...">, <a href="tel:...">, itemprop="telephone"
-    // Thẻ đặc trưng Google Maps: <div class="Io6YTe fontBodyMedium kR99db fdkmkc ">+84 919 909 828</div>
     const io6Matches = initialHtml.match(/class=["'][^"']*Io6YTe[^"']*["'][^>]*>([^<]+)<\/div>/g);
     if (io6Matches) {
       for (const m of io6Matches) {
         const text = m.replace(/<[^>]+>/g, '').trim();
-        if (/^(?:\+84\s*[0-9\s.-]{8,15}|0[35789][0-9\s.-]{8,12})$/.test(text)) {
+        if (/^(?:\+84\s*[0-9\s.-]{8,15}|0[35789][0-9\s.-]{8,12}|1[89]00\s*[0-9\s.-]{4,8})$/.test(text)) {
           phone = text;
           break;
         }
@@ -138,13 +141,6 @@ module.exports = async (req, res) => {
       if (itemPropTel && itemPropTel[1]) {
         phone = itemPropTel[1].trim();
       }
-    }
-
-    // D. Ảnh từ thẻ <img> có grass-cs / gps-cs-s:
-    // <img decoding="async" src="https://lh3.googleusercontent.com/grass-cs/...=w408-h345-k-no" ...>
-    const grassImgTag = initialHtml.match(/<img[^>]+src=["'](https:\/\/lh[0-9]\.googleusercontent\.com\/(?:grass-cs|gps-cs-s|p)\/[^"'\s\\]+)["']/i);
-    if (grassImgTag && grassImgTag[1]) {
-      imageUrl = grassImgTag[1].replace(/\\u003d/g, '=').split('=')[0] + '=w800-h500-k-no';
     }
 
     // =========================================================================
@@ -196,19 +192,56 @@ module.exports = async (req, res) => {
       // Đánh giá sao & số lượt review
       if (d6[4] && d6[4][7]) rating = d6[4][7].toFixed(1) + ' ★';
       if (d6[4] && d6[4][8]) reviews = `${d6[4][8]} đánh giá`;
+
+      // Website chính thức của quán
+      if (d6[7] && d6[7][0]) {
+        website = d6[7][0];
+      }
+
+      // Trạng thái mở cửa / Giờ hoạt động
+      if (d6[203] && d6[203][1] && d6[203][1][4] && d6[203][1][4][0]) {
+        openStatus = d6[203][1][4][0];
+      } else if (d6[34] && d6[34][1]) {
+        openStatus = d6[34][1];
+      }
+
+      // Mã vị trí Plus code
+      if (d6[183] && d6[183][2] && d6[183][2][2] && d6[183][2][2][0]) {
+        plusCode = d6[183][2][2][0];
+      }
+
+      // Khoảng giá (vd: 100.000 – 200.000 ₫)
+      const d6Str = JSON.stringify(d6);
+      const priceMatch = d6Str.match(/([0-9.,]+\s*[-–]\s*[0-9.,]+\s*(?:₫|đ|k|N\s*đ))/i) || d6Str.match(/(₫[0-9.,]+|[0-9.,]+\s*₫\/người)/i);
+      if (priceMatch && priceMatch[1]) {
+        priceRange = priceMatch[1];
+      }
+
+      // CHÍNH XÁC ẢNH BÌA HERO PHOTO CỦA GOOGLE MAPS TỪ d6[72] HOẶC d6[51]:
+      let coverPhoto = '';
+      if (d6[72] && d6[72][0] && d6[72][0][0] && d6[72][0][0][6] && d6[72][0][0][6][0]) {
+        coverPhoto = d6[72][0][0][6][0];
+      } else if (d6[51] && d6[51][0] && d6[51][0][0] && d6[51][0][0][6] && d6[51][0][0][6][0]) {
+        coverPhoto = d6[51][0][0][6][0];
+      }
+
+      if (coverPhoto) {
+        imageUrl = coverPhoto.replace(/\\u003d/g, '=').split('=')[0] + '=w800-h500-k-no';
+      }
     }
 
     const allStream = previewBody + ' ' + initialHtml;
 
     // Quét regex số điện thoại tổng quát nếu chưa thấy qua thẻ hay API
     if (!phone) {
-      const phones = allStream.match(/(?:\+84\s*[0-9\s.-]{8,15}|(?:\b0[35789][0-9\s.-]{8,12}\b))/g);
+      const phones = allStream.match(/(?:\+84\s*[0-9\s.-]{8,15}|(?:\b0[35789][0-9\s.-]{8,12}\b)|(?:\b1[89]00\s*[0-9\s.-]{4,8}\b))/g);
       if (phones && phones.length > 0) {
         phone = (phones.find((p) => p.startsWith('+84') || p.includes(' ')) || phones[0]).trim();
       }
     }
 
     // Quét ảnh gốc quán chất lượng cao (grass-cs, gps-cs-s, /p/)
+    // Loại trừ hoàn toàn staticmap và avatar tài khoản
     if (!imageUrl || imageUrl.includes('AAAAAAAAAAI') || imageUrl.includes('staticmap')) {
       const grassPhotos = allStream.match(/https:\/\/lh[0-9]\.googleusercontent\.com\/(?:grass-cs|gps-cs-s|p)\/[^"'\s\\]+/g);
       if (grassPhotos && grassPhotos.length > 0) {
@@ -218,117 +251,12 @@ module.exports = async (req, res) => {
       }
     }
 
-    // Ảnh StreetView
-    if (!imageUrl) {
+    // Ảnh StreetView nếu không có ảnh chụp
+    if (!imageUrl || imageUrl.includes('staticmap')) {
       const svPhotos = allStream.match(/https:\/\/streetviewpixels-pa\.googleapis\.com\/v1\/thumbnail\?[^"'\s\\]+/g);
       if (svPhotos && svPhotos.length > 0) {
         imageUrl = svPhotos[0].replace(/\\u003d/g, '=').replace(/\\u0026/g, '&');
       }
-    }
-
-    // =========================================================================
-    // 4. CRAWL THEO SEARCH API (tbm=map) NẾU THIẾU THÔNG TIN
-    // =========================================================================
-    if ((!phone || !address || !imageUrl || !rating) && placeName) {
-      try {
-        const tbmUrl = 'https://www.google.com/search?tbm=map&authuser=0&hl=vi&gl=vn&q=' + encodeURIComponent(placeName);
-        const tbmBody = await new Promise((resolve) => {
-          https.get(
-            tbmUrl,
-            {
-              headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                'Accept-Language': 'vi-VN,vi;q=0.9'
-              }
-            },
-            (res) => {
-              let b = '';
-              res.on('data', c => b += c);
-              res.on('end', () => resolve(b));
-            }
-          ).on('error', () => resolve(''));
-        });
-
-        if (!phone) {
-          const tbmPhones = tbmBody.match(/(?:\+84\s*[0-9\s.-]{8,15}|(?:\b0[35789][0-9\s.-]{8,12}\b))/g);
-          if (tbmPhones && tbmPhones.length > 0) {
-            phone = (tbmPhones.find(p => p.startsWith('+84') || p.includes(' ')) || tbmPhones[0]).trim();
-          }
-        }
-
-        if (!address) {
-          const addrCandidates = tbmBody.match(/"([^"]{10,120}(?:Đường|Phố|Phường|Quận|Huyện|KCN|Thành phố|TP\.|Bình Dương|Hà Nội|Hồ Chí Minh)[^"]*)"/g);
-          if (addrCandidates && addrCandidates.length > 0) {
-            const cleanedAddrs = addrCandidates
-              .map(a => a.replace(/^"|"$/g, '').trim())
-              .filter(a => a.includes(',') && !a.startsWith('http') && a !== placeName);
-            if (cleanedAddrs.length > 0) {
-              address = cleanedAddrs[0];
-            }
-          }
-        }
-
-        if (!rating) {
-          const ratingMatch = tbmBody.match(/([0-9],[0-9])\s*(?:★|sao|stars)?/);
-          if (ratingMatch && ratingMatch[1]) {
-            rating = ratingMatch[1].replace(',', '.') + ' ★';
-          }
-        }
-
-        if (!reviews) {
-          const reviewsMatch = tbmBody.match(/([0-9]+)\s*(?:bài|lượt|đánh giá|reviews)/i);
-          if (reviewsMatch && reviewsMatch[1]) {
-            reviews = `${reviewsMatch[1]} đánh giá`;
-          }
-        }
-
-        if (!imageUrl) {
-          const tbmGrass = tbmBody.match(/https:\/\/lh[0-9]\.googleusercontent\.com\/(?:grass-cs|gps-cs-s|p)\/[^"'\s\\]+/g);
-          if (tbmGrass && tbmGrass.length > 0) {
-            imageUrl = tbmGrass[0].replace(/\\u003d/g, '=').split('=')[0] + '=w800-h500-k-no';
-          }
-        }
-      } catch (e) {}
-    }
-
-    // =========================================================================
-    // 5. CRAWL TỌA ĐỘ QUA OPENSTREETMAP NOMINATIM NẾU ĐỊA CHỈ TRỐNG
-    // =========================================================================
-    if (!address && coords) {
-      try {
-        const [lat, lon] = coords.split(',');
-        const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
-        
-        const geoData = await new Promise((resolve) => {
-          const nr = https.get(
-            nominatimUrl,
-            { headers: { 'User-Agent': 'SugoiHanoiTrip/2.0 (trip-planner-app)' } },
-            (nres) => {
-              let b = '';
-              nres.on('data', c => b += c);
-              nres.on('end', () => {
-                try {
-                  resolve(JSON.parse(b));
-                } catch (e) {
-                  resolve(null);
-                }
-              });
-            }
-          );
-          nr.on('error', () => resolve(null));
-          nr.setTimeout(2500, () => {
-            nr.destroy();
-            resolve(null);
-          });
-        });
-
-        if (geoData) {
-          address = geoData.display_name || '';
-          if (!phone && geoData.extratags && geoData.extratags.phone) {
-            phone = geoData.extratags.phone;
-          }
-        }
-      } catch (e) {}
     }
 
     // Fallbacks thông tin chung nếu nơi đó trên Google Maps chưa có đánh giá hoặc ảnh
@@ -336,12 +264,9 @@ module.exports = async (req, res) => {
     if (!reviews) reviews = 'Đã xác minh trên Maps';
     if (!category) category = 'Địa điểm';
 
-    if (!imageUrl) {
-      if (coords) {
-        imageUrl = `https://maps.google.com/maps/api/staticmap?center=${coords}&zoom=17&size=600x350&language=vi`;
-      } else {
-        imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
-      }
+    // Tuyệt đối không dùng staticmap để tránh lỗi "Missing size parameter"
+    if (!imageUrl || imageUrl.includes('staticmap')) {
+      imageUrl = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
     }
 
     res.statusCode = 200;
@@ -358,7 +283,11 @@ module.exports = async (req, res) => {
         rating,
         reviews,
         imageUrl,
-        category
+        category,
+        openStatus: openStatus || '',
+        priceRange: priceRange || '',
+        website: website || '',
+        plusCode: plusCode || ''
       })
     );
   } catch (err) {
