@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SUGOI HANOI TRIP • Lịch Trình & Chi Phí (22 - 24/11/2026)</title>
 
-  <!-- Google Fonts: Baloo 2 (Headings/Buttons) + Be Vietnam Pro (Clean Body Sans) -->
+  <!-- Browser Tab Favicon (Logo lên thanh tab) -->
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="logo.png" />
+
+  <!-- Google Fonts: Baloo 2 (Headings/Buttons) + Be Vietnam Pro (Clean Body Sans scanned from Uranus Center) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,7 +19,6 @@
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
 
   <style>
-    /* Hanoi Red & Clean White Theme */
     :root {
       --primary: #dc2626;         /* Hanoi Red */
       --primary-hover: #b91c1c;   /* Deep Hanoi Red */
@@ -48,13 +52,13 @@
       color: #ffffff;
       font-family: 'Baloo 2', cursive, sans-serif;
       font-weight: 700;
-      border-radius: 10px;
+      border-radius: 12px;
       transition: all 0.15s ease-in-out;
     }
     .btn-primary:hover {
       background-color: #b91c1c;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
     }
     .btn-primary:active {
       transform: translateY(0);
@@ -65,7 +69,7 @@
       color: #334155;
       border: 1px solid #e2e8f0;
       font-weight: 600;
-      border-radius: 10px;
+      border-radius: 12px;
       transition: all 0.15s ease-in-out;
     }
     .btn-secondary:hover {
@@ -91,11 +95,34 @@
     .s-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
 
-    /* Toast */
+    /* Uranus Sidebar Styles */
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #475569;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .sidebar-link:hover {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .sidebar-link.active {
+      background-color: #fef2f2;
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    /* Toast Notification */
     .toast-anim {
       transform: translateY(140%);
       opacity: 0;
@@ -105,319 +132,595 @@
       transform: translateY(0);
       opacity: 1;
     }
+
+    /* Table Sticky Column */
+    .sticky-time-col {
+      position: sticky;
+      left: 0;
+      background: #ffffff;
+      z-index: 10;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-[#f8fafc] text-[#0f172a] selection:bg-[#dc2626] selection:text-white">
+<body class="min-h-screen flex bg-[#f8fafc] text-[#0f172a] selection:bg-[#dc2626] selection:text-white">
 
-  <!-- ================= TOP NAVBAR ================= -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      
-      <!-- Brand Logo in Hanoi Red -->
+  <!-- ================= MOBILE SIDEBAR BACKDROP ================= -->
+  <div id="mobile-sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/40 z-40 backdrop-blur-xs hidden transition-opacity lg:hidden"></div>
+
+  <!-- ================= EXACT URANUS DASHBOARD SIDEBAR ================= -->
+  <aside id="app-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static lg:z-auto shrink-0 shadow-sm">
+    
+    <!-- Sidebar Header: Hamburger Toggle + Logo + URANUS/SUGOI Brand -->
+    <div class="h-16 px-4 flex items-center justify-between border-b border-slate-100">
       <div class="flex items-center gap-3">
-        <img src="logo.png" alt="SUGOI HANOI TRIP" class="w-10 h-10 object-cover rounded-xl border border-slate-200 shadow-sm shrink-0" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-baloo text-base font-extrabold text-slate-900 tracking-tight">SUGOI HANOI TRIP</span>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-[#dc2626] bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">
-              Hà Nội 2026
-            </span>
-          </div>
-          <p class="text-[11px] text-slate-500 hidden sm:block">Lịch trình linh hoạt & Quản lý quỹ 8 thành viên HCM</p>
+        <button onclick="toggleSidebar()" class="w-9 h-9 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-700 transition" title="Thu gọn / Mở rộng menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <img src="logo.png" alt="SUGOI" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
+          <span class="font-baloo text-xl font-extrabold text-[#dc2626] tracking-tight uppercase">SUGOI</span>
+        </div>
+      </div>
+      <button onclick="toggleSidebar(false)" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 lg:hidden text-sm font-bold">✕</button>
+    </div>
+
+    <!-- Navigation Scroll Area -->
+    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+      
+      <!-- Section: QUẢN TRỊ HÀNH TRÌNH (Exact Uranus Style) -->
+      <div>
+        <div class="px-3 pb-2 text-[11px] font-extrabold text-slate-400 tracking-wider uppercase">
+          QUẢN TRỊ HÀNH TRÌNH
+        </div>
+
+        <nav class="space-y-1">
+          <!-- 1. Tổng quan (Active Soft Orange/Red Pill) -->
+          <button onclick="navigateTo('overview')" id="nav-overview" class="w-full sidebar-link active">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="truncate">Tổng quan</span>
+          </button>
+
+          <!-- 2. Thành viên (8 người) -->
+          <button onclick="navigateTo('members')" id="nav-members" class="w-full sidebar-link">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span class="truncate">Thành viên (8 người)</span>
+          </button>
+
+          <!-- 3. Lịch trình dạng bảng -->
+          <button onclick="navigateTo('schedule')" id="nav-schedule" class="w-full sidebar-link">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span class="truncate">Lịch trình (Dạng bảng)</span>
+          </button>
+
+          <!-- 4. Quỹ & Chi phí -->
+          <button onclick="navigateTo('budget')" id="nav-budget" class="w-full sidebar-link">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span class="truncate">Quỹ & Chi phí</span>
+          </button>
+
+          <!-- 5. Chuyến bay SGN ⇄ HAN -->
+          <button onclick="navigateTo('flight')" id="nav-flight" class="w-full sidebar-link">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+            <span class="truncate">Vé bay SGN ⇄ HAN</span>
+          </button>
+
+          <!-- 6. Checklist hành lý -->
+          <button onclick="navigateTo('checklist')" id="nav-checklist" class="w-full sidebar-link">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span class="truncate">Checklist hành lý</span>
+          </button>
+
+          <!-- 7. Thảo luận nhóm (With badge) -->
+          <button onclick="navigateTo('comments')" id="nav-comments" class="w-full sidebar-link justify-between">
+            <div class="flex items-center gap-3 truncate">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <span class="truncate">Thảo luận nhóm</span>
+            </div>
+            <span id="sidebar-comment-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#dc2626] text-white shrink-0">0</span>
+          </button>
+
+          <!-- 8. Hỗ trợ chuyến đi (With Badge 14 like in Uranus screenshot) -->
+          <button onclick="navigateTo('support')" id="nav-support" class="w-full sidebar-link justify-between">
+            <div class="flex items-center gap-3 truncate">
+              <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+              <span class="truncate">Hỗ trợ chuyến đi</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ea580c] text-white shrink-0">14</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- 8 HCM Members Quick Box -->
+      <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
+        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center justify-between">
+          <span>8 Bạn HCM</span>
+          <span class="text-emerald-600 font-extrabold text-[10px]">Đầy Đủ</span>
+        </div>
+        <div class="grid grid-cols-4 gap-1.5 text-center">
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Cường</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Huy</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Giang</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Dũng</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Lân</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Nhung</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Quỳnh</div>
+          <div class="p-1 rounded-lg bg-white border border-slate-200 text-[10px] font-bold text-slate-700">Lanh</div>
         </div>
       </div>
 
-      <!-- Quick Action Controls -->
-      <div class="flex items-center gap-2">
-        <button onclick="openFlexibleModal(null)" class="btn-primary px-3.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
-          <span>Thêm Kèo Mới</span>
-        </button>
-
-        <button onclick="copyShareLink()" title="Sao chép link tóm tắt gửi nhóm" class="btn-secondary px-3 py-1.5 text-xs flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          <span class="hidden sm:inline">Gửi Nhóm</span>
-        </button>
-      </div>
-
     </div>
-  </header>
 
-  <!-- ================= FLIGHT INFO & COUNTDOWN (MONOCHROME & HANOI RED) ================= -->
-  <section class="bg-white border-b border-slate-200 py-4 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-      
-      <!-- Flight Details -->
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-[#dc2626] shrink-0">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-100 flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-red-100 text-[#dc2626] font-bold flex items-center justify-center text-xs">
+        8P
+      </div>
+      <div class="truncate">
+        <div class="text-xs font-bold text-slate-800">Team HCM ➔ Hà Nội</div>
+        <div class="text-[10px] text-slate-400">22 - 24/11/2026</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CONTENT WRAPPER ================= -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- ================= CLEAN TOP NAVBAR ================= -->
+    <!-- (Note: Đã xóa 2 nút [Thêm Kèo Mới], [Gửi Nhóm] và đã xóa dòng subtitle theo yêu cầu) -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        
+        <div class="flex items-center gap-3">
+          <!-- Mobile Hamburger Toggle -->
+          <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+
+          <!-- Brand Logo in Hanoi Red -->
+          <div class="flex items-center gap-2.5">
+            <img src="logo.png" alt="SUGOI HANOI TRIP" class="w-9 h-9 object-cover rounded-xl border border-slate-200 shadow-xs shrink-0" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
+            <div class="flex items-center gap-2">
+              <span class="font-baloo text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">SUGOI HANOI TRIP</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-[#dc2626] bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">
+                Hà Nội 2026
+              </span>
+            </div>
           </div>
+        </div>
+
+        <!-- Right Side: Weather & Status info (Clean & Minimal) -->
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600">
+            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+            <span>Hà Nội: 20°C - 24°C • Se Lạnh</span>
+          </div>
+          <button onclick="copyShareLink()" title="Sao chép link tóm tắt gửi nhóm" class="btn-secondary px-3 py-1.5 text-xs flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span class="hidden md:inline">Chia Sẻ</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ================= FLIGHT INFO & COUNTDOWN (CONFIRMED ROUND TRIP) ================= -->
+    <section id="section-flight" class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        
+        <!-- Flight Details -->
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center text-[#dc2626] shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-900 uppercase tracking-wide">Vé Máy Bay Khứ Hồi</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Đã Đặt Xong</span>
+              </div>
+              <span class="text-[11px] text-slate-500">TP. Hồ Chí Minh (SGN) ⇄ Hà Nội (HAN) • 8 Bạn</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs flex-wrap">
+            <!-- Chiều đi -->
+            <div class="px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="text-[9px] text-slate-400 block uppercase font-bold">Chiều đi • Đêm 21/11</span>
+              <span class="font-mono font-bold text-slate-900">23:00 21/11 ➔ 01:00 22/11</span>
+            </div>
+            <!-- Chiều về -->
+            <div class="px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-200">
+              <span class="text-[9px] text-slate-400 block uppercase font-bold">Chiều về • Chiều 24/11</span>
+              <span class="font-mono font-bold text-slate-900">17:30 24/11 ➔ 19:40 24/11</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="flex items-center gap-3 self-start lg:self-auto">
+          <div class="text-right hidden sm:block">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Đếm ngược cất cánh</span>
+            <span class="text-[11px] font-bold text-slate-700">23:00 • 21/11/2026</span>
+          </div>
+          <div class="flex items-center gap-1 font-mono text-center text-xs">
+            <div class="bg-slate-100 rounded-lg px-2 py-1 border border-slate-200 min-w-[38px]">
+              <span id="cd-days" class="font-bold text-slate-900 block leading-tight">--</span>
+              <span class="text-[8px] text-slate-400 uppercase font-sans">Ngày</span>
+            </div>
+            <div class="bg-slate-100 rounded-lg px-2 py-1 border border-slate-200 min-w-[38px]">
+              <span id="cd-hours" class="font-bold text-slate-900 block leading-tight">--</span>
+              <span class="text-[8px] text-slate-400 uppercase font-sans">Giờ</span>
+            </div>
+            <div class="bg-slate-100 rounded-lg px-2 py-1 border border-slate-200 min-w-[38px]">
+              <span id="cd-mins" class="font-bold text-slate-900 block leading-tight">--</span>
+              <span class="text-[8px] text-slate-400 uppercase font-sans">Phút</span>
+            </div>
+            <div class="bg-slate-100 rounded-lg px-2 py-1 border border-slate-200 min-w-[38px]">
+              <span id="cd-secs" class="font-bold text-[#dc2626] block leading-tight">--</span>
+              <span class="text-[8px] text-slate-400 uppercase font-sans">Giây</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TWO MAIN HORIZONTAL TABS ================= -->
+    <section class="bg-white border-b border-slate-200 sticky top-16 z-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-2">
+          
+          <!-- Tab 1: Lịch Trình Dạng Bảng -->
+          <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Lịch Trình (Dạng Bảng)</span>
+            <span id="tab-badge-items" class="ml-1 text-[11px] font-sans font-bold px-2 py-0.2 rounded-full bg-red-50 text-[#dc2626]">0 Kèo</span>
+          </button>
+
+          <!-- Tab 2: Bảng Tính Chi Phí -->
+          <button onclick="switchTab('budget')" id="tab-btn-budget" class="flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Bảng Tính Chi Phí</span>
+            <span id="tab-badge-cost" class="ml-1 text-[11px] font-sans font-mono font-bold px-2 py-0.2 rounded-full bg-slate-100 text-slate-700">0đ/bạn</span>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAIN BODY CONTAINER ================= -->
+    <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+
+      <!-- =========================================================================
+           TAB 1: LỊCH TRÌNH DẠNG BẢNG (TABLE VIEW WITH FAR-LEFT TIME COLUMN)
+           ========================================================================= -->
+      <div id="content-schedule" class="space-y-6">
+        
+        <!-- Table Toolbar & Slot Creator (Tự do tạo khung giờ) -->
+        <div class="s-card p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-red-50/40 via-white to-slate-50 border-red-100">
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-slate-900 uppercase tracking-wide">Vé Máy Bay Khứ Hồi</span>
-              <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Đã Đặt Xong</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-100 text-[#dc2626]">Dạng Bảng Ma Trận</span>
+              <h2 class="text-base sm:text-lg font-baloo font-extrabold text-slate-900">Thời Khóa Biểu 3 Ngày (Cột Giờ Bên Trái)</h2>
             </div>
-            <span class="text-[11px] text-slate-500">TP. Hồ Chí Minh (SGN) ⇄ Hà Nội (HAN) • 8 Bạn</span>
+            <p class="text-xs text-slate-500 mt-1">
+              Khung giờ tự do do anh em tự tạo! Bấm <strong>[+ Thêm Khung Giờ Mới]</strong> để tạo thêm hàng thời gian, hoặc bấm <strong>[+ Thêm Kèo]</strong> để chốt địa điểm vào ô tương ứng.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 self-start md:self-auto shrink-0 flex-wrap">
+            <button onclick="openTimeSlotModal()" class="btn-outline-red px-3.5 py-2 text-xs flex items-center gap-1.5 shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>+ Thêm Khung Giờ Mới</span>
+            </button>
+            <button onclick="openProposalModal(null, null)" class="btn-primary px-3.5 py-2 text-xs flex items-center gap-1.5 shadow-xs">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+              <span>+ Thêm Kèo / Địa Điểm</span>
+            </button>
           </div>
         </div>
 
-        <div class="flex items-center gap-2 text-xs">
-          <!-- Chiều đi -->
-          <div class="px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
-            <span class="text-[10px] text-slate-400 block uppercase font-bold">Chiều đi • Bay Đêm</span>
-            <span class="font-mono font-bold text-slate-900">23:00 21/11 ➔ 01:00 22/11</span>
-          </div>
-          <!-- Chiều về -->
-          <div class="px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
-            <span class="text-[10px] text-slate-400 block uppercase font-bold">Chiều về • Hoàng Hôn</span>
-            <span class="font-mono font-bold text-slate-900">17:30 24/11 ➔ 19:40 24/11</span>
+        <!-- ================= THE SCHEDULE TABLE MATRIX ================= -->
+        <div class="s-card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[780px]" id="schedule-matrix-table">
+              
+              <!-- Table Header: Column 1 = THỜI GIAN, Columns 2-4 = Ngày 1, 2, 3 -->
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-800 text-xs font-bold font-baloo">
+                  
+                  <!-- CỘT 1: THỜI GIAN (Phía ngoài cùng bên trái) -->
+                  <th class="py-3.5 px-4 w-48 sm:w-56 sticky-time-col border-r border-slate-200 bg-slate-100">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-[#dc2626]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span>THỜI GIAN</span>
+                      </div>
+                      <button onclick="openTimeSlotModal()" title="Thêm khung giờ mới" class="text-[11px] font-sans font-bold text-[#dc2626] hover:underline">+ Giờ</button>
+                    </div>
+                  </th>
+
+                  <!-- CỘT 2: NGÀY 1 -->
+                  <th class="py-3.5 px-4 border-r border-slate-200">
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-sans font-bold bg-red-100 text-[#dc2626]">NGÀY 1</span>
+                      <div>
+                        <div class="text-sm font-extrabold text-slate-900">CN 22/11/2026</div>
+                        <div class="text-[10px] font-sans font-normal text-slate-500">Đáp 01:00 AM • Phố Cổ & Hồ Gươm</div>
+                      </div>
+                    </div>
+                  </th>
+
+                  <!-- CỘT 3: NGÀY 2 -->
+                  <th class="py-3.5 px-4 border-r border-slate-200">
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-sans font-bold bg-red-100 text-[#dc2626]">NGÀY 2</span>
+                      <div>
+                        <div class="text-sm font-extrabold text-slate-900">T2 23/11/2026</div>
+                        <div class="text-[10px] font-sans font-normal text-slate-500">Hồ Tây • Lăng Bác & Văn Miếu</div>
+                      </div>
+                    </div>
+                  </th>
+
+                  <!-- CỘT 4: NGÀY 3 -->
+                  <th class="py-3.5 px-4">
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-sans font-bold bg-red-100 text-[#dc2626]">NGÀY 3</span>
+                      <div>
+                        <div class="text-sm font-extrabold text-slate-900">T3 24/11/2026</div>
+                        <div class="text-[10px] font-sans font-normal text-slate-500">Cà phê • Mua Cốm • 17:30 Bay về</div>
+                      </div>
+                    </div>
+                  </th>
+
+                </tr>
+              </thead>
+
+              <!-- Table Body (Rendered dynamically based on custom time slots and events) -->
+              <tbody id="schedule-matrix-body" class="divide-y divide-slate-200 text-xs">
+                <!-- Injected via JavaScript -->
+              </tbody>
+
+            </table>
           </div>
         </div>
-      </div>
 
-      <!-- Compact Countdown -->
-      <div class="flex items-center gap-3 self-start lg:self-auto">
-        <div class="text-right hidden sm:block">
-          <span class="text-[10px] uppercase font-bold text-slate-400 block">Đếm ngược cất cánh</span>
-          <span class="text-[11px] font-bold text-slate-700">23:00 • 21/11/2026</span>
-        </div>
-        <div class="flex items-center gap-1 font-mono text-center text-xs">
-          <div class="bg-slate-100 rounded-md px-2 py-1 border border-slate-200 min-w-[36px]">
-            <span id="cd-days" class="font-bold text-slate-900 block leading-tight">--</span>
-            <span class="text-[8px] text-slate-400 uppercase font-sans">Ngày</span>
-          </div>
-          <div class="bg-slate-100 rounded-md px-2 py-1 border border-slate-200 min-w-[36px]">
-            <span id="cd-hours" class="font-bold text-slate-900 block leading-tight">--</span>
-            <span class="text-[8px] text-slate-400 uppercase font-sans">Giờ</span>
-          </div>
-          <div class="bg-slate-100 rounded-md px-2 py-1 border border-slate-200 min-w-[36px]">
-            <span id="cd-mins" class="font-bold text-slate-900 block leading-tight">--</span>
-            <span class="text-[8px] text-slate-400 uppercase font-sans">Phút</span>
-          </div>
-          <div class="bg-slate-100 rounded-md px-2 py-1 border border-slate-200 min-w-[36px]">
-            <span id="cd-secs" class="font-bold text-[#dc2626] block leading-tight">--</span>
-            <span class="text-[8px] text-slate-400 uppercase font-sans">Giây</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= HORIZONTAL TWO TABS (LỊCH TRÌNH / CHI PHÍ) ================= -->
-  <section class="bg-white border-b border-slate-200 sticky top-16 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-2">
-        
-        <!-- Tab 1: Lịch Trình -->
-        <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-          <span>Lịch Trình Linh Hoạt</span>
-          <span id="tab-badge-items" class="ml-1 text-[11px] font-sans font-bold px-2 py-0.2 rounded-full bg-red-50 text-[#dc2626]">0 Kèo</span>
-        </button>
-
-        <!-- Tab 2: Chi Phí -->
-        <button onclick="switchTab('budget')" id="tab-btn-budget" class="flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-          <span>Bảng Tính Chi Phí</span>
-          <span id="tab-badge-cost" class="ml-1 text-[11px] font-sans font-mono font-bold px-2 py-0.2 rounded-full bg-slate-100 text-slate-700">0đ/bạn</span>
-        </button>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= MAIN CONTAINER ================= -->
-  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
-
-    <!-- =========================================================================
-         TAB 1: LỊCH TRÌNH LINH HOẠT (FLEXIBLE SCHEDULE VIEW)
-         ========================================================================= -->
-    <div id="content-schedule" class="space-y-6">
-      
-      <!-- Top Instruction Card -->
-      <div class="s-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-red-50/50 via-white to-slate-50 border-red-100">
-        <div>
-          <h2 class="text-base font-baloo font-extrabold text-slate-900">Thời Khóa Biểu 3 Ngày (Khung Giờ Tự Do)</h2>
-          <p class="text-xs text-slate-500">
-            Không gò bó khung giờ cố định. Bấm nút <strong>[+ Thêm Kèo]</strong> ở ngày tương ứng để nhập giờ tùy ý (VD: 07:30 - 09:00, 15:30 - 18:00...).
-          </p>
-        </div>
-
-        <button onclick="openFlexibleModal(null)" class="btn-primary px-3.5 py-1.5 text-xs flex items-center gap-1.5 self-start sm:self-auto shrink-0 shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
-          <span>Tạo Kèo Mới</span>
-        </button>
-      </div>
-
-      <!-- 3-Column Flexible Grid for the 3 Days -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="days-columns-container">
-        <!-- Rendered dynamically by JavaScript -->
-      </div>
-
-      <!-- Checklist & Comments Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-slate-200">
-        
-        <!-- Left: Thảo luận -->
-        <div class="lg:col-span-7 space-y-3">
-          <div class="s-card p-5">
-            <h3 class="text-base font-baloo font-extrabold text-slate-900 mb-1">
-              Thảo Luận & Dặn Dò Nhóm
-            </h3>
-            <p class="text-xs text-slate-500 mb-4">Để lại lưu ý hoặc gợi ý địa điểm muốn rủ cả nhóm</p>
-
-            <form onsubmit="handleSendComment(event)" class="space-y-2.5 mb-4">
-              <div class="grid grid-cols-2 gap-2">
-                <select id="cmt-name" required class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
-                <option value="Cường">Cường</option>
-              <option value="Huy">Huy</option>
-              <option value="Giang">Giang</option>
-              <option value="Dũng">Dũng</option>
-              <option value="Lân">Lân</option>
-              <option value="Nhung">Nhung</option>
-              <option value="Quỳnh">Quỳnh</option>
-              <option value="Lanh">Lanh</option>
-              </select>
-                <select id="cmt-tag" class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
-                  <option value="quán ăn">Gợi ý quán ăn</option>
-                  <option value="lịch trình">Góp ý lịch trình</option>
-                  <option value="chỗ ở">Chỗ ở / Phòng</option>
-                  <option value="xe cộ">Đi lại / Xe đón</option>
-                  <option value="nhắc nhở">Lưu ý chuẩn bị</option>
-                </select>
+        <!-- ================= DISCUSSION & DYNAMIC CHECKLIST ================= -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4">
+          
+          <!-- Left: Thảo Luận & Dặn Dò Nhóm (Với chức năng Sửa & Xóa tin nhắn) -->
+          <div class="lg:col-span-7 space-y-3" id="section-comments">
+            <div class="s-card p-5">
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="text-base font-baloo font-extrabold text-slate-900">
+                  Thảo Luận & Dặn Dò Nhóm
+                </h3>
+                <span class="text-xs text-slate-400">Hỗ trợ sửa & xóa</span>
               </div>
-              <textarea id="cmt-content" required rows="2" placeholder="Nội dung thảo luận..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
-              <button type="submit" class="w-full py-2 btn-primary text-xs font-bold">Gửi Tin Nhắn</button>
-            </form>
+              <p class="text-xs text-slate-500 mb-4">Để lại lưu ý hoặc gợi ý địa điểm muốn rủ cả nhóm</p>
 
-            <div id="comments-feed" class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-              <!-- Rendered by JS -->
+              <!-- Discussion Form with 8-Member Dropdown -->
+              <form onsubmit="handleSendComment(event)" class="space-y-2.5 mb-4">
+                <div class="grid grid-cols-2 gap-2">
+                  <select id="cmt-name" required class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
+                    <option value="Cường">1. Cường</option>
+                    <option value="Huy">2. Huy</option>
+                    <option value="Giang">3. Giang</option>
+                    <option value="Dũng">4. Dũng</option>
+                    <option value="Lân">5. Lân</option>
+                    <option value="Nhung">6. Nhung</option>
+                    <option value="Quỳnh">7. Quỳnh</option>
+                    <option value="Lanh">8. Lanh</option>
+                  </select>
+
+                  <select id="cmt-tag" class="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white">
+                    <option value="quán ăn">Gợi ý quán ăn</option>
+                    <option value="lịch trình">Góp ý lịch trình</option>
+                    <option value="chỗ ở">Chỗ ở / Homestay</option>
+                    <option value="xe cộ">Đi lại / Đón tiễn sân bay</option>
+                    <option value="nhắc nhở">Lưu ý chuẩn bị</option>
+                  </select>
+                </div>
+                <textarea id="cmt-content" required rows="2" placeholder="Nội dung thảo luận..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
+                <button type="submit" class="w-full py-2 btn-primary text-xs font-bold">Gửi Tin Nhắn</button>
+              </form>
+
+              <!-- Comments Feed -->
+              <div id="comments-feed" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+                <!-- Rendered dynamically -->
+              </div>
             </div>
+          </div>
+
+          <!-- Right: Dynamic Checklist Hành Lý (Cho mọi người tự thêm, sửa, xóa) -->
+          <div class="lg:col-span-5 space-y-3" id="section-checklist">
+            <div class="s-card p-5">
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="text-base font-baloo font-extrabold text-slate-900">
+                  Checklist Hành Lý (20°C - 24°C)
+                </h3>
+                <span class="text-xs font-bold text-[#dc2626]" id="checklist-stat">0/0 Đã Chuẩn Bị</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-3">Vật dụng cần thiết cho chuyến đi 63 giờ tại thủ đô</p>
+
+              <!-- Progress bar -->
+              <div class="w-full bg-slate-100 rounded-full h-1.5 mb-4 overflow-hidden">
+                <div id="checklist-progress" class="bg-[#dc2626] h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+
+              <!-- Form to Add Custom Checklist Items -->
+              <form onsubmit="handleAddChecklistItem(event)" class="flex items-center gap-1.5 mb-3.5">
+                <input type="text" id="new-checklist-text" required placeholder="Thêm vật dụng của bạn..." class="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-[#dc2626] focus:bg-white" />
+                <button type="submit" class="px-3.5 py-2 btn-primary text-xs font-bold shrink-0">
+                  + Thêm Đồ
+                </button>
+              </form>
+
+              <!-- Dynamic Checklist Items with Edit & Delete -->
+              <div id="checklist-items" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- =========================================================================
+           TAB 2: BẢNG TÍNH CHI PHÍ (BUDGET VIEW)
+           ========================================================================= -->
+      <div id="content-budget" class="hidden space-y-6">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-baloo font-extrabold text-slate-900">Bảng Tính & Dự Toán Chi Phí (8 Người)</h2>
+            <p class="text-xs text-slate-500">Tự động đồng bộ chi phí từ các kèo trên lịch trình và các khoản chi chung</p>
+          </div>
+
+          <button onclick="openExpenseModal(null)" class="btn-primary px-3.5 py-2 text-xs flex items-center gap-1.5 self-start sm:self-auto shadow-xs">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+            <span>+ Thêm Khoản Chi Chung</span>
+          </button>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="s-card p-4 border-l-4 border-l-[#dc2626]">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Chi Phí / Mỗi Bạn</span>
+            <div id="stat-per-person" class="text-2xl font-baloo font-extrabold text-[#dc2626] leading-none">0đ</div>
+            <span class="text-[10px] text-slate-400 mt-1 block">Tự động chia đều cho 8 người</span>
+          </div>
+          <div class="s-card p-4">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Tổng Quỹ Toàn Nhóm</span>
+            <div id="stat-group-total" class="text-2xl font-baloo font-extrabold text-slate-900 leading-none">0đ</div>
+            <span class="text-[10px] text-slate-400 mt-1 block">8 bạn x Chi phí mỗi bạn</span>
+          </div>
+          <div class="s-card p-4">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Số Kèo Trong Lịch</span>
+            <div id="stat-winning-count" class="text-2xl font-baloo font-extrabold text-slate-800 leading-none">0 Kèo</div>
+            <span class="text-[10px] text-slate-400 mt-1 block">Đã xếp vào các ngày</span>
+          </div>
+          <div class="s-card p-4">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Tổng Khoản Chi</span>
+            <div id="stat-total-props" class="text-2xl font-baloo font-extrabold text-slate-700 leading-none">0 Mục</div>
+            <span class="text-[10px] text-slate-400 mt-1 block">Bao gồm vé bay & hoạt động</span>
           </div>
         </div>
 
-        <!-- Right: Checklist -->
-        <div class="lg:col-span-5 space-y-3">
-          <div class="s-card p-5">
-            <div class="flex items-center justify-between mb-1">
-              <h3 class="text-base font-baloo font-extrabold text-slate-900">
-                Checklist Hành Lý (20°C - 24°C)
-              </h3>
-              <span class="text-xs font-bold text-[#dc2626]" id="checklist-stat">0/0</span>
-            </div>
-            <p class="text-xs text-slate-500 mb-4">Vật dụng cần thiết cho chuyến đi 63 giờ tại thủ đô</p>
-
-            <div id="checklist-items" class="space-y-2">
-              <!-- Rendered by JS -->
-            </div>
+        <!-- Expense Table -->
+        <div class="s-card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <tr>
+                  <th class="py-3 px-4 text-left">Hạng Mục Chi Phí</th>
+                  <th class="py-3 px-4 text-left">Phân Loại</th>
+                  <th class="py-3 px-4 text-right">Chi Phí / Người</th>
+                  <th class="py-3 px-4 text-right">Tổng Nhóm (8 Bạn)</th>
+                  <th class="py-3 px-4 text-center">Nguồn</th>
+                  <th class="py-3 px-4 text-right">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody id="expense-table-rows" class="divide-y divide-slate-100">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
           </div>
         </div>
 
       </div>
 
-    </div>
+    </main>
 
-    <!-- =========================================================================
-         TAB 2: BẢNG TÍNH CHI PHÍ (BUDGET VIEW)
-         ========================================================================= -->
-    <div id="content-budget" class="hidden space-y-6">
-      
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-lg font-baloo font-extrabold text-slate-900">Bảng Tính & Dự Toán Chi Phí (8 Người)</h2>
-          <p class="text-xs text-slate-500">Tự động đồng bộ chi phí từ các kèo trên lịch trình và các khoản chi chung</p>
+    <!-- ================= FOOTER ================= -->
+    <footer class="mt-auto border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto px-4 space-y-1">
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <img src="logo.png" alt="SUGOI" class="w-6 h-6 object-cover rounded-md" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
+          <span class="font-baloo text-sm font-extrabold text-slate-800">SUGOI HANOI TRIP • 2026</span>
         </div>
-
-        <button onclick="openExpenseModal(null)" class="btn-primary px-3.5 py-1.5 text-xs flex items-center gap-1.5 self-start sm:self-auto shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
-          <span>Thêm Khoản Chi Chung</span>
-        </button>
+        <p>Giao diện Uranus Center chuẩn hóa • Lịch trình dạng bảng & quản trị chi phí 8 thành viên HCM</p>
       </div>
+    </footer>
 
-      <!-- 4 Metric Cards -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="s-card p-4 border-l-4 border-l-[#dc2626]">
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Chi Phí / Mỗi Bạn</span>
-          <div id="stat-per-person" class="text-2xl font-baloo font-extrabold text-[#dc2626] leading-none">0đ</div>
-          <span class="text-[10px] text-slate-400 mt-1 block">Tự động chia đều cho 8 người</span>
-        </div>
-        <div class="s-card p-4">
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Tổng Quỹ Toàn Nhóm</span>
-          <div id="stat-group-total" class="text-2xl font-baloo font-extrabold text-slate-900 leading-none">0đ</div>
-          <span class="text-[10px] text-slate-400 mt-1 block">8 bạn x Chi phí mỗi bạn</span>
-        </div>
-        <div class="s-card p-4">
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Số Kèo Trong Lịch</span>
-          <div id="stat-winning-count" class="text-2xl font-baloo font-extrabold text-slate-800 leading-none">0 Kèo</div>
-          <span class="text-[10px] text-slate-400 mt-1 block">Đã xếp vào các ngày</span>
-        </div>
-        <div class="s-card p-4">
-          <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Tổng Khoản Chi</span>
-          <div id="stat-total-props" class="text-2xl font-baloo font-extrabold text-slate-700 leading-none">0 Mục</div>
-          <span class="text-[10px] text-slate-400 mt-1 block">Bao gồm vé bay & hoạt động</span>
-        </div>
-      </div>
+  </div>
 
-      <!-- Expense Table -->
-      <div class="s-card overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-xs">
-            <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
-              <tr>
-                <th class="py-3 px-4 text-left">Hạng Mục Chi Phí</th>
-                <th class="py-3 px-4 text-left">Phân Loại</th>
-                <th class="py-3 px-4 text-right">Chi Phí / Người</th>
-                <th class="py-3 px-4 text-right">Tổng Nhóm (8 Bạn)</th>
-                <th class="py-3 px-4 text-center">Nguồn</th>
-                <th class="py-3 px-4 text-right">Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="expense-table-rows" class="divide-y divide-slate-100">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- ================= FLEXIBLE TIME SLOT & EVENT MODAL ================= -->
-  <div id="flexible-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 shadow-2xl relative">
-      <button onclick="closeFlexibleModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
+  <!-- ================= MODAL: TỰ TẠO KHUNG GIỜ MỚI (TIME SLOT MODAL) ================= -->
+  <div id="timeslot-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeTimeSlotModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
       
       <div class="mb-3">
-        <h3 id="modal-title" class="text-base font-baloo font-extrabold text-slate-900">Thêm Kèo / Khung Giờ Mới</h3>
-        <p class="text-xs text-slate-500">Tự do nhập khung giờ linh hoạt, địa điểm và chi phí</p>
+        <h3 id="timeslot-modal-title" class="text-base font-baloo font-extrabold text-slate-900">Tạo Khung Giờ Mới</h3>
+        <p class="text-xs text-slate-500">Tự do thêm hoặc sửa một hàng khung giờ trên bảng lịch trình</p>
       </div>
 
-      <form onsubmit="handleSaveFlexibleEvent(event)" class="space-y-3">
+      <form onsubmit="handleSaveTimeSlot(event)" class="space-y-3">
+        <input type="hidden" id="slot-id" />
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Khoảng Thời Gian (Giờ:Phút) *</label>
+          <input type="text" id="slot-time" required placeholder="VD: 07:00 - 09:00, 15:30 - 18:00..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-medium focus:border-[#dc2626] focus:bg-white" />
+          <div class="flex flex-wrap gap-1 mt-1.5">
+            <span class="text-[10px] text-slate-400 self-center mr-0.5">Mẫu nhanh:</span>
+            <button type="button" onclick="document.getElementById('slot-time').value='06:30 - 08:30'; document.getElementById('slot-label').value='Sáng sớm - Ăn phở & Cà phê';" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">06:30 - 08:30</button>
+            <button type="button" onclick="document.getElementById('slot-time').value='09:00 - 11:30'; document.getElementById('slot-label').value='Buổi sáng - Tham quan di tích';" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">09:00 - 11:30</button>
+            <button type="button" onclick="document.getElementById('slot-time').value='12:00 - 14:00'; document.getElementById('slot-label').value='Buổi trưa - Bún chả & Nghỉ ngơi';" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">12:00 - 14:00</button>
+            <button type="button" onclick="document.getElementById('slot-time').value='15:00 - 17:30'; document.getElementById('slot-label').value='Buổi chiều - Cà phê Hồ Tây';" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">15:00 - 17:30</button>
+            <button type="button" onclick="document.getElementById('slot-time').value='18:30 - 21:00'; document.getElementById('slot-label').value='Buổi tối - Lẩu & Phố đi bộ';" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">18:30 - 21:00</button>
+            <button type="button" onclick="document.getElementById('slot-time').value='21:30 - Khuya'; document.getElementById('slot-label').value='Đêm muộn - Bia Tạ Hiện';" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">21:30 - Khuya</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tên Gọi Khung Giờ (Tùy Chọn)</label>
+          <input type="text" id="slot-label" placeholder="VD: Sáng sớm, Buổi sáng, Ăn trưa, Buổi tối..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white" />
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <button type="submit" class="flex-1 py-2.5 btn-primary text-xs font-bold">
+            Lưu Khung Giờ Vào Bảng
+          </button>
+          <button type="button" id="btn-delete-slot" onclick="handleDeleteCurrentSlot()" class="px-3.5 py-2.5 rounded-xl bg-red-50 text-[#dc2626] hover:bg-red-100 border border-red-200 text-xs font-bold hidden">
+            Xóa Giờ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: THÊM / SỬA KÈO HOẠT ĐỘNG (PROPOSAL MODAL) ================= -->
+  <div id="proposal-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 shadow-2xl relative">
+      <button onclick="closeProposalModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
+      
+      <div class="mb-3">
+        <h3 id="prop-modal-title" class="text-base font-baloo font-extrabold text-slate-900">Thêm Kèo Vào Bảng Lịch Trình</h3>
+        <p class="text-xs text-slate-500">Nhập thông tin địa điểm, chi phí và người đề xuất</p>
+      </div>
+
+      <form onsubmit="handleSaveProposal(event)" class="space-y-3">
         <input type="hidden" id="event-id" />
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Ngày Đi *</label>
             <select id="event-day" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white">
-              <option value="22">Ngày 1: Thứ Bảy (22/11)</option>
-              <option value="23">Ngày 2: Chủ Nhật (23/11)</option>
-              <option value="24">Ngày 3: Thứ Hai (24/11)</option>
+              <option value="22">Ngày 1: CN (22/11)</option>
+              <option value="23">Ngày 2: T2 (23/11)</option>
+              <option value="24">Ngày 3: T3 (24/11)</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Khung Giờ Tự Do *</label>
-            <input type="text" id="event-time" required placeholder="VD: 07:30 - 09:00, 15:00 - 18:00..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-medium focus:border-[#dc2626] focus:bg-white" />
-            <div class="flex flex-wrap gap-1 mt-1.5">
-              <span class="text-[10px] text-slate-400 self-center mr-0.5">Gợi ý nhanh:</span>
-              <button type="button" onclick="document.getElementById('event-time').value='07:30 - 09:00'" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">07:30 - 09:00</button>
-              <button type="button" onclick="document.getElementById('event-time').value='09:00 - 11:30'" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">09:00 - 11:30</button>
-              <button type="button" onclick="document.getElementById('event-time').value='11:30 - 13:30'" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">11:30 - 13:30</button>
-              <button type="button" onclick="document.getElementById('event-time').value='14:00 - 16:30'" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">14:00 - 16:30</button>
-              <button type="button" onclick="document.getElementById('event-time').value='17:00 - 19:30'" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">17:00 - 19:30</button>
-              <button type="button" onclick="document.getElementById('event-time').value='20:00 - Khuya'" class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono">20:00 - Khuya</button>
-            </div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Gắn Vào Khung Giờ *</label>
+            <select id="event-slot-id" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white">
+              <!-- Rendered dynamically from current time slots -->
+            </select>
           </div>
         </div>
 
@@ -429,46 +732,186 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Chi Phí / Người (VNĐ)</label>
-            <input type="number" id="event-cost" placeholder="VD: 75000 (để trống nếu miễn phí)" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-medium focus:border-[#dc2626] focus:bg-white" />
+            <input type="number" id="event-cost" placeholder="VD: 75000 (để trống nếu 0đ)" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-medium focus:border-[#dc2626] focus:bg-white" />
           </div>
+          
+          <!-- Dropdown 8 Members (Exact user request) -->
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Người Đề Xuất *</label>
             <select id="event-author" required class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white">
-              <option value="Cường">Cường</option>
-              <option value="Huy">Huy</option>
-              <option value="Giang">Giang</option>
-              <option value="Dũng">Dũng</option>
-              <option value="Lân">Lân</option>
-              <option value="Nhung">Nhung</option>
-              <option value="Quỳnh">Quỳnh</option>
-              <option value="Lanh">Lanh</option>
+              <option value="Cường">1. Cường</option>
+              <option value="Huy">2. Huy</option>
+              <option value="Giang">3. Giang</option>
+              <option value="Dũng">4. Dũng</option>
+              <option value="Lân">5. Lân</option>
+              <option value="Nhung">6. Nhung</option>
+              <option value="Quỳnh">7. Quỳnh</option>
+              <option value="Lanh">8. Lanh</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Địa Chỉ / Khu Vực Cụ Thể</label>
-          <input type="text" id="event-location" placeholder="VD: 49 Bát Đàn, Hoàn Kiếm" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white" />
+          <label class="block text-xs font-bold text-slate-700 mb-1">Địa Chỉ Cụ Thể</label>
+          <input type="text" id="event-location" placeholder="VD: 49 Bát Đàn, Hoàn Kiếm, Hà Nội" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white" />
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Ghi Chú</label>
-          <textarea id="event-notes" rows="2" placeholder="Ghi chú món ngon, cách đi, thời gian xếp hàng..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Ghi Chú / Lưu Ý Cho Anh Em</label>
+          <textarea id="event-notes" rows="2" placeholder="Ghi chú món ngon nên thử, cách gửi xe, thời gian mở cửa..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
         </div>
 
         <div class="flex items-center gap-2 pt-2">
           <button type="submit" class="flex-1 py-2.5 btn-primary text-xs font-bold">
-            Lưu Kèo Lịch Trình
+            Lưu Vào Bảng Lịch Trình
           </button>
-          <button type="button" id="btn-delete-event" onclick="handleDeleteCurrentEvent()" class="px-3 py-2.5 rounded-xl bg-red-50 text-[#dc2626] hover:bg-red-100 border border-red-200 text-xs font-bold hidden">
-            Xóa
+          <button type="button" id="btn-delete-event" onclick="handleDeleteCurrentEvent()" class="px-3.5 py-2.5 rounded-xl bg-red-50 text-[#dc2626] hover:bg-red-100 border border-red-200 text-xs font-bold hidden">
+            Xóa Kèo
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ================= EXPENSE MODAL (ADD & EDIT) ================= -->
+  <!-- ================= MODAL: EDIT COMMENT MODAL ================= -->
+  <div id="comment-edit-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeCommentEditModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
+      
+      <div class="mb-3">
+        <h3 class="text-base font-baloo font-extrabold text-slate-900">Chỉnh Sửa Tin Nhắn Thảo Luận</h3>
+        <p class="text-xs text-slate-500">Cập nhật nội dung hoặc phân loại thảo luận</p>
+      </div>
+
+      <form onsubmit="handleSaveEditedComment(event)" class="space-y-3">
+        <input type="hidden" id="edit-cmt-id" />
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Người Gửi</label>
+            <select id="edit-cmt-name" required class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white">
+              <option value="Cường">1. Cường</option>
+              <option value="Huy">2. Huy</option>
+              <option value="Giang">3. Giang</option>
+              <option value="Dũng">4. Dũng</option>
+              <option value="Lân">5. Lân</option>
+              <option value="Nhung">6. Nhung</option>
+              <option value="Quỳnh">7. Quỳnh</option>
+              <option value="Lanh">8. Lanh</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Phân Loại</label>
+            <select id="edit-cmt-tag" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 font-medium focus:border-[#dc2626] focus:bg-white">
+              <option value="quán ăn">Gợi ý quán ăn</option>
+              <option value="lịch trình">Góp ý lịch trình</option>
+              <option value="chỗ ở">Chỗ ở / Homestay</option>
+              <option value="xe cộ">Đi lại / Đón tiễn sân bay</option>
+              <option value="nhắc nhở">Lưu ý chuẩn bị</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nội Dung Thảo Luận *</label>
+          <textarea id="edit-cmt-content" required rows="3" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white resize-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 btn-primary text-xs font-bold">
+          Cập Nhật Tin Nhắn
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: EDIT CHECKLIST ITEM ================= -->
+  <div id="checklist-edit-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-sm w-full p-5 shadow-2xl relative">
+      <button onclick="closeChecklistEditModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
+      
+      <h3 class="text-sm font-baloo font-extrabold text-slate-900 mb-3">Sửa Vật Dụng Hành Lý</h3>
+      <form onsubmit="handleSaveEditedChecklist(event)" class="space-y-3">
+        <input type="hidden" id="edit-checklist-index" />
+        <input type="text" id="edit-checklist-text" required class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:border-[#dc2626] focus:bg-white" />
+        <button type="submit" class="w-full py-2 btn-primary text-xs font-bold">
+          Lưu Chỉnh Sửa
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: THÀNH VIÊN (8 NGƯỜI) MODAL ================= -->
+  <div id="members-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeMembersModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
+      
+      <div class="mb-4">
+        <h3 class="text-base font-baloo font-extrabold text-slate-900">Danh Sách 8 Thành Viên HCM</h3>
+        <p class="text-xs text-slate-500">Chuyến đi Hà Nội 22 - 24/11/2026 (Vé bay khứ hồi đã chốt)</p>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">1</span>
+            <span class="text-xs font-bold text-slate-800">Cường</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">2</span>
+            <span class="text-xs font-bold text-slate-800">Huy</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">3</span>
+            <span class="text-xs font-bold text-slate-800">Giang</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">4</span>
+            <span class="text-xs font-bold text-slate-800">Dũng</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">5</span>
+            <span class="text-xs font-bold text-slate-800">Lân</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">6</span>
+            <span class="text-xs font-bold text-slate-800">Nhung</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">7</span>
+            <span class="text-xs font-bold text-slate-800">Quỳnh</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-red-100 text-[#dc2626] font-bold text-xs flex items-center justify-center">8</span>
+            <span class="text-xs font-bold text-slate-800">Lanh</span>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Đã chốt vé bay</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: EXPENSE MODAL ================= -->
   <div id="expense-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
     <div class="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button onclick="closeExpenseModal()" class="absolute right-4 top-4 w-7 h-7 rounded-lg bg-slate-100 text-slate-500 hover:text-slate-900 flex items-center justify-center font-bold text-xs">✕</button>
@@ -518,20 +961,18 @@
     <span id="toast-msg">Thông báo</span>
   </div>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="mt-auto border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 space-y-1">
-      <div class="flex items-center justify-center gap-2 mb-1">
-        <img src="logo.png" alt="SUGOI HANOI TRIP" class="w-6 h-6 object-cover rounded-md" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
-        <span class="font-baloo text-sm font-extrabold text-slate-800">SUGOI HANOI TRIP • 2026</span>
-      </div>
-      <p>Lịch trình linh hoạt & dự toán kinh phí tự động dành riêng cho 8 anh em HCM</p>
-    </div>
-  </footer>
-
-  <!-- ================= JAVASCRIPT ENGINE ================= -->
+  <!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
   <script>
-    const STORAGE_KEY = 'sugoi_hn_v7_custom_slots';
+    const STORAGE_KEY = 'sugoi_hn_v10_full_state';
+
+    const INITIAL_SLOTS = [
+      { id: 'slot-1', time: '07:00 - 09:00', label: 'Sáng sớm (Phở & Cà phê)' },
+      { id: 'slot-2', time: '09:30 - 12:00', label: 'Buổi sáng (Khám phá & Check-in)' },
+      { id: 'slot-3', time: '12:00 - 14:00', label: 'Buổi trưa (Ẩm thực & Nghỉ ngơi)' },
+      { id: 'slot-4', time: '14:30 - 17:30', label: 'Buổi chiều (Dạo phố & Trải nghiệm)' },
+      { id: 'slot-5', time: '18:00 - 21:00', label: 'Buổi tối (Ăn tối & Phố đi bộ)' },
+      { id: 'slot-6', time: '21:30 - Khuya', label: 'Đêm muộn (Bia Tạ Hiện)' }
+    ];
 
     const DEFAULT_CHECKLIST = [
       { text: 'Áo khoác ấm nhẹ (Nhiệt độ Hà Nội cuối tháng 11 khoảng 20°C - 24°C, se lạnh)' },
@@ -542,12 +983,14 @@
       { text: 'Cài sẵn app Grab / Be / Xanh SM để gọi xe nội đô linh hoạt' }
     ];
 
-    /* Flexible Events State - No hardcoded fixed slots */
-    let activeTab = 'schedule'; // 'schedule' or 'budget'
+    /* Global Reactive State */
+    let activeTab = 'schedule';
+    let timeSlots = [];
     let scheduleEvents = [];
     let baseExpenses = [];
     let commentsList = [];
-    let checklistState = {};
+    let checklistItems = [];
+    let checklistChecked = {};
     let userVotedMap = {};
 
     function loadState() {
@@ -555,10 +998,12 @@
       if (saved) {
         try {
           const data = JSON.parse(saved);
+          timeSlots = (data.timeSlots && data.timeSlots.length > 0) ? data.timeSlots : INITIAL_SLOTS;
           scheduleEvents = data.scheduleEvents || [];
           baseExpenses = data.baseExpenses || [];
           commentsList = data.commentsList || [];
-          checklistState = data.checklistState || {};
+          checklistItems = (data.checklistItems && data.checklistItems.length > 0) ? data.checklistItems : DEFAULT_CHECKLIST;
+          checklistChecked = data.checklistChecked || {};
           userVotedMap = data.userVotedMap || {};
           return;
         } catch (e) {
@@ -566,7 +1011,8 @@
         }
       }
 
-      // Default: Flexible and completely clean slate (no dummy clutter)
+      // Default State
+      timeSlots = INITIAL_SLOTS;
       scheduleEvents = [];
       baseExpenses = [
         {
@@ -576,18 +1022,29 @@
           amount: 1850000
         }
       ];
-      commentsList = [];
-      checklistState = {};
+      commentsList = [
+        {
+          id: 'cmt-init-1',
+          name: 'Cường',
+          tag: 'quán ăn',
+          content: 'Sáng Chủ Nhật 22/11 đáp xong anh em ghé làm bát Phở Bát Đàn nhé!',
+          time: 'Vừa xong'
+        }
+      ];
+      checklistItems = DEFAULT_CHECKLIST;
+      checklistChecked = {};
       userVotedMap = {};
       saveState();
     }
 
     function saveState() {
       const data = {
+        timeSlots,
         scheduleEvents,
         baseExpenses,
         commentsList,
-        checklistState,
+        checklistItems,
+        checklistChecked,
         userVotedMap
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -600,16 +1057,81 @@
     });
 
     function renderAll() {
-      renderDaysColumns();
+      renderScheduleMatrix();
       renderExpenses();
       renderComments();
       renderChecklist();
       updateBadges();
+      populateSlotSelect();
     }
 
     /* =========================================================================
-       TAB NAVIGATION
+       SIDEBAR & TAB NAVIGATION
        ========================================================================= */
+    function toggleSidebar(forceState) {
+      const sidebar = document.getElementById('app-sidebar');
+      const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      const isMobile = window.innerWidth < 1024;
+
+      if (isMobile) {
+        const isClosed = sidebar.classList.contains('-translate-x-full');
+        const shouldOpen = (forceState !== undefined) ? forceState : isClosed;
+
+        if (shouldOpen) {
+          sidebar.classList.remove('-translate-x-full');
+          backdrop.classList.remove('hidden');
+        } else {
+          sidebar.classList.add('-translate-x-full');
+          backdrop.classList.add('hidden');
+        }
+      } else {
+        // Desktop collapse toggle
+        sidebar.classList.toggle('lg:w-64');
+        sidebar.classList.toggle('lg:w-20');
+        sidebar.classList.toggle('sidebar-compact');
+      }
+    }
+
+    function navigateTo(target) {
+      // Close mobile sidebar if open
+      if (window.innerWidth < 1024) {
+        toggleSidebar(false);
+      }
+
+      // Update sidebar active link UI
+      const navLinks = ['overview', 'members', 'schedule', 'budget', 'flight', 'checklist', 'comments', 'support'];
+      navLinks.forEach(id => {
+        const el = document.getElementById('nav-' + id);
+        if (el) el.classList.remove('active');
+      });
+      const activeEl = document.getElementById('nav-' + target);
+      if (activeEl) activeEl.classList.add('active');
+
+      if (target === 'members') {
+        openMembersModal();
+      } else if (target === 'schedule' || target === 'overview') {
+        switchTab('schedule');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (target === 'budget') {
+        switchTab('budget');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (target === 'flight') {
+        document.getElementById('section-flight').scrollIntoView({ behavior: 'smooth' });
+      } else if (target === 'checklist') {
+        switchTab('schedule');
+        setTimeout(() => {
+          document.getElementById('section-checklist').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else if (target === 'comments') {
+        switchTab('schedule');
+        setTimeout(() => {
+          document.getElementById('section-comments').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else if (target === 'support') {
+        showToast('Đường dây hỗ trợ 8 thành viên HCM luôn sẵn sàng!');
+      }
+    }
+
     function switchTab(tabId) {
       activeTab = tabId;
       const schedContent = document.getElementById('content-schedule');
@@ -620,13 +1142,11 @@
       if (tabId === 'schedule') {
         schedContent.classList.remove('hidden');
         budgetContent.classList.add('hidden');
-
         schedBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]';
         budgetBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900';
       } else {
         schedContent.classList.add('hidden');
         budgetContent.classList.remove('hidden');
-
         budgetBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-[#dc2626] text-[#dc2626]';
         schedBtn.className = 'flex items-center gap-2 py-3 px-4 border-b-2 font-baloo text-sm font-extrabold transition border-transparent text-slate-500 hover:text-slate-900';
       }
@@ -634,227 +1154,275 @@
 
     function updateBadges() {
       document.getElementById('tab-badge-items').textContent = scheduleEvents.length + ' Kèo';
+      document.getElementById('sidebar-comment-count').textContent = commentsList.length;
     }
 
     /* =========================================================================
-       1. FLEXIBLE DAYS COLUMNS RENDERING
+       1. SCHEDULE TABLE MATRIX (DẠNG BẢNG VỚI CỘT GIỜ PHÍA TRÁI)
        ========================================================================= */
-    function renderDaysColumns() {
-      const container = document.getElementById('days-columns-container');
-      container.innerHTML = '';
+    function renderScheduleMatrix() {
+      const tbody = document.getElementById('schedule-matrix-body');
+      tbody.innerHTML = '';
 
-      const dayConfigs = [
-        {
-          day: '22',
-          badge: 'Ngày 1',
-          date: 'Thứ Bảy • 22/11/2026',
-          subtitle: 'Đáp 01:00 AM, Nhận phòng & Khám phá Phố cổ'
-        },
-        {
-          day: '23',
-          badge: 'Ngày 2',
-          date: 'Chủ Nhật • 23/11/2026',
-          subtitle: 'Khám phá ẩm thực & Tham quan di tích thủ đô'
-        },
-        {
-          day: '24',
-          badge: 'Ngày 3',
-          date: 'Thứ Hai • 24/11/2026',
-          subtitle: 'Mua đặc sản cốm & 17:30 Bay về Tân Sơn Nhất'
-        }
-      ];
+      if (timeSlots.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="py-12 text-center text-slate-400">Chưa có khung giờ nào. Bấm nút <strong>[+ Thêm Khung Giờ Mới]</strong> để bắt đầu tạo bảng.</td></tr>';
+        return;
+      }
 
-      dayConfigs.forEach(conf => {
-        const dayEvents = scheduleEvents.filter(ev => ev.day === conf.day);
+      timeSlots.forEach((slot, index) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/60 transition';
 
-        // Sort chronologically by start time string
-        dayEvents.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
-
-        const col = document.createElement('div');
-        col.className = 's-card flex flex-col p-4 sm:p-5 space-y-4';
-
-        col.innerHTML = `
-          <!-- Column Header -->
-          <div class="flex items-start justify-between pb-3 border-b border-slate-200">
-            <div>
-              <div class="flex items-center gap-2 mb-0.5">
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-100 text-[#dc2626]">
-                  ${conf.badge}
+        // Column 1: THỜI GIAN (Sticky Far-Left Column)
+        const timeCol = `
+          <td class="py-4 px-4 align-top border-r border-slate-200 sticky-time-col bg-white">
+            <div class="space-y-1">
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-red-50 text-[#dc2626] border border-red-200">
+                  ${slot.time}
                 </span>
-                <span class="text-xs font-bold text-slate-500">${dayEvents.length} Kèo</span>
               </div>
-              <h3 class="text-base font-baloo font-extrabold text-slate-900">${conf.date}</h3>
-              <p class="text-[11px] text-slate-500 mt-0.5">${conf.subtitle}</p>
+              <div class="text-xs font-bold text-slate-800 leading-snug">
+                ${slot.label || 'Khung giờ ' + (index + 1)}
+              </div>
+              
+              <!-- Action buttons for slot: Edit & Delete -->
+              <div class="flex items-center gap-2 pt-1 text-[11px]">
+                <button onclick="openEditTimeSlotModal('${slot.id}')" class="text-slate-400 hover:text-slate-700 font-medium">Sửa Giờ</button>
+                <span class="text-slate-300">•</span>
+                <button onclick="deleteTimeSlot('${slot.id}')" class="text-slate-400 hover:text-red-600 font-medium">Xóa Giờ</button>
+              </div>
             </div>
-
-            <button onclick="openFlexibleModal('${conf.day}')" class="btn-outline-red px-2.5 py-1 text-xs flex items-center gap-1 shrink-0">
-              <span class="text-sm leading-none">+</span>
-              <span>Tạo Khung Giờ</span>
-            </button>
-          </div>
-
-          <!-- Events List for this Day -->
-          <div class="flex-1 space-y-3" id="day-events-list-${conf.day}">
-            ${dayEvents.length === 0 ? `
-              <div class="py-12 text-center flex flex-col items-center justify-center p-4 border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
-                <svg class="w-8 h-8 text-slate-300 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span class="text-xs font-bold text-slate-600">Chưa có kèo nào trong ngày</span>
-                <span class="text-[11px] text-slate-400 mt-0.5">Bấm nút bên dưới để tạo khung giờ linh hoạt</span>
-                <button onclick="openFlexibleModal('${conf.day}')" class="mt-3 px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-[#dc2626] border border-red-200 hover:bg-red-50 transition">
-                  + Thêm Kèo Cho ${conf.badge}
-                </button>
-              </div>
-            ` : ''}
-          </div>
+          </td>
         `;
 
-        container.appendChild(col);
+        // Columns 2, 3, 4: Ngày 22, 23, 24
+        const days = ['22', '23', '24'];
+        let daysHtml = '';
 
-        if (dayEvents.length > 0) {
-          const listEl = col.querySelector(`#day-events-list-${conf.day}`);
-          dayEvents.forEach(item => {
-            const hasVoted = userVotedMap[item.id];
+        days.forEach(day => {
+          // Find events assigned to this day and this slot
+          const events = scheduleEvents.filter(ev => ev.day === day && (ev.slotId === slot.id || ev.time === slot.time));
 
-            const itemEl = document.createElement('div');
-            itemEl.className = 'p-3.5 rounded-xl border border-slate-200 hover:border-slate-300 transition bg-white space-y-2';
-
-            itemEl.innerHTML = `
-              <div class="flex items-start justify-between gap-2">
-                <div class="space-y-1">
-                  <!-- Flexible Time Chip -->
-                  <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-100 text-slate-800 border border-slate-200">
-                      ${item.time}
-                    </span>
-                    ${item.votes > 0 ? `
-                      <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-red-50 text-[#dc2626] border border-red-100">
-                        ${item.votes} Phiếu
-                      </span>
-                    ` : ''}
+          let eventsListHtml = '';
+          if (events.length > 0) {
+            eventsListHtml = events.map(item => {
+              const hasVoted = userVotedMap[item.id];
+              return `
+                <div class="p-2.5 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-1.5 mb-2">
+                  <div class="flex items-start justify-between gap-1.5">
+                    <span class="text-xs font-bold text-slate-900 leading-tight">${item.title}</span>
+                    <button onclick="voteEvent('${item.id}')" class="px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1 shrink-0 transition ${hasVoted ? 'bg-[#dc2626] text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
+                      <span>▲</span>
+                      <span>${item.votes || 0}</span>
+                    </button>
                   </div>
 
-                  <h4 class="text-sm font-bold text-slate-900 leading-snug">${item.title}</h4>
+                  ${item.location ? `
+                    <div class="text-[11px] text-slate-500 truncate flex items-center gap-1">
+                      <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                      <span>${item.location}</span>
+                    </div>
+                  ` : ''}
+
+                  <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-[10px]">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="font-bold text-slate-600 bg-slate-100 px-1.5 py-0.2 rounded">${item.author || 'Thành viên'}</span>
+                      ${item.cost ? `<span class="font-bold text-[#dc2626] font-mono">${formatMoney(item.cost)}đ</span>` : ''}
+                    </div>
+                    
+                    <div class="flex items-center gap-1 text-slate-400">
+                      <button onclick="openEditProposalModal('${item.id}')" title="Sửa kèo" class="hover:text-slate-800 p-0.5">✏️</button>
+                      <button onclick="deleteFlexibleEvent('${item.id}')" title="Xóa kèo" class="hover:text-red-600 p-0.5">✕</button>
+                    </div>
+                  </div>
                 </div>
+              `;
+            }).join('');
+          }
 
-                <!-- Action buttons -->
-                <div class="flex items-center gap-1 shrink-0">
-                  <button onclick="voteEvent('${item.id}')" class="px-2 py-1 rounded-md text-xs font-bold flex items-center gap-1 transition ${hasVoted ? 'bg-[#dc2626] text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                    <span>${item.votes || 0}</span>
-                  </button>
-                  <button onclick="openEditFlexibleModal('${item.id}')" title="Sửa kèo này" class="p-1 text-slate-400 hover:text-slate-800">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                  </button>
-                  <button onclick="deleteFlexibleEvent('${item.id}')" title="Xóa kèo này" class="p-1 text-slate-400 hover:text-red-600">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                  </button>
-                </div>
+          daysHtml += `
+            <td class="py-3 px-3 align-top border-r border-slate-200 min-w-[200px]">
+              <div class="space-y-1">
+                ${eventsListHtml}
+                <button onclick="openProposalModal('${day}', '${slot.id}')" class="w-full py-1.5 px-2 rounded-lg border border-dashed border-slate-300 hover:border-[#dc2626] hover:bg-red-50/40 text-slate-500 hover:text-[#dc2626] text-[11px] font-bold transition flex items-center justify-center gap-1">
+                  <span>+</span>
+                  <span>Thêm kèo vào giờ này</span>
+                </button>
               </div>
+            </td>
+          `;
+        });
 
-              <!-- Metadata: Cost & Location -->
-              <div class="text-[11px] text-slate-500 flex items-center gap-2 flex-wrap pt-1 border-t border-slate-100">
-                ${item.cost > 0 ? `<span class="font-bold text-[#dc2626] font-mono">${Number(item.cost).toLocaleString()}đ/bạn</span>` : '<span class="text-slate-400 font-medium">Miễn phí</span>'}
-                ${item.location ? `<span>• ${item.location}</span>` : ''}
-                <span>• Bởi <strong>${item.author || 'Bạn'}</strong></span>
-              </div>
+        tr.innerHTML = timeCol + daysHtml;
+        tbody.appendChild(tr);
+      });
+    }
 
-              ${item.notes ? `<p class="text-[11px] text-slate-600 leading-snug pt-1 font-normal">${item.notes}</p>` : ''}
-            `;
-
-            listEl.appendChild(itemEl);
-          });
-        }
+    function populateSlotSelect() {
+      const select = document.getElementById('event-slot-id');
+      if (!select) return;
+      select.innerHTML = '';
+      timeSlots.forEach(slot => {
+        const opt = document.createElement('option');
+        opt.value = slot.id;
+        opt.textContent = `${slot.time} - ${slot.label || ''}`;
+        select.appendChild(opt);
       });
     }
 
     /* =========================================================================
-       2. VOTING ENGINE
+       2. TIME SLOT MODAL (TỰ TẠO & SỬA KHUNG GIỜ)
        ========================================================================= */
-    function voteEvent(id) {
-      const item = scheduleEvents.find(x => x.id === id);
-      if (!item) return;
+    function openTimeSlotModal() {
+      document.getElementById('timeslot-modal-title').textContent = 'Tạo Khung Giờ Mới';
+      document.getElementById('slot-id').value = '';
+      document.getElementById('slot-time').value = '';
+      document.getElementById('slot-label').value = '';
+      document.getElementById('btn-delete-slot').classList.add('hidden');
+      document.getElementById('timeslot-modal').classList.remove('hidden');
+    }
 
-      if (userVotedMap[id]) {
-        item.votes = Math.max(0, (item.votes || 0) - 1);
-        delete userVotedMap[id];
+    function openEditTimeSlotModal(slotId) {
+      const slot = timeSlots.find(s => s.id === slotId);
+      if (!slot) return;
+      document.getElementById('timeslot-modal-title').textContent = 'Chỉnh Sửa Khung Giờ';
+      document.getElementById('slot-id').value = slot.id;
+      document.getElementById('slot-time').value = slot.time;
+      document.getElementById('slot-label').value = slot.label || '';
+      document.getElementById('btn-delete-slot').classList.remove('hidden');
+      document.getElementById('timeslot-modal').classList.remove('hidden');
+    }
+
+    function closeTimeSlotModal() {
+      document.getElementById('timeslot-modal').classList.add('hidden');
+    }
+
+    function handleSaveTimeSlot(e) {
+      e.preventDefault();
+      const id = document.getElementById('slot-id').value;
+      const time = document.getElementById('slot-time').value.trim();
+      const label = document.getElementById('slot-label').value.trim();
+
+      if (!time) return;
+
+      if (id) {
+        // Edit existing
+        const index = timeSlots.findIndex(s => s.id === id);
+        if (index !== -1) {
+          timeSlots[index].time = time;
+          timeSlots[index].label = label;
+          showToast('Đã cập nhật khung giờ!');
+        }
       } else {
-        item.votes = (item.votes || 0) + 1;
-        userVotedMap[id] = true;
+        // Add new slot
+        const newSlot = {
+          id: 'slot-' + Date.now(),
+          time,
+          label
+        };
+        timeSlots.push(newSlot);
+        showToast('Đã thêm khung giờ mới vào bảng!');
       }
 
       saveState();
-      renderAll();
-      showToast('Đã ghi nhận biểu quyết!');
+      closeTimeSlotModal();
+      renderScheduleMatrix();
+      populateSlotSelect();
+    }
+
+    function deleteTimeSlot(slotId) {
+      if (!confirm('Bạn có chắc chắn muốn xóa khung giờ này khỏi bảng?')) return;
+      timeSlots = timeSlots.filter(s => s.id !== slotId);
+      saveState();
+      renderScheduleMatrix();
+      populateSlotSelect();
+      showToast('Đã xóa khung giờ!');
+    }
+
+    function handleDeleteCurrentSlot() {
+      const id = document.getElementById('slot-id').value;
+      if (id) {
+        deleteTimeSlot(id);
+        closeTimeSlotModal();
+      }
     }
 
     /* =========================================================================
-       3. FLEXIBLE EVENT MODAL (ADD & EDIT)
+       3. PROPOSAL MODAL (THÊM & SỬA KÈO LỊCH TRÌNH)
        ========================================================================= */
-    function openFlexibleModal(day = null) {
-      document.getElementById('modal-title').textContent = 'Thêm Kèo / Khung Giờ Mới';
+    function openProposalModal(day, slotId) {
+      document.getElementById('prop-modal-title').textContent = 'Thêm Kèo Vào Bảng Lịch Trình';
       document.getElementById('event-id').value = '';
       if (day) document.getElementById('event-day').value = day;
-      document.getElementById('event-time').value = '';
+      if (slotId) document.getElementById('event-slot-id').value = slotId;
       document.getElementById('event-title').value = '';
       document.getElementById('event-cost').value = '';
-      document.getElementById('event-author').value = 'Cường';
       document.getElementById('event-location').value = '';
       document.getElementById('event-notes').value = '';
       document.getElementById('btn-delete-event').classList.add('hidden');
-
-      document.getElementById('flexible-modal').classList.remove('hidden');
+      document.getElementById('proposal-modal').classList.remove('hidden');
     }
 
-    function openEditFlexibleModal(id) {
-      const item = scheduleEvents.find(x => x.id === id);
+    function openEditProposalModal(eventId) {
+      const item = scheduleEvents.find(ev => ev.id === eventId);
       if (!item) return;
 
-      document.getElementById('modal-title').textContent = 'Chỉnh Sửa Kèo Lịch Trình';
+      document.getElementById('prop-modal-title').textContent = 'Chỉnh Sửa Kèo Lịch Trình';
       document.getElementById('event-id').value = item.id;
       document.getElementById('event-day').value = item.day || '22';
-      document.getElementById('event-time').value = item.time || '';
-      document.getElementById('event-title').value = item.title || '';
+      document.getElementById('event-slot-id').value = item.slotId || (timeSlots[0] ? timeSlots[0].id : '');
+      document.getElementById('event-title').value = item.title;
       document.getElementById('event-cost').value = item.cost || '';
-      document.getElementById('event-author').value = item.author || '';
+      document.getElementById('event-author').value = item.author || 'Cường';
       document.getElementById('event-location').value = item.location || '';
       document.getElementById('event-notes').value = item.notes || '';
       document.getElementById('btn-delete-event').classList.remove('hidden');
-
-      document.getElementById('flexible-modal').classList.remove('hidden');
+      document.getElementById('proposal-modal').classList.remove('hidden');
     }
 
-    function closeFlexibleModal() {
-      document.getElementById('flexible-modal').classList.add('hidden');
+    function closeProposalModal() {
+      document.getElementById('proposal-modal').classList.add('hidden');
     }
 
-    function handleSaveFlexibleEvent(e) {
+    function handleSaveProposal(e) {
       e.preventDefault();
       const id = document.getElementById('event-id').value;
       const day = document.getElementById('event-day').value;
-      const time = document.getElementById('event-time').value.trim();
+      const slotId = document.getElementById('event-slot-id').value;
       const title = document.getElementById('event-title').value.trim();
-      const cost = Number(document.getElementById('event-cost').value) || 0;
-      const author = document.getElementById('event-author').value.trim();
+      const cost = parseInt(document.getElementById('event-cost').value) || 0;
+      const author = document.getElementById('event-author').value;
       const location = document.getElementById('event-location').value.trim();
       const notes = document.getElementById('event-notes').value.trim();
 
+      const matchedSlot = timeSlots.find(s => s.id === slotId);
+      const slotTime = matchedSlot ? matchedSlot.time : '';
+
       if (id) {
-        const item = scheduleEvents.find(x => x.id === id);
-        if (item) {
-          item.day = day;
-          item.time = time;
-          item.title = title;
-          item.cost = cost;
-          item.author = author;
-          item.location = location;
-          item.notes = notes;
+        // Edit
+        const index = scheduleEvents.findIndex(ev => ev.id === id);
+        if (index !== -1) {
+          scheduleEvents[index] = {
+            ...scheduleEvents[index],
+            day,
+            slotId,
+            time: slotTime,
+            title,
+            cost,
+            author,
+            location,
+            notes
+          };
+          showToast('Đã cập nhật kèo!');
         }
-        showToast('Đã lưu thay đổi kèo!');
       } else {
-        const newItem = {
+        // Add new
+        const newEvent = {
           id: 'ev-' + Date.now(),
           day,
-          time,
+          slotId,
+          time: slotTime,
           title,
           cost,
           author,
@@ -862,118 +1430,316 @@
           notes,
           votes: 1
         };
-        scheduleEvents.push(newItem);
-        userVotedMap[newItem.id] = true;
-        showToast('Đã thêm kèo mới và bỏ phiếu!');
+        scheduleEvents.push(newEvent);
+        userVotedMap[newEvent.id] = true;
+        showToast('Đã thêm kèo mới vào lịch trình!');
       }
 
       saveState();
-      closeFlexibleModal();
+      closeProposalModal();
       renderAll();
+    }
+
+    function voteEvent(eventId) {
+      const item = scheduleEvents.find(ev => ev.id === eventId);
+      if (!item) return;
+
+      if (!item.votes) item.votes = 0;
+
+      if (userVotedMap[eventId]) {
+        item.votes = Math.max(0, item.votes - 1);
+        delete userVotedMap[eventId];
+        showToast('Đã rút lại phiếu bầu');
+      } else {
+        item.votes += 1;
+        userVotedMap[eventId] = true;
+        showToast('Đã bỏ phiếu cho kèo: ' + item.title);
+      }
+
+      saveState();
+      renderScheduleMatrix();
+    }
+
+    function deleteFlexibleEvent(id) {
+      if (!confirm('Bạn có chắc muốn xóa kèo này?')) return;
+      scheduleEvents = scheduleEvents.filter(ev => ev.id !== id);
+      saveState();
+      renderAll();
+      showToast('Đã xóa kèo khỏi lịch trình');
     }
 
     function handleDeleteCurrentEvent() {
       const id = document.getElementById('event-id').value;
-      if (!id) return;
-      deleteFlexibleEvent(id);
-      closeFlexibleModal();
-    }
-
-    function deleteFlexibleEvent(id) {
-      if (confirm('Bạn có chắc muốn xóa kèo này khỏi lịch trình?')) {
-        scheduleEvents = scheduleEvents.filter(x => x.id !== id);
-        delete userVotedMap[id];
-        saveState();
-        renderAll();
-        showToast('Đã xóa kèo');
+      if (id) {
+        deleteFlexibleEvent(id);
+        closeProposalModal();
       }
     }
 
     /* =========================================================================
-       4. EXPENSES & DYNAMIC BUDGET CALCULATOR
+       4. DISCUSSION COMMENTS (VỚI SỬA & XÓA TIN NHẮN)
+       ========================================================================= */
+    function renderComments() {
+      const feed = document.getElementById('comments-feed');
+      feed.innerHTML = '';
+
+      if (commentsList.length === 0) {
+        feed.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center">Chưa có bình luận nào. Hãy để lại lời nhắn đầu tiên!</p>';
+        return;
+      }
+
+      commentsList.forEach(cmt => {
+        const item = document.createElement('div');
+        item.className = 'p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1 hover:bg-slate-50/80 transition';
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-[11px]">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-bold text-slate-900">${cmt.name}</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] bg-red-100 text-[#dc2626] font-bold">#${cmt.tag}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-slate-400 text-[10px]">${cmt.time}</span>
+              <button onclick="openCommentEditModal('${cmt.id}')" title="Sửa tin nhắn" class="text-slate-400 hover:text-slate-700 text-[11px] font-bold">Sửa</button>
+              <button onclick="deleteComment('${cmt.id}')" title="Xóa tin nhắn" class="text-slate-400 hover:text-red-600 text-[11px] font-bold">Xóa</button>
+            </div>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed font-medium">${cmt.content}</p>
+        `;
+        feed.appendChild(item);
+      });
+    }
+
+    function handleSendComment(e) {
+      e.preventDefault();
+      const name = document.getElementById('cmt-name').value;
+      const tag = document.getElementById('cmt-tag').value;
+      const content = document.getElementById('cmt-content').value.trim();
+
+      if (!content) return;
+
+      const newCmt = {
+        id: 'cmt-' + Date.now(),
+        name,
+        tag,
+        content,
+        time: 'Vừa xong'
+      };
+
+      commentsList.unshift(newCmt);
+      saveState();
+      document.getElementById('cmt-content').value = '';
+      renderComments();
+      updateBadges();
+      showToast('Đã gửi tin nhắn thảo luận!');
+    }
+
+    function openCommentEditModal(cmtId) {
+      const cmt = commentsList.find(c => c.id === cmtId);
+      if (!cmt) return;
+
+      document.getElementById('edit-cmt-id').value = cmt.id;
+      document.getElementById('edit-cmt-name').value = cmt.name;
+      document.getElementById('edit-cmt-tag').value = cmt.tag;
+      document.getElementById('edit-cmt-content').value = cmt.content;
+      document.getElementById('comment-edit-modal').classList.remove('hidden');
+    }
+
+    function closeCommentEditModal() {
+      document.getElementById('comment-edit-modal').classList.add('hidden');
+    }
+
+    function handleSaveEditedComment(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-cmt-id').value;
+      const name = document.getElementById('edit-cmt-name').value;
+      const tag = document.getElementById('edit-cmt-tag').value;
+      const content = document.getElementById('edit-cmt-content').value.trim();
+
+      const index = commentsList.findIndex(c => c.id === id);
+      if (index !== -1) {
+        commentsList[index].name = name;
+        commentsList[index].tag = tag;
+        commentsList[index].content = content;
+        saveState();
+        renderComments();
+        closeCommentEditModal();
+        showToast('Đã cập nhật tin nhắn!');
+      }
+    }
+
+    function deleteComment(cmtId) {
+      if (!confirm('Bạn có chắc muốn xóa tin nhắn này?')) return;
+      commentsList = commentsList.filter(c => c.id !== cmtId);
+      saveState();
+      renderComments();
+      updateBadges();
+      showToast('Đã xóa tin nhắn!');
+    }
+
+    /* =========================================================================
+       5. DYNAMIC CHECKLIST (THÊM, SỬA, XÓA, TICK HOÀN THÀNH)
+       ========================================================================= */
+    function renderChecklist() {
+      const container = document.getElementById('checklist-items');
+      container.innerHTML = '';
+
+      let checkedCount = 0;
+      checklistItems.forEach((item, index) => {
+        const isChecked = !!checklistChecked[index];
+        if (isChecked) checkedCount++;
+
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between p-2 rounded-xl border border-slate-100 hover:border-slate-200 transition bg-slate-50/50 group';
+        div.innerHTML = `
+          <label class="flex items-center gap-2.5 text-xs text-slate-800 cursor-pointer flex-1 min-w-0 pr-2">
+            <input type="checkbox" onchange="toggleChecklist(${index})" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded text-[#dc2626] focus:ring-[#dc2626] border-slate-300 rounded cursor-pointer shrink-0" />
+            <span class="${isChecked ? 'line-through text-slate-400 font-normal' : 'font-medium text-slate-800'} break-words">${item.text}</span>
+          </label>
+          <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition shrink-0">
+            <button onclick="openChecklistEditModal(${index})" title="Sửa tên đồ" class="text-slate-400 hover:text-slate-700 text-xs p-1">✏️</button>
+            <button onclick="deleteChecklistItem(${index})" title="Xóa món này" class="text-slate-400 hover:text-red-600 text-xs p-1">✕</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      const total = checklistItems.length;
+      document.getElementById('checklist-stat').textContent = `${checkedCount}/${total} Đã Chuẩn Bị`;
+      const pct = total > 0 ? (checkedCount / total) * 100 : 0;
+      document.getElementById('checklist-progress').style.width = pct + '%';
+    }
+
+    function handleAddChecklistItem(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-checklist-text');
+      const text = input.value.trim();
+      if (!text) return;
+
+      checklistItems.push({ text });
+      input.value = '';
+      saveState();
+      renderChecklist();
+      showToast('Đã thêm đồ dùng vào checklist!');
+    }
+
+    function toggleChecklist(index) {
+      checklistChecked[index] = !checklistChecked[index];
+      saveState();
+      renderChecklist();
+    }
+
+    function openChecklistEditModal(index) {
+      const item = checklistItems[index];
+      if (!item) return;
+
+      document.getElementById('edit-checklist-index').value = index;
+      document.getElementById('edit-checklist-text').value = item.text;
+      document.getElementById('checklist-edit-modal').classList.remove('hidden');
+    }
+
+    function closeChecklistEditModal() {
+      document.getElementById('checklist-edit-modal').classList.add('hidden');
+    }
+
+    function handleSaveEditedChecklist(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('edit-checklist-index').value);
+      const text = document.getElementById('edit-checklist-text').value.trim();
+
+      if (checklistItems[index] && text) {
+        checklistItems[index].text = text;
+        saveState();
+        renderChecklist();
+        closeChecklistEditModal();
+        showToast('Đã cập nhật đồ dùng!');
+      }
+    }
+
+    function deleteChecklistItem(index) {
+      if (!confirm('Xóa vật dụng này khỏi danh sách?')) return;
+      checklistItems.splice(index, 1);
+      delete checklistChecked[index];
+      saveState();
+      renderChecklist();
+      showToast('Đã xóa vật dụng!');
+    }
+
+    /* =========================================================================
+       6. MEMBERS MODAL
+       ========================================================================= */
+    function openMembersModal() {
+      document.getElementById('members-modal').classList.remove('hidden');
+    }
+    function closeMembersModal() {
+      document.getElementById('members-modal').classList.add('hidden');
+    }
+
+    /* =========================================================================
+       7. BUDGET & EXPENSES
        ========================================================================= */
     function renderExpenses() {
       const tbody = document.getElementById('expense-table-rows');
       tbody.innerHTML = '';
 
       let totalPerPerson = 0;
+      let totalItemsCount = 0;
 
-      // 1. Base expenses (Flight, Accommodation, etc.)
+      // 1. Base / Fixed Expenses
       baseExpenses.forEach(exp => {
-        const amt = Number(exp.amount) || 0;
-        totalPerPerson += amt;
-        appendExpenseRow(tbody, exp.id, exp.title, exp.cat, amt, 'Cố Định', false);
-      });
+        totalPerPerson += exp.amount;
+        totalItemsCount++;
 
-      // 2. Schedule events with costs > 0
-      const eventsWithCost = scheduleEvents.filter(ev => Number(ev.cost) > 0);
-      eventsWithCost.forEach((ev, idx) => {
-        const amt = Number(ev.cost);
-        totalPerPerson += amt;
-        appendExpenseRow(tbody, `ev-cost-${idx}`, `${ev.title} (Ngày ${ev.day} • ${ev.time})`, 'food', amt, 'Lịch Trình', true);
-      });
-
-      if (baseExpenses.length === 0 && eventsWithCost.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="py-6 text-center text-xs text-slate-400 bg-slate-50/50">
-              Chưa có khoản chi nào. Bấm <strong>[+ Thêm Khoản Chi Chung]</strong> hoặc thêm kèo có chi phí trên lịch!
-            </td>
-          </tr>
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-slate-900">${exp.title}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 uppercase">${exp.cat}</span></td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-slate-800">${formatMoney(exp.amount)}đ</td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-[#dc2626]">${formatMoney(exp.amount * 8)}đ</td>
+          <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-500">Chi Phí Cố Định</span></td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="deleteCustomExpense('${exp.id}')" title="Xóa khoản này" class="text-slate-400 hover:text-red-600 font-bold">Xóa</button>
+          </td>
         `;
-      }
+        tbody.appendChild(tr);
+      });
 
-      const totalGroup = totalPerPerson * 8;
-      document.getElementById('stat-per-person').textContent = `${totalPerPerson.toLocaleString()}đ`;
-      document.getElementById('stat-group-total').textContent = `${totalGroup.toLocaleString()}đ`;
-      document.getElementById('stat-winning-count').textContent = `${scheduleEvents.length} Kèo`;
-      document.getElementById('stat-total-props').textContent = `${baseExpenses.length + eventsWithCost.length} Mục`;
-      document.getElementById('tab-badge-cost').textContent = `${totalPerPerson.toLocaleString()}đ/bạn`;
+      // 2. Events Expenses from Schedule
+      const eventsWithCost = scheduleEvents.filter(ev => ev.cost && ev.cost > 0);
+      eventsWithCost.forEach(ev => {
+        totalPerPerson += ev.cost;
+        totalItemsCount++;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-slate-900">
+            ${ev.title} <span class="text-[10px] text-slate-400 font-normal">(${ev.time})</span>
+          </td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 uppercase">Ẩm thực / Kèo</span></td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-slate-800">${formatMoney(ev.cost)}đ</td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-[#dc2626]">${formatMoney(ev.cost * 8)}đ</td>
+          <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-[#dc2626]">Từ Lịch Trình</span></td>
+          <td class="py-3 px-4 text-right">
+            <span class="text-[11px] text-slate-400">Đồng bộ lịch</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update Summary Cards
+      const groupTotal = totalPerPerson * 8;
+      document.getElementById('stat-per-person').textContent = formatMoney(totalPerPerson) + 'đ';
+      document.getElementById('stat-group-total').textContent = formatMoney(groupTotal) + 'đ';
+      document.getElementById('stat-winning-count').textContent = scheduleEvents.length + ' Kèo';
+      document.getElementById('stat-total-props').textContent = totalItemsCount + ' Mục';
+      document.getElementById('tab-badge-cost').textContent = formatMoney(totalPerPerson) + 'đ/bạn';
     }
 
-    function appendExpenseRow(tbody, id, title, cat, amount, source, isFromSlot) {
-      const catLabels = {
-        flight: 'Vé máy bay', stay: 'Chỗ ở', food: 'Ẩm thực',
-        transit: 'Xe cộ', ticket: 'Vé tham quan', gift: 'Quà biếu', other: 'Khác'
-      };
-
-      const tr = document.createElement('tr');
-      tr.className = 'hover:bg-slate-50 transition';
-
-      tr.innerHTML = `
-        <td class="py-2.5 px-4 font-bold text-slate-900">${title}</td>
-        <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">${catLabels[cat] || 'Khác'}</span></td>
-        <td class="py-2.5 px-4 text-right font-mono font-bold text-[#dc2626]">${amount.toLocaleString()}đ</td>
-        <td class="py-2.5 px-4 text-right font-mono font-bold text-slate-800">${(amount * 8).toLocaleString()}đ</td>
-        <td class="py-2.5 px-4 text-center">
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isFromSlot ? 'bg-red-50 text-[#dc2626]' : 'bg-slate-100 text-slate-700'}">${source}</span>
-        </td>
-        <td class="py-2.5 px-4 text-right whitespace-nowrap">
-          ${!isFromSlot ? `
-            <button onclick="openExpenseModal('${id}')" class="p-1 text-slate-500 hover:text-slate-900 font-bold text-xs">Sửa</button>
-            <button onclick="deleteBaseExpense('${id}')" class="p-1 text-slate-400 hover:text-red-600 font-bold text-xs">✕</button>
-          ` : `<span class="text-[10px] text-slate-400 italic">Sửa trên Lịch</span>`}
-        </td>
-      `;
-      tbody.appendChild(tr);
-    }
-
-    function openExpenseModal(id = null) {
-      if (id) {
-        const exp = baseExpenses.find(x => x.id === id);
-        if (!exp) return;
-        document.getElementById('exp-modal-title').textContent = 'Sửa Khoản Chi';
-        document.getElementById('custom-exp-id').value = exp.id;
-        document.getElementById('custom-exp-title').value = exp.title;
-        document.getElementById('custom-exp-cat').value = exp.cat;
-        document.getElementById('custom-exp-amount').value = exp.amount;
-      } else {
-        document.getElementById('exp-modal-title').textContent = 'Thêm Khoản Chi Chung (8 Bạn)';
-        document.getElementById('custom-exp-id').value = '';
-        document.getElementById('custom-exp-title').value = '';
-        document.getElementById('custom-exp-cat').value = 'flight';
-        document.getElementById('custom-exp-amount').value = '';
-      }
+    function openExpenseModal(expId) {
+      document.getElementById('custom-exp-id').value = '';
+      document.getElementById('custom-exp-title').value = '';
+      document.getElementById('custom-exp-amount').value = '';
       document.getElementById('expense-modal').classList.remove('hidden');
     }
 
@@ -983,161 +1749,85 @@
 
     function handleSaveCustomExpense(e) {
       e.preventDefault();
-      const id = document.getElementById('custom-exp-id').value;
       const title = document.getElementById('custom-exp-title').value.trim();
       const cat = document.getElementById('custom-exp-cat').value;
-      const amount = Number(document.getElementById('custom-exp-amount').value) || 0;
+      const amount = parseInt(document.getElementById('custom-exp-amount').value) || 0;
 
-      if (id) {
-        const exp = baseExpenses.find(x => x.id === id);
-        if (exp) {
-          exp.title = title;
-          exp.cat = cat;
-          exp.amount = amount;
-        }
-        showToast('Đã sửa khoản chi!');
-      } else {
-        baseExpenses.push({
-          id: 'exp-' + Date.now(),
-          title,
-          cat,
-          amount
-        });
-        showToast('Đã thêm khoản chi mới!');
-      }
+      if (!title || !amount) return;
+
+      baseExpenses.push({
+        id: 'exp-' + Date.now(),
+        title,
+        cat,
+        amount
+      });
 
       saveState();
       closeExpenseModal();
       renderExpenses();
+      showToast('Đã thêm khoản chi vào bảng tính!');
     }
 
-    function deleteBaseExpense(id) {
-      if (confirm('Xóa khoản chi này?')) {
-        baseExpenses = baseExpenses.filter(x => x.id !== id);
-        saveState();
-        renderExpenses();
-        showToast('Đã xóa khoản chi');
-      }
+    function deleteCustomExpense(id) {
+      if (!confirm('Xóa khoản chi này khỏi bảng tính?')) return;
+      baseExpenses = baseExpenses.filter(e => e.id !== id);
+      saveState();
+      renderExpenses();
+      showToast('Đã xóa khoản chi!');
     }
 
     /* =========================================================================
-       5. COMMENTS FEED & CHECKLIST
-       ========================================================================= */
-    function renderComments() {
-      const feed = document.getElementById('comments-feed');
-      if (commentsList.length === 0) {
-        feed.innerHTML = `
-          <div class="py-6 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-            Chưa có tin nhắn nào. Hãy là người đầu tiên để lại lời nhắn cho nhóm!
-          </div>
-        `;
-        return;
-      }
-
-      feed.innerHTML = '';
-      commentsList.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1';
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-slate-900 font-baloo text-sm">${c.user}</span>
-              <span class="px-1.5 py-0.2 rounded text-[9px] bg-slate-200 text-slate-600 font-bold">#${c.tag}</span>
-            </div>
-            <span class="text-[10px] text-slate-400">${c.time}</span>
-          </div>
-          <p class="text-slate-700 leading-relaxed font-normal">${c.text}</p>
-        `;
-        feed.appendChild(div);
-      });
-    }
-
-    function handleSendComment(e) {
-      e.preventDefault();
-      const user = document.getElementById('cmt-name').value.trim();
-      const tag = document.getElementById('cmt-tag').value;
-      const text = document.getElementById('cmt-content').value.trim();
-
-      commentsList.unshift({ user, tag, text, time: 'Vừa xong' });
-      saveState();
-      renderComments();
-      e.target.reset();
-      showToast('Đã gửi ý kiến lên bảng nhóm!');
-    }
-
-    function renderChecklist() {
-      const container = document.getElementById('checklist-items');
-      container.innerHTML = '';
-
-      let checked = 0;
-      DEFAULT_CHECKLIST.forEach((item, idx) => {
-        const key = `ck_${idx}`;
-        const isDone = !!checklistState[key];
-        if (isDone) checked++;
-
-        const label = document.createElement('label');
-        label.className = 'flex items-start gap-2.5 text-xs text-slate-700 cursor-pointer select-none p-2 rounded-lg hover:bg-slate-50 transition border border-transparent hover:border-slate-200';
-        label.innerHTML = `
-          <input type="checkbox" onchange="toggleChecklist('${key}')" ${isDone ? 'checked' : ''} class="mt-0.5 rounded text-[#dc2626] accent-[#dc2626]"/>
-          <span class="${isDone ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${item.text}</span>
-        `;
-        container.appendChild(label);
-      });
-
-      document.getElementById('checklist-stat').textContent = `${checked}/${DEFAULT_CHECKLIST.length} Đã Chuẩn Bị`;
-    }
-
-    function toggleChecklist(key) {
-      checklistState[key] = !checklistState[key];
-      saveState();
-      renderChecklist();
-    }
-
-    /* =========================================================================
-       6. COUNTDOWN & SHARE & TOAST
+       8. UTILITIES (COUNTDOWN, TOAST, SHARE)
        ========================================================================= */
     function initCountdown() {
-      const target = new Date('2026-11-21T23:00:00+07:00');
+      const target = new Date('2026-11-21T23:00:00+07:00').getTime();
+
       function update() {
-        const diff = target - new Date();
+        const now = new Date().getTime();
+        const diff = target - now;
+
         if (diff <= 0) {
-          ['days', 'hours', 'mins', 'secs'].forEach(id => document.getElementById(`cd-${id}`).textContent = '00');
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-mins').textContent = '00';
+          document.getElementById('cd-secs').textContent = '00';
           return;
         }
-        document.getElementById('cd-days').textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-        document.getElementById('cd-hours').textContent = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
-        document.getElementById('cd-mins').textContent = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
-        document.getElementById('cd-secs').textContent = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('cd-days').textContent = d.toString().padStart(2, '0');
+        document.getElementById('cd-hours').textContent = h.toString().padStart(2, '0');
+        document.getElementById('cd-mins').textContent = m.toString().padStart(2, '0');
+        document.getElementById('cd-secs').textContent = s.toString().padStart(2, '0');
       }
+
       update();
       setInterval(update, 1000);
     }
 
-    function copyShareLink() {
-      const text = `
-SUGOI HANOI TRIP • 8 BẠN HCM (22 - 24/11/2026)
-Vé bay đã đặt:
-- Chiều đi: 23:00 (21/11) ➔ Đáp 01:00 (22/11) Nội Bài
-- Chiều về: 17:30 (24/11) ➔ Đáp 19:40 (24/11) Tân Sơn Nhất
-
-Bảng lịch trình linh hoạt theo giờ tự do đã mở, anh em vào tạo kèo & vote tại:
-👉 https://sugoi-hn.vercel.app
-      `.trim();
-
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('Đã sao chép link & tin nhắn gửi nhóm!');
-      }).catch(() => {
-        showToast('Vui lòng copy thủ công!');
-      });
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-msg');
+      text.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
     }
 
-    let toastTimer;
-    function showToast(msg) {
-      const el = document.getElementById('toast');
-      document.getElementById('toast-msg').textContent = msg;
-      el.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+    function copyShareLink() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+      }
+      showToast('Đã sao chép link hành trình gửi nhóm!');
+    }
+
+    function formatMoney(n) {
+      return (n || 0).toLocaleString('vi-VN');
     }
   </script>
 </body>
