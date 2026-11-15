@@ -310,30 +310,105 @@
         </div>
       </div>
 
-      <!-- Right Side: CRAWL NHIỆT ĐỘ HÀ NỘI TRỰC TUYẾN 24/7 (Open-Meteo Live API) -->
-      <div class="flex items-center gap-3">
-        <div id="weather-widget" class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 shadow-2xs">
-          <!-- Live pulsing green dot -->
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
+      <!-- Right Side: CRAWL NHIỆT ĐỘ HÀ NỘI TRỰC TUYẾN 24/7 + ĐỒNG BỘ ĐÁM MÂY -->
+      <div class="flex items-center gap-2.5">
+        <!-- Trạng thái đồng bộ đám mây cho cả 8 bạn -->
+        <div id="cloud-sync-status" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] font-bold text-slate-700 shadow-2xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span class="text-emerald-700">Đám mây đã lưu</span>
+        </div>
 
-          <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
-          
-          <span id="live-temp-display" class="font-bold text-slate-900">Hà Nội: 23°C</span>
-          <span class="text-slate-300 hidden sm:inline">•</span>
-          <span id="live-weather-desc" class="text-slate-600 text-[11px] font-semibold hidden sm:inline">Trời quang</span>
-          <span class="text-slate-300">•</span>
-          <span id="live-hanoi-time" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-extrabold bg-white text-slate-900 border border-slate-200 shrink-0 shadow-2xs"><script>document.write(new Date().toLocaleTimeString('vi-VN', {timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}));</script></span>
+        <!-- Weather Widget với Hover/Click Dropdown chi tiết -->
+        <div class="relative group/weather">
+          <div id="weather-widget" onclick="toggleWeatherDropdown(event)" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 shadow-2xs transition select-none">
+            <!-- Live pulsing green dot -->
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+
+            <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+            
+            <span id="live-temp-display" class="font-bold text-slate-900">Hà Nội: 23°C</span>
+            <span class="text-slate-300 hidden sm:inline">•</span>
+            <span id="live-weather-desc" class="text-slate-600 text-[11px] font-semibold hidden sm:inline">Trời quang</span>
+            <span class="text-slate-300">•</span>
+            <span id="live-hanoi-time" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-extrabold bg-white text-slate-900 border border-slate-200 shrink-0 shadow-2xs"><script>document.write(new Date().toLocaleTimeString('vi-VN', {timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}));</script></span>
+            <svg class="w-3 h-3 text-slate-400 ml-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+
+          <!-- Dropdown chi tiết dự báo thời tiết & gợi ý trang phục -->
+          <div id="weather-dropdown" class="absolute right-0 top-full mt-2 hidden group-hover/weather:block z-50 w-84 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 transition text-left">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🌤️</span>
+                <div>
+                  <h4 class="text-xs font-baloo font-extrabold text-slate-900">Thời Tiết Hà Nội Trực Tiếp</h4>
+                  <p class="text-[10px] text-slate-500 font-medium">Trạm khí tượng Thủ đô • Cập nhật 24/7</p>
+                </div>
+              </div>
+              <button onclick="fetchLiveHanoiWeather(); showToast('Đang làm mới thời tiết...');" class="px-2 py-1 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-slate-900 text-xs font-bold transition border border-slate-200 flex items-center gap-1" title="Làm mới thời tiết">
+                <span>↻</span>
+                <span class="text-[10px]">Cập nhật</span>
+              </button>
+            </div>
+
+            <!-- Các chỉ số hiện tại -->
+            <div class="grid grid-cols-3 gap-2 py-3 border-b border-slate-100 text-center">
+              <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <span class="text-[10px] text-slate-500 font-bold block">Nhiệt độ</span>
+                <span id="detail-weather-temp" class="text-sm font-extrabold text-[#dc2626]">23°C</span>
+              </div>
+              <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <span class="text-[10px] text-slate-500 font-bold block">Độ ẩm</span>
+                <span id="detail-weather-humidity" class="text-sm font-extrabold text-slate-900">91%</span>
+              </div>
+              <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <span class="text-[10px] text-slate-500 font-bold block">Tình trạng</span>
+                <span id="detail-weather-status" class="text-xs font-extrabold text-slate-900 mt-0.5 block truncate">Dịu mát</span>
+              </div>
+            </div>
+
+            <!-- Dự báo 3 ngày chuyến đi -->
+            <div class="py-3 border-b border-slate-100 space-y-2">
+              <span class="text-[11px] font-extrabold text-slate-900 block flex items-center gap-1">
+                <span>📅</span> Dự Báo 3 Ngày Lịch Trình (22 - 24/11):
+              </span>
+              
+              <div class="space-y-1.5 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-xl bg-red-50/50 border border-red-100/70">
+                  <span class="font-bold text-slate-900">CN 22/11 (Ngày 1):</span>
+                  <span class="font-medium text-slate-700">🌤 20°C - 25°C • Nắng thu, se lạnh</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-150">
+                  <span class="font-bold text-slate-900">T2 23/11 (Ngày 2):</span>
+                  <span class="font-medium text-slate-700">⛅ 21°C - 26°C • Dịu mát, gió nhẹ</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-150">
+                  <span class="font-bold text-slate-900">T3 24/11 (Ngày 3):</span>
+                  <span class="font-medium text-slate-700">🌤 20°C - 24°C • Trời trong, khô ráo</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gợi ý trang phục -->
+            <div class="pt-2.5 text-[11px] text-slate-600 space-y-1">
+              <div class="flex items-center gap-1.5 font-bold text-slate-800">
+                <span>🧥</span> Gợi ý trang phục cho 8 anh em:
+              </div>
+              <p class="text-[10px] leading-relaxed text-slate-600">
+                Mang theo áo khoác ấm nhẹ hoặc hoodie vì sáng sớm và đêm muộn Hà Nội se lạnh (20°C). Ban ngày mát mẻ, nên đi giày thể thao êm chân vì đi bộ phố cổ và các di tích nhiều!
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
     </header>
 
     <!-- ================= FLIGHT INFO & COUNTDOWN (CONFIRMED ROUND TRIP) ================= -->
-    <section class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+    <section class="bg-white border-b border-slate-200 py-3.5 px-3 sm:px-6 lg:px-8">
+      <div class="w-full flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         
         <!-- Flight Details -->
         <div class="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -394,7 +469,7 @@
     </section>
 
     <!-- ================= MAIN BODY CONTAINER ================= -->
-    <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+    <main class="flex-1 w-full px-3 sm:px-6 lg:px-8 py-5">
 
       <!-- =========================================================================
            NỘI DUNG 1: LỊCH TRÌNH DẠNG BẢNG (CHỈ CHỨA LỊCH TRÌNH + GOOGLE MAPS HOVER)
@@ -664,7 +739,7 @@
 
     <!-- ================= FOOTER ================= -->
     <footer class="mt-auto border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-600 font-medium">
-      <div class="max-w-7xl mx-auto px-4 space-y-1">
+      <div class="w-full px-3 sm:px-6 lg:px-8 space-y-1">
         <div class="flex items-center justify-center gap-2 mb-1">
           <img src="logo.png" alt="SUGOI" class="w-6 h-6 object-contain" onerror="this.onerror=null; this.src='Gemini_Generated_Image_wyeclpwyeclpwyec.png';" />
           <span class="font-baloo text-sm font-extrabold text-slate-800">SUGOI HANOI TRIP • 2026</span>
@@ -1213,7 +1288,7 @@
       }
     }
 
-    function saveState() {
+    function saveState(sync = true) {
       const data = {
         timeSlots,
         scheduleEvents,
@@ -1224,10 +1299,116 @@
         userVotedMap
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      if (sync) {
+        syncToCloud();
+      }
+    }
+
+    /* =========================================================================
+       CLOUD PERSISTENCE (VERCEL BLOB SYNC - DÙNG CHUNG CHO CẢ 8 BẠN)
+       ========================================================================= */
+    let cloudSyncTimer = null;
+
+    function syncToCloud() {
+      if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
+      cloudSyncTimer = setTimeout(async () => {
+        try {
+          updateSyncStatusUI('saving');
+          const payload = {
+            timeSlots,
+            scheduleEvents,
+            baseExpenses,
+            commentsList,
+            checklistItems,
+            checklistChecked,
+            userVotedMap
+          };
+          const res = await fetch('/api/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            updateSyncStatusUI('saved');
+          } else {
+            updateSyncStatusUI('offline');
+          }
+        } catch (e) {
+          console.warn('Cloud sync error (fallback to local):', e);
+          updateSyncStatusUI('offline');
+        }
+      }, 400);
+    }
+
+    async function loadCloudState() {
+      try {
+        const res = await fetch('/api/sync?t=' + Date.now());
+        if (res.ok) {
+          const resp = await res.json();
+          if (resp && resp.data) {
+            const data = resp.data;
+            let hasChanged = false;
+
+            if (data.timeSlots && Array.isArray(data.timeSlots) && data.timeSlots.length > 0) {
+              timeSlots = data.timeSlots;
+              hasChanged = true;
+            }
+            if (Array.isArray(data.scheduleEvents)) {
+              scheduleEvents = data.scheduleEvents;
+              hasChanged = true;
+            }
+            if (Array.isArray(data.baseExpenses) && data.baseExpenses.length > 0) {
+              baseExpenses = data.baseExpenses;
+              hasChanged = true;
+            }
+            if (Array.isArray(data.commentsList)) {
+              commentsList = data.commentsList;
+              hasChanged = true;
+            }
+            if (Array.isArray(data.checklistItems) && data.checklistItems.length > 0) {
+              checklistItems = data.checklistItems;
+              hasChanged = true;
+            }
+            if (data.checklistChecked) {
+              checklistChecked = data.checklistChecked;
+              hasChanged = true;
+            }
+            if (data.userVotedMap) {
+              userVotedMap = data.userVotedMap;
+              hasChanged = true;
+            }
+
+            if (hasChanged) {
+              saveState(false);
+              renderAll();
+            }
+            updateSyncStatusUI('saved');
+            return true;
+          }
+        }
+      } catch (err) {
+        console.warn('Could not load from cloud, using local cache:', err);
+      }
+      updateSyncStatusUI('saved');
+      return false;
+    }
+
+    function updateSyncStatusUI(status) {
+      const el = document.getElementById('cloud-sync-status');
+      if (!el) return;
+      if (status === 'saving' || status === 'loading') {
+        el.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span><span class="text-amber-600 font-bold">Đang lưu đám mây...</span>';
+      } else if (status === 'saved') {
+        el.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span class="text-emerald-700 font-bold">Đám mây đã lưu</span>';
+      } else {
+        el.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span><span class="text-slate-500 font-bold">Lưu máy</span>';
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       loadState();
+      initTabRouting();
+      loadCloudState();
       initCountdown();
       updateHanoiClock();
       setInterval(updateHanoiClock, 1000);
@@ -1235,6 +1416,9 @@
 
       // Refresh live weather every 10 minutes
       setInterval(fetchLiveHanoiWeather, 600000);
+
+      // Tự động kiểm tra dữ liệu đám mây mỗi 30 giây để cập nhật tức thì nếu có bạn khác sửa
+      setInterval(loadCloudState, 30000);
 
       // Check saved sidebar collapse state for desktop
       if (window.innerWidth >= 1024 && localStorage.getItem('sugoi_sidebar_collapsed') === 'true') {
@@ -1254,9 +1438,25 @@
     }
 
     /* =========================================================================
-       LIVE 24/7 HANOI WEATHER CRAWLER (OPEN-METEO API)
+       LIVE 24/7 HANOI WEATHER CRAWLER & DROPDOWN (OPEN-METEO API)
        ========================================================================= */
     
+    function toggleWeatherDropdown(e) {
+      if (e) e.stopPropagation();
+      const dd = document.getElementById('weather-dropdown');
+      if (dd) {
+        dd.classList.toggle('hidden');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const dd = document.getElementById('weather-dropdown');
+      const widget = document.getElementById('weather-widget');
+      if (dd && !dd.contains(e.target) && widget && !widget.contains(e.target)) {
+        dd.classList.add('hidden');
+      }
+    });
+
     function updateHanoiClock() {
       const el = document.getElementById('live-hanoi-time');
       if (!el) return;
@@ -1280,13 +1480,14 @@
 
     async function fetchLiveHanoiWeather() {
       try {
-        const url = 'https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current=temperature_2m,relative_humidity_2m,weather_code&timezone=Asia%2FBangkok';
+        const url = 'https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code&timezone=Asia%2FBangkok';
         const res = await fetch(url);
         if (!res.ok) throw new Error('Network error');
         const data = await res.json();
         
         if (data && data.current) {
           const temp = Math.round(data.current.temperature_2m * 10) / 10;
+          const feels = data.current.apparent_temperature ? Math.round(data.current.apparent_temperature * 10) / 10 : temp;
           const code = data.current.weather_code;
           const humidity = data.current.relative_humidity_2m;
           
@@ -1299,8 +1500,23 @@
           else if (code >= 61 && code <= 65) desc = 'Mưa rào rải rác';
           else if (code >= 80) desc = 'Có mưa rào';
 
-          document.getElementById('live-temp-display').textContent = `Hà Nội: ${temp}°C`;
-          document.getElementById('live-weather-desc').textContent = `${desc} (${humidity}%)`;
+          const tempEl = document.getElementById('live-temp-display');
+          if (tempEl) tempEl.textContent = `Hà Nội: ${temp}°C`;
+
+          const descEl = document.getElementById('live-weather-desc');
+          if (descEl) descEl.textContent = `${desc} (${humidity}%)`;
+
+          const detailTemp = document.getElementById('detail-weather-temp');
+          if (detailTemp) detailTemp.textContent = `${temp}°C`;
+
+          const detailHumidity = document.getElementById('detail-weather-humidity');
+          if (detailHumidity) detailHumidity.textContent = `${humidity}%`;
+
+          const detailFeels = document.getElementById('detail-weather-feels');
+          if (detailFeels) detailFeels.textContent = `${feels}°C`;
+
+          const detailStatus = document.getElementById('detail-weather-status');
+          if (detailStatus) detailStatus.textContent = desc;
         }
       } catch (e) {
         console.warn('Weather fetch fallback:', e);
@@ -1308,7 +1524,7 @@
     }
 
     /* =========================================================================
-       SIDEBAR & TAB NAVIGATION (BẤM 3 GẠCH THU GỌN / MỞ RỘNG)
+       SIDEBAR & TAB NAVIGATION WITH URL HASH ROUTING (F5 KHÔNG MẤT VỊ TRÍ)
        ========================================================================= */
     function toggleSidebar(forceState) {
       const sidebar = document.getElementById('app-sidebar');
@@ -1334,20 +1550,27 @@
     }
 
     function switchTab(tabId) {
+      if (!['schedule', 'budget', 'checklist'].includes(tabId)) tabId = 'schedule';
       activeTab = tabId;
+
+      // Cập nhật URL Hash để khi F5 trình duyệt giữ nguyên vị trí tab!
+      if (window.location.hash.replace('#', '') !== tabId) {
+        history.replaceState(null, '', '#' + tabId);
+      }
+
       const schedContent = document.getElementById('content-schedule');
       const budgetContent = document.getElementById('content-budget');
       const checklistContent = document.getElementById('content-checklist');
 
-      schedContent.classList.add('hidden');
-      budgetContent.classList.add('hidden');
-      checklistContent.classList.add('hidden');
+      if (schedContent) schedContent.classList.add('hidden');
+      if (budgetContent) budgetContent.classList.add('hidden');
+      if (checklistContent) checklistContent.classList.add('hidden');
 
-      if (tabId === 'schedule') {
+      if (tabId === 'schedule' && schedContent) {
         schedContent.classList.remove('hidden');
-      } else if (tabId === 'budget') {
+      } else if (tabId === 'budget' && budgetContent) {
         budgetContent.classList.remove('hidden');
-      } else if (tabId === 'checklist') {
+      } else if (tabId === 'checklist' && checklistContent) {
         checklistContent.classList.remove('hidden');
       }
 
@@ -1367,6 +1590,22 @@
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function initTabRouting() {
+      const hash = window.location.hash.replace('#', '');
+      if (['schedule', 'budget', 'checklist'].includes(hash)) {
+        switchTab(hash);
+      } else {
+        switchTab('schedule');
+      }
+
+      window.addEventListener('hashchange', () => {
+        const newHash = window.location.hash.replace('#', '');
+        if (['schedule', 'budget', 'checklist'].includes(newHash) && newHash !== activeTab) {
+          switchTab(newHash);
+        }
+      });
     }
 
     function updateBadges() {
@@ -1446,13 +1685,13 @@
               const displayImg = item.imageUrl || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80';
 
               return `
-                <div class="p-3 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-2 mb-2 relative">
-                  <!-- Ảnh trực tiếp trên thẻ kèo lịch trình (Theo yêu cầu: tôi cần cả hình ở đây) -->
-                  <div class="w-full h-28 rounded-lg overflow-hidden border border-slate-200 bg-slate-100 relative group/cardimg mb-1.5 shadow-2xs">
-                    <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover/cardimg:scale-105" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
+                <div class="p-3 rounded-2xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-2 mb-2 relative">
+                  <!-- Ảnh trực tiếp trên thẻ kèo lịch trình (Cố định kích thước chuẩn 124px, không méo hình) -->
+                  <div class="w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-100 relative group/cardimg mb-1.5 shadow-2xs shrink-0" style="height: 124px;">
+                    <img src="${displayImg}" alt="${item.title}" style="width: 100%; height: 124px; object-fit: cover;" class="transition-transform duration-300 group-hover/cardimg:scale-105 block" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
                     <span class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[8px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh quán</span>
                     ${item.rating ? `
-                      <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-black/60 text-amber-300 backdrop-blur-xs flex items-center gap-0.5">
+                      <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded text-[9px] font-extrabold bg-black/70 text-amber-300 backdrop-blur-xs flex items-center gap-0.5 shadow-xs">
                         ★ ${item.rating.replace('★', '').trim()}
                       </span>
                     ` : ''}
@@ -1470,75 +1709,125 @@
                   <div class="relative group/map inline-block max-w-full">
                     <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="text-[11px] font-bold text-slate-700 hover:text-[#dc2626] flex items-center gap-1.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 px-2 py-1 rounded-lg transition" title="${item.title}">
                       <svg class="w-3.5 h-3.5 text-[#dc2626] shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                      <span class="truncate max-w-[130px] font-bold">${item.title}</span>
+                      <span class="truncate max-w-[150px] font-bold">${item.title}</span>
                       <span class="text-[9px] text-[#dc2626] font-bold bg-white px-1 py-0.2 rounded border border-red-100">Bản đồ ↗</span>
                     </a>
 
                     <!-- Hover Live Map Popup (Mở hướng xuống top-full mt-2 KHÔNG BAO GIỜ BỊ KHUẤT) -->
-                    <div class="absolute ${popupPlacement} hidden group-hover/map:block z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3.5 pointer-events-auto transition text-left">
+                    <div class="absolute ${popupPlacement} hidden group-hover/map:block z-50 w-88 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden pointer-events-auto transition text-left">
                       
-                      <!-- Ảnh quán / món ăn từ Google Maps -->
-                      <div class="w-full h-32 rounded-xl overflow-hidden mb-2.5 relative border border-slate-200 bg-slate-100">
-                        <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover" />
-                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/60 text-white backdrop-blur-xs">Ảnh Google Maps</span>
+                      <!-- 1. Ảnh bìa Hero cover photo từ Google Maps với Gradient & Badges -->
+                      <div class="w-full relative bg-slate-900 overflow-hidden shrink-0" style="height: 140px;">
+                        <img src="${displayImg}" alt="${item.title}" style="width: 100%; height: 140px; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80'" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        
+                        <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-[#1a73e8] text-white shadow-md flex items-center gap-1 backdrop-blur-xs">
+                          <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                          Google Maps
+                        </span>
+
+                        ${item.openStatus ? `
+                          <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-black/60 text-emerald-400 border border-emerald-400/40 backdrop-blur-xs">
+                            ${item.openStatus.split('·')[0].trim()}
+                          </span>
+                        ` : ''}
+
+                        <div class="absolute bottom-2 left-3 right-3 text-white">
+                          <h4 class="text-sm font-baloo font-extrabold leading-tight drop-shadow-md break-words">${item.title}</h4>
+                          <div class="flex items-center gap-1.5 text-[11px] font-semibold text-white/90 drop-shadow flex-wrap mt-0.5">
+                            <span class="font-bold text-amber-300">★ ${item.rating ? item.rating.replace('★','').trim() : '4.8'}</span>
+                            <span class="text-white/80">(${item.reviews || 'Đã xác minh'})</span>
+                            <span class="text-white/40">•</span>
+                            <span class="text-white/90 font-medium">${item.category || 'Địa điểm'}</span>
+                            ${item.priceRange ? `
+                              <span class="text-white/40">•</span>
+                              <span class="text-amber-200 font-bold">${item.priceRange}</span>
+                            ` : ''}
+                          </div>
+                        </div>
                       </div>
 
-                      <!-- Header tên quán & badge -->
-                      <div class="flex items-start justify-between gap-1.5 pb-2 mb-2 border-b border-slate-100">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                          <svg class="w-4 h-4 text-[#dc2626] shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                          <span class="text-xs font-baloo font-extrabold text-slate-900 truncate">${item.title}</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 shrink-0">Google Maps</span>
+                      <!-- 2. Action buttons (Đường đi, Gọi điện, Website) -->
+                      <div class="p-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
+                        <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="flex-1 py-1 px-2 bg-[#1a73e8] hover:bg-blue-700 text-white rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 transition shadow-xs">
+                          <svg class="w-3 h-3 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M21.71 11.29l-9-9a.996.996 0 0 0-1.41 0l-9 9a.996.996 0 0 0 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9a.996.996 0 0 0 0-1.41zm-8.71 6.3V14h-4v-4h4V6.41L18.59 12 13 17.59z"/></svg>
+                          <span>Đường đi</span>
+                        </a>
+                        ${item.phone ? `
+                          <a href="tel:${item.phone.replace(/[^0-9+]/g, '')}" class="flex-1 py-1 px-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 transition shadow-2xs">
+                            <span>📞</span>
+                            <span class="truncate">${item.phone}</span>
+                          </a>
+                        ` : ''}
+                        ${item.website ? `
+                          <a href="${item.website}" target="_blank" rel="noopener" class="py-1 px-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 transition shadow-2xs">
+                            <span>🌐</span>
+                            <span>Web</span>
+                          </a>
+                        ` : ''}
                       </div>
 
-                      <!-- Dòng đánh giá sao & số lượt bình luận (VD: 4.9 ★★★★★ (8)) -->
-                      <div class="flex items-center gap-2 mb-2 text-xs font-bold bg-amber-50/70 p-1.5 rounded-lg border border-amber-100">
-                        <div class="text-amber-500 flex items-center gap-1">
-                          <span class="text-sm">★</span>
-                          <span class="text-slate-900 font-extrabold">${item.rating || '4.9'}</span>
+                      <!-- 3. Chi tiết địa điểm (Địa chỉ, Giờ mở cửa, SĐT, Plus Code, Notes) -->
+                      <div class="p-3 space-y-1.5 text-[11px] text-slate-700 bg-white">
+                        <div class="flex items-start gap-2">
+                          <span class="text-slate-400 shrink-0 text-xs mt-0.5">📍</span>
+                          <span class="font-medium text-slate-800 leading-tight break-words">${item.address || item.location || 'Địa chỉ đang cập nhật'}</span>
                         </div>
-                        <span class="text-slate-300">•</span>
-                        <span class="text-slate-700 text-[11px] font-semibold">${item.reviews || '(8 đánh giá)'}</span>
-                        <span class="text-slate-300">•</span>
-                        <span class="text-slate-600 text-[10px] uppercase font-bold">Ẩm thực / Địa điểm</span>
-                      </div>
 
-                      <!-- Địa chỉ chi tiết & Số điện thoại & Bình luận dặn dò -->
-                      <div class="space-y-1.5 mb-2.5 text-[11px]">
-                        <div class="flex items-start gap-1.5 text-slate-700 font-semibold leading-tight">
-                          <span class="text-slate-400 shrink-0 mt-0.5">📍</span>
-                          <span class="break-words">${item.address || item.location || 'Địa chỉ đang cập nhật'}</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 text-slate-700 font-semibold">
-                          <span class="text-slate-400 shrink-0">📞</span>
-                          ${item.phone ? `<a href="tel:${item.phone}" class="text-[#dc2626] hover:underline font-mono font-bold">${item.phone}</a>` : `<span class="text-slate-400 font-medium">Chưa cập nhật SĐT</span>`}
-                        </div>
+                        ${item.openStatus ? `
+                          <div class="flex items-center gap-2">
+                            <span class="text-slate-400 shrink-0 text-xs">🕒</span>
+                            <span class="font-medium text-slate-700">${item.openStatus}</span>
+                          </div>
+                        ` : ''}
+
+                        ${item.phone ? `
+                          <div class="flex items-center gap-2">
+                            <span class="text-slate-400 shrink-0 text-xs">📞</span>
+                            <a href="tel:${item.phone.replace(/[^0-9+]/g, '')}" class="font-mono font-bold text-[#dc2626] hover:underline">${item.phone}</a>
+                          </div>
+                        ` : ''}
+
+                        ${item.plusCode ? `
+                          <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                            <span class="text-slate-400 shrink-0 text-xs">❖</span>
+                            <span class="font-mono">${item.plusCode}</span>
+                          </div>
+                        ` : ''}
+
                         ${item.notes ? `
-                          <div class="flex items-start gap-1.5 text-slate-700 font-medium bg-slate-50 p-2 rounded-lg border border-slate-200">
-                            <span class="text-amber-500 shrink-0">💬</span>
+                          <div class="flex items-start gap-1.5 bg-amber-50/80 p-2 rounded-lg border border-amber-200/60 text-amber-950 font-medium">
+                            <span class="text-amber-500 shrink-0 text-xs">💬</span>
                             <span class="break-words"><strong>Lưu ý:</strong> ${item.notes}</span>
                           </div>
                         ` : ''}
                       </div>
 
-                      <!-- Bản đồ vệ tinh / đường đi tương tác Google Maps -->
-                      <div class="w-full h-28 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 mb-2.5">
+                      <!-- 4. Bản đồ vệ tinh nhúng trực tiếp -->
+                      <div class="w-full h-24 border-t border-b border-slate-200 bg-slate-100">
                         <iframe class="w-full h-full border-0" loading="lazy" src="https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s${encodeURIComponent(mapEmbedQuery)}"></iframe>
                       </div>
 
-                      <!-- Nút mở Google Maps & Chỉ đường -->
-                      <div class="flex items-center justify-between text-[11px] font-semibold pt-1 border-t border-slate-100">
+                      <!-- 5. Footer links -->
+                      <div class="p-2.5 bg-slate-50 flex items-center justify-between text-[11px] font-semibold">
                         <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="text-slate-600 hover:text-slate-900 font-bold flex items-center gap-1">
                           Mở Google Maps ↗
                         </a>
-                        <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="text-[#dc2626] hover:underline font-bold flex items-center gap-0.5 shrink-0">
+                        <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="text-[#dc2626] hover:underline font-bold flex items-center gap-0.5">
                           Chỉ đường ↗
                         </a>
                       </div>
 
                     </div>
                   </div>
+
+                  <!-- HIỆN NOTE TRỰC TIẾP TRÊN THẺ KÈO (Theo yêu cầu: thiếu hiện note ở đây) -->
+                  ${item.notes ? `
+                    <div class="p-2 rounded-xl bg-amber-50/90 border border-amber-200/80 text-[11px] text-amber-950 font-medium flex items-start gap-1.5">
+                      <span class="text-amber-500 shrink-0 text-xs mt-0.5">💬</span>
+                      <span class="leading-snug break-words"><strong>Lưu ý:</strong> ${item.notes}</span>
+                    </div>
+                  ` : ''}
 
                   <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-[10px]">
                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -1557,7 +1846,7 @@
           }
 
           daysHtml += `
-            <td class="py-3 px-3 align-top border-r border-slate-200 min-w-[210px]">
+            <td class="py-3 px-3 align-top border-r border-slate-200 min-w-[260px]">
               <div class="space-y-1">
                 ${eventsListHtml}
                 <button onclick="openProposalModal('${day}', '${slot.id}')" class="w-full py-1.5 px-2 rounded-lg border border-dashed border-slate-300 hover:border-[#dc2626] hover:bg-red-50/40 text-slate-600 hover:text-[#dc2626] text-[11px] font-bold transition flex items-center justify-center gap-1">
