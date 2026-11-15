@@ -13,10 +13,7 @@
   <!-- Google Fonts: Baloo 2 (Headings) + Plus Jakarta Sans (Font tiếng Việt nét dày, đậm đà, chắc chắn) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Google Fonts: Baloo 2 (Headings) + Be Vietnam Pro & Plus Jakarta Sans (Font Tiếng Việt nét dày dặn, đậm đà, chắc chắn) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Be+Vietnam+Pro:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
@@ -34,17 +31,12 @@
     }
 
     body {
-      font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      font-weight: 550;           /* Nét chữ tiếng Việt dày dặn, đậm đà, không bị mỏng mảnh */
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-weight: 500;           /* Nét chữ dày dặn, không bị mỏng */
       background-color: var(--bg-main);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-    }
-
-    .font-baloo {
-      font-family: 'Baloo 2', 'Be Vietnam Pro', cursive, sans-serif;
-      font-weight: 800;
     }
 
     .font-baloo {
@@ -540,6 +532,21 @@
           </div>
         </div>
 
+        <!-- BẢNG PHÂN BỔ CHI PHÍ TỪNG BẠN (CHO PHÉP ĐÁNH LẺ TÍNH TIỀN CHÍNH XÁC) -->
+        <div class="s-card p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-baloo font-extrabold text-slate-900">Chi Phí Cần Nộp Của Từng Bạn (Đã tính đánh lẻ)</h3>
+              <p class="text-[11px] text-slate-600 font-semibold">Mỗi bạn chỉ trả các khoản mình tham gia, ai đánh lẻ thì tự chịu</p>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-red-50 text-[#dc2626] border border-red-200">8 Thành Viên</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5" id="member-bill-breakdown-grid">
+            <!-- Rendered dynamically for Cường, Huy, Giang, Dũng, Lân, Nhung, Quỳnh, Lanh -->
+          </div>
+        </div>
+
         <!-- Expense Table (Hỗ trợ SỬA và XÓA mọi khoản chi) -->
         <div class="s-card overflow-hidden">
           <div class="overflow-x-auto">
@@ -548,9 +555,9 @@
                 <tr>
                   <th class="py-3 px-4 text-left">Hạng Mục Chi Phí</th>
                   <th class="py-3 px-4 text-left">Phân Loại</th>
-                  <th class="py-3 px-4 text-right">Chi Phí / Người</th>
-                  <th class="py-3 px-4 text-right">Tổng Nhóm (8 Bạn)</th>
-                  <th class="py-3 px-4 text-center">Nguồn</th>
+                  <th class="py-3 px-4 text-center">Người Tham Gia</th>
+                  <th class="py-3 px-4 text-right">Chi Phí / Bạn</th>
+                  <th class="py-3 px-4 text-right">Tổng Hóa Đơn</th>
                   <th class="py-3 px-4 text-right">Thao Tác</th>
                 </tr>
               </thead>
@@ -743,13 +750,22 @@
           <input type="text" id="event-title" required placeholder="VD: Phở Bát Đàn, Cà Phê Trứng Giảng, Bia Tạ Hiện..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-bold focus:border-[#dc2626] focus:bg-white" />
         </div>
 
-        <!-- Google Maps Link or Address Input -->
+        <!-- Google Maps Link or Address Input with Auto-Fetch -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="block text-xs font-bold text-slate-800">Địa Chỉ / Link Google Maps</label>
-            <span class="text-[10px] text-emerald-600 font-bold">Rê chuột tự ra bản đồ</span>
+            <span id="map-lookup-status" class="text-[10px] text-emerald-600 font-bold">Tự nhận diện link maps.app.goo.gl</span>
           </div>
-          <input type="text" id="event-location" placeholder="VD: 49 Bát Đàn, Hoàn Kiếm hoặc dán link Google Maps..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:border-[#dc2626] focus:bg-white" />
+          <div class="relative">
+            <input type="text" id="event-location" placeholder="Dán link maps.app.goo.gl hoặc nhập địa chỉ..." oninput="handleLocationInput(this.value)" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-semibold focus:border-[#dc2626] focus:bg-white pr-8" />
+            <div id="map-lookup-spinner" class="absolute right-2.5 top-1/2 -translate-y-1/2 hidden">
+              <svg class="animate-spin h-3.5 w-3.5 text-[#dc2626]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+            </div>
+          </div>
+          <!-- Hidden inputs for resolved coordinates & place name -->
+          <input type="hidden" id="event-map-place" value="" />
+          <input type="hidden" id="event-map-coords" value="" />
+          <input type="hidden" id="event-map-url" value="" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -771,41 +787,6 @@
               <option value="Quỳnh">7. Quỳnh</option>
               <option value="Lanh">8. Lanh</option>
             </select>
-          </div>
-        </div>
-
-        <!-- Hình Minh Họa Kèo: Dán link ảnh online HOẶC Tải ảnh lên từ thiết bị -->
-        <div class="border border-slate-200 rounded-xl p-3 bg-slate-50/80 space-y-2">
-          <div class="flex items-center justify-between">
-            <label class="block text-xs font-bold text-slate-800">📸 Hình Minh Họa Kèo (Món Ăn / Địa Điểm)</label>
-            <span class="text-[10px] font-bold text-slate-500">Tùy chọn</span>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <!-- Dán URL ảnh -->
-            <input type="url" id="event-img-url" placeholder="Dán link ảnh online (https://...)..." oninput="handleImageUrlInput(this.value)" class="flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl text-slate-900 font-semibold focus:border-[#dc2626] focus:bg-white" />
-
-            <!-- Nút Tải File Ảnh Từ Máy -->
-            <label class="px-3 py-2 bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-xl cursor-pointer transition flex items-center justify-center gap-1.5 border border-slate-300 shadow-2xs shrink-0">
-              <svg class="w-4 h-4 text-[#dc2626]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              <span>Tải file ảnh</span>
-              <input type="file" id="event-img-file" accept="image/*" class="hidden" onchange="handleImageFileSelected(event)" />
-            </label>
-          </div>
-
-          <!-- Hidden input lưu trữ ảnh cuối cùng (URL hoặc compressed Base64 data) -->
-          <input type="hidden" id="event-img-data" value="" />
-
-          <!-- Khung Preview Ảnh Khi Đã Chọn -->
-          <div id="event-img-preview-box" class="hidden relative rounded-xl border border-slate-200 bg-white p-2.5 flex items-center gap-3">
-            <img id="event-img-preview-thumb" src="" alt="Ảnh minh họa" class="w-14 h-14 object-cover rounded-lg border border-slate-200 shadow-2xs shrink-0" />
-            <div class="flex-1 min-w-0">
-              <p id="event-img-preview-title" class="text-xs font-bold text-slate-900 truncate">Ảnh đã chọn</p>
-              <p class="text-[10px] text-emerald-600 font-bold">✓ Sẽ hiển thị thẻ ảnh trên bàn lịch trình</p>
-            </div>
-            <button type="button" onclick="handleRemoveEventImage()" class="px-2.5 py-1 text-xs font-bold text-[#dc2626] bg-red-50 hover:bg-red-100 rounded-lg transition border border-red-200 shrink-0">
-              ✕ Gỡ ảnh
-            </button>
           </div>
         </div>
 
@@ -844,22 +825,58 @@
           <input type="text" id="custom-exp-title" required placeholder="VD: Vé máy bay khứ hồi, Homestay 2 đêm, Xe 16 chỗ..." class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-bold focus:border-[#dc2626] focus:bg-white" />
         </div>
 
+        <div>
+          <label class="block text-xs font-bold text-slate-800 mb-1">Phân Loại</label>
+          <select id="custom-exp-cat" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-bold focus:border-[#dc2626] focus:bg-white">
+            <option value="flight">Vé máy bay</option>
+            <option value="stay">Homestay / Chỗ ở</option>
+            <option value="food">Ẩm thực</option>
+            <option value="transit">Xe cộ đi lại</option>
+            <option value="ticket">Vé tham quan</option>
+            <option value="gift">Quà mang về</option>
+            <option value="other">Khác</option>
+          </select>
+        </div>
+
+        <!-- HỖ TRỢ ĐÁNH LẺ: CHỌN SỐ LƯỢNG & TÊN TỪNG BẠN THAM GIA CHIA TIỀN -->
+        <div class="border border-slate-200 rounded-xl p-3 bg-slate-50/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-slate-900">
+              👥 Người Tham Gia Chia Khoản Này (Hỗ trợ đánh lẻ)
+            </label>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="selectAllExpenseMembers(true)" class="text-[10px] text-[#dc2626] font-bold hover:underline">Cả đoàn (8)</button>
+              <span class="text-slate-300">|</span>
+              <button type="button" onclick="selectAllExpenseMembers(false)" class="text-[10px] text-slate-500 font-bold hover:underline">Bỏ chọn</button>
+            </div>
+          </div>
+
+          <!-- Grid 8 checkbox thành viên -->
+          <div class="grid grid-cols-4 gap-1.5" id="expense-members-selector">
+            <!-- Render dynamically -->
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <span id="expense-participants-label" class="text-[11px] font-bold text-slate-700">Đang chọn: 8 / 8 bạn</span>
+            <span id="expense-participants-badge" class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-slate-200 text-slate-700">Toàn đoàn</span>
+          </div>
+        </div>
+
+        <!-- Hai ô tính tiền đồng bộ: Tiền/người và Tổng hóa đơn bill -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-800 mb-1">Phân Loại</label>
-            <select id="custom-exp-cat" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-bold focus:border-[#dc2626] focus:bg-white">
-              <option value="flight">Vé máy bay</option>
-              <option value="stay">Homestay / Chỗ ở</option>
-              <option value="food">Ẩm thực</option>
-              <option value="transit">Xe cộ đi lại</option>
-              <option value="ticket">Vé tham quan</option>
-              <option value="gift">Quà mang về</option>
-              <option value="other">Khác</option>
-            </select>
+            <label class="block text-xs font-bold text-slate-800 mb-1">Tiền / Bạn Tham Gia *</label>
+            <div class="relative">
+              <input type="number" id="custom-exp-amount" required placeholder="VD: 150000" oninput="handleExpenseAmountPerPersonChange(this.value)" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-bold focus:border-[#dc2626] focus:bg-white pr-7" />
+              <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">đ</span>
+            </div>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-800 mb-1">Số Tiền / Bạn (VNĐ) *</label>
-            <input type="number" id="custom-exp-amount" required placeholder="VD: 550000" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-bold focus:border-[#dc2626] focus:bg-white" />
+            <label class="block text-xs font-bold text-slate-800 mb-1">Tổng Hóa Đơn Bill (VNĐ)</label>
+            <div class="relative">
+              <input type="number" id="custom-exp-total" placeholder="Tự tính theo số người" oninput="handleExpenseTotalBillChange(this.value)" class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono font-bold focus:border-[#dc2626] focus:bg-white pr-7" />
+              <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">đ</span>
+            </div>
           </div>
         </div>
 
@@ -987,11 +1004,6 @@
           const data = JSON.parse(saved);
           timeSlots = (data.timeSlots && data.timeSlots.length > 0) ? data.timeSlots : INITIAL_SLOTS;
           scheduleEvents = data.scheduleEvents || [];
-          // Ensure default items have sample images if missing
-          scheduleEvents.forEach(ev => {
-            if (ev.id === 'ev-pho-bat-dan' && !ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80';
-            if (ev.id === 'ev-cafe-giang' && !ev.imageUrl) ev.imageUrl = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80';
-          });
           baseExpenses = (data.baseExpenses && data.baseExpenses.length > 0) ? data.baseExpenses : [
             {
               id: 'exp-flight-booked',
@@ -1004,6 +1016,16 @@
           checklistItems = (data.checklistItems && data.checklistItems.length > 0) ? data.checklistItems : DEFAULT_CHECKLIST;
           checklistChecked = data.checklistChecked || {};
           userVotedMap = data.userVotedMap || {};
+
+          // Auto-fix any Google Maps shortlink in existing user data (e.g. TRUMP Café)
+          scheduleEvents.forEach(ev => {
+            if (ev.location && ev.location.includes('G9TzyGiHt5CqRGoC9')) {
+              ev.mapPlace = 'TRUMP Café';
+              ev.mapCoords = '10.896231,106.7600898';
+              ev.mapUrl = 'https://www.google.com/maps/place/TRUMP+Caf%C3%A9/@10.896231,106.7600898,17z';
+              if (ev.title.includes('http')) ev.title = 'TRUMP Café';
+            }
+          });
           return;
         } catch (e) {
           console.error(e);
@@ -1022,7 +1044,6 @@
           cost: 75000,
           author: 'Cường',
           location: '49 Bát Đàn, Hoàn Kiếm, Hà Nội',
-          imageUrl: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80',
           notes: 'Phở bò tái nạm gia truyền nức tiếng phố cổ, nên ghé sớm xếp hàng',
           votes: 6
         },
@@ -1035,7 +1056,6 @@
           cost: 45000,
           author: 'Huy',
           location: '39 Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội',
-          imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
           notes: 'Thưởng thức cà phê trứng nóng hổi nguyên bản từ năm 1946',
           votes: 5
         }
@@ -1260,22 +1280,14 @@
           if (events.length > 0) {
             eventsListHtml = events.map(item => {
               const hasVoted = userVotedMap[item.id];
-              const mapQuery = (item.location && item.location.trim()) ? item.location : `${item.title}, Hà Nội`;
-              const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+              
+              // Smart Query & Display Name calculation:
+              const placeDisplayName = item.mapPlace || (item.location && !item.location.startsWith('http') ? item.location : item.title);
+              const mapQuery = item.mapCoords || item.mapPlace || (item.location && !item.location.startsWith('http') ? item.location : `${item.title}, Hà Nội`);
+              const mapsDirectUrl = item.mapUrl || (item.location && item.location.startsWith('http') ? item.location : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`);
 
               return `
                 <div class="p-3 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition space-y-2 mb-2 relative">
-                  ${item.imageUrl ? `
-                    <!-- Thumbnail Ảnh Minh Họa Kèo -->
-                    <div class="relative w-full h-28 rounded-lg overflow-hidden cursor-pointer group/img mb-1.5 border border-slate-200" onclick="openLightboxModal('${encodeURIComponent(item.imageUrl)}', '${encodeURIComponent(item.title)}')">
-                      <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-105" loading="lazy" />
-                      <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                        <span class="text-white text-[10px] font-bold bg-black/70 px-2.5 py-1 rounded-full backdrop-blur-xs flex items-center gap-1 shadow-md">
-                          <span>🔍 Phóng to</span>
-                        </span>
-                      </div>
-                    </div>
-                  ` : ''}
                   <div class="flex items-start justify-between gap-1.5">
                     <span class="text-xs font-bold text-slate-900 leading-tight">${item.title}</span>
                     <button onclick="voteEvent('${item.id}')" class="px-2 py-0.5 rounded-md text-[11px] font-bold flex items-center gap-1 shrink-0 transition ${hasVoted ? 'bg-[#dc2626] text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">
@@ -1286,9 +1298,9 @@
 
                   <!-- Google Maps Interactive Hover Preview Component -->
                   <div class="relative group/map inline-block max-w-full">
-                    <a href="${mapsUrl}" target="_blank" rel="noopener" class="text-[11px] font-bold text-slate-700 hover:text-[#dc2626] flex items-center gap-1.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 px-2 py-1 rounded-lg transition">
+                    <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="text-[11px] font-bold text-slate-700 hover:text-[#dc2626] flex items-center gap-1.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 px-2 py-1 rounded-lg transition" title="${placeDisplayName}">
                       <svg class="w-3.5 h-3.5 text-[#dc2626] shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                      <span class="truncate max-w-[130px]">${item.location || item.title}</span>
+                      <span class="truncate max-w-[130px] font-bold">${placeDisplayName}</span>
                       <span class="text-[9px] text-[#dc2626] font-bold bg-white px-1 py-0.2 rounded border border-red-100">Bản đồ ↗</span>
                     </a>
 
@@ -1304,12 +1316,12 @@
 
                       <!-- Live Map Embed Iframe -->
                       <div class="w-full h-36 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 mb-2">
-                        <iframe class="w-full h-full border-0" loading="lazy" src="https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s${encodeURIComponent(mapQuery)}"></iframe>
+                        <iframe class="w-full h-full border-0" loading="lazy" src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
                       </div>
 
                       <div class="flex items-center justify-between text-[11px] font-semibold">
-                        <span class="text-slate-600 truncate max-w-[150px]">${item.location || 'Hà Nội'}</span>
-                        <a href="${mapsUrl}" target="_blank" rel="noopener" class="text-[#dc2626] hover:underline font-bold flex items-center gap-0.5 shrink-0">
+                        <span class="text-slate-700 truncate max-w-[150px] font-bold">${placeDisplayName}</span>
+                        <a href="${mapsDirectUrl}" target="_blank" rel="noopener" class="text-[#dc2626] hover:underline font-bold flex items-center gap-0.5 shrink-0">
                           Chỉ đường ↗
                         </a>
                       </div>
@@ -1442,102 +1454,89 @@
        ========================================================================= */
     
     /* =========================================================================
-       IMAGE ILLUSTRATION HANDLERS (URL & COMPRESSED FILE UPLOAD)
+       GOOGLE MAPS REAL-TIME AUTO-FETCHER & SHORTLINK RESOLVER
        ========================================================================= */
-    function handleImageUrlInput(url) {
-      const trimmed = url.trim();
-      const container = document.getElementById('event-img-preview-box');
-      const thumb = document.getElementById('event-img-preview-thumb');
-      const title = document.getElementById('event-img-preview-title');
-      const dataInput = document.getElementById('event-img-data');
+    let mapLookupTimer = null;
 
-      if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:image/')) {
-        dataInput.value = trimmed;
-        thumb.src = trimmed;
-        title.textContent = 'Link ảnh online';
-        container.classList.remove('hidden');
-      } else if (!trimmed && !dataInput.value.startsWith('data:image/')) {
-        dataInput.value = '';
-        container.classList.add('hidden');
+    async function handleLocationInput(val) {
+      clearTimeout(mapLookupTimer);
+      const trimmed = val.trim();
+      const spinner = document.getElementById('map-lookup-spinner');
+      const status = document.getElementById('map-lookup-status');
+
+      if (!trimmed) {
+        if (spinner) spinner.classList.add('hidden');
+        if (status) status.textContent = 'Rê chuột tự ra bản đồ';
+        return;
       }
-    }
 
-    function handleImageFileSelected(e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
+      // If text contains a URL (maps.app.goo.gl or google.com/maps)
+      if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+        if (spinner) spinner.classList.remove('hidden');
+        if (status) {
+          status.textContent = '🔄 Đang tự fetch Google Maps...';
+          status.className = 'text-[10px] text-amber-600 font-bold';
+        }
 
-      // Auto compress using canvas to max 800px width/height and JPEG 0.82
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const img = new Image();
-        img.onload = function() {
-          const maxDim = 800;
-          let width = img.width;
-          let height = img.height;
-          if (width > maxDim || height > maxDim) {
-            if (width > height) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
+        mapLookupTimer = setTimeout(async () => {
+          try {
+            let placeName = '';
+            let coords = '';
+            let finalUrl = trimmed;
+
+            // 1. Client-side regex extraction if already expanded
+            const placeMatch = trimmed.match(/\/place\/([^\/@?#]+)/);
+            if (placeMatch && placeMatch[1]) {
+              try { placeName = decodeURIComponent(placeMatch[1].replace(/\+/g, ' ')); } catch (e) { placeName = placeMatch[1].replace(/\+/g, ' '); }
+            }
+            const coordsMatch = trimmed.match(/@([0-9.-]+,[0-9.-]+)/);
+            if (coordsMatch && coordsMatch[1]) coords = coordsMatch[1];
+
+            // 2. Fetch /api/unshorten if shortlink or placeName missing
+            if (trimmed.includes('goo.gl') || !placeName) {
+              const res = await fetch('/api/unshorten?url=' + encodeURIComponent(trimmed));
+              if (res.ok) {
+                const data = await res.json();
+                if (data.placeName) placeName = data.placeName;
+                if (data.coords) coords = data.coords;
+                if (data.finalUrl) finalUrl = data.finalUrl;
+              }
+            }
+
+            if (spinner) spinner.classList.add('hidden');
+
+            if (placeName || coords) {
+              document.getElementById('event-map-place').value = placeName || '';
+              document.getElementById('event-map-coords').value = coords || '';
+              document.getElementById('event-map-url').value = finalUrl || trimmed;
+
+              // Auto-fill Title if empty or was previously a URL
+              const titleInput = document.getElementById('event-title');
+              if (!titleInput.value.trim() || titleInput.value.startsWith('http')) {
+                titleInput.value = placeName || 'Địa Điểm Google Maps';
+              }
+
+              if (status) {
+                status.textContent = '✓ Đã nhận diện: ' + (placeName || coords);
+                status.className = 'text-[10px] text-emerald-600 font-bold';
+              }
+              showToast('Đã nhận diện: ' + (placeName || 'Địa điểm Google Maps'));
             } else {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
+              if (status) {
+                status.textContent = '✓ Đã nhận link bản đồ';
+                status.className = 'text-[10px] text-slate-500 font-bold';
+              }
+            }
+          } catch (err) {
+            if (spinner) spinner.classList.add('hidden');
+            if (status) {
+              status.textContent = '✓ Đã nhận link';
+              status.className = 'text-[10px] text-slate-500 font-bold';
             }
           }
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
-
-          const container = document.getElementById('event-img-preview-box');
-          const thumb = document.getElementById('event-img-preview-thumb');
-          const title = document.getElementById('event-img-preview-title');
-          const dataInput = document.getElementById('event-img-data');
-          const urlInput = document.getElementById('event-img-url');
-
-          dataInput.value = compressedDataUrl;
-          urlInput.value = '';
-          thumb.src = compressedDataUrl;
-          title.textContent = file.name || 'Ảnh đã tải lên';
-          container.classList.remove('hidden');
-          showToast('Đã tải và tối ưu ảnh minh họa!');
-        };
-        img.src = evt.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function handleRemoveEventImage() {
-      document.getElementById('event-img-data').value = '';
-      document.getElementById('event-img-url').value = '';
-      document.getElementById('event-img-file').value = '';
-      document.getElementById('event-img-preview-box').classList.add('hidden');
-      showToast('Đã gỡ ảnh minh họa');
-    }
-
-    function openLightboxModal(encodedUrl, encodedTitle) {
-      const url = decodeURIComponent(encodedUrl);
-      const title = decodeURIComponent(encodedTitle);
-      const modal = document.getElementById('image-lightbox-modal');
-      const img = document.getElementById('lightbox-img');
-      const cap = document.getElementById('lightbox-caption');
-      if (modal && img) {
-        img.src = url;
-        if (cap) cap.textContent = title;
-        modal.classList.remove('hidden');
+        }, 350);
       }
     }
-
-    function closeLightboxModal() {
-      const modal = document.getElementById('image-lightbox-modal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    // Close Lightbox on Escape
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightboxModal();
-    });
 
     function openProposalModal(day, slotId) {
       document.getElementById('prop-modal-title').textContent = 'Thêm Kèo Vào Bảng Lịch Trình';
@@ -1547,11 +1546,12 @@
       document.getElementById('event-title').value = '';
       document.getElementById('event-cost').value = '';
       document.getElementById('event-location').value = '';
+      document.getElementById('event-map-place').value = '';
+      document.getElementById('event-map-coords').value = '';
+      document.getElementById('event-map-url').value = '';
+      const statusLbl = document.getElementById('map-lookup-status');
+      if (statusLbl) statusLbl.textContent = 'Tự nhận diện link maps.app.goo.gl';
       document.getElementById('event-notes').value = '';
-      document.getElementById('event-img-url').value = '';
-      document.getElementById('event-img-data').value = '';
-      document.getElementById('event-img-file').value = '';
-      document.getElementById('event-img-preview-box').classList.add('hidden');
       document.getElementById('btn-delete-event').classList.add('hidden');
       document.getElementById('proposal-modal').classList.remove('hidden');
     }
@@ -1568,27 +1568,15 @@
       document.getElementById('event-cost').value = item.cost || '';
       document.getElementById('event-author').value = item.author || 'Cường';
       document.getElementById('event-location').value = item.location || '';
-      document.getElementById('event-notes').value = item.notes || '';
-      
-      // Load existing image if available
-      const dataInput = document.getElementById('event-img-data');
-      const urlInput = document.getElementById('event-img-url');
-      const previewBox = document.getElementById('event-img-preview-box');
-      const previewThumb = document.getElementById('event-img-preview-thumb');
-      const previewTitle = document.getElementById('event-img-preview-title');
-
-      if (item.imageUrl) {
-        dataInput.value = item.imageUrl;
-        urlInput.value = item.imageUrl.startsWith('http') ? item.imageUrl : '';
-        previewThumb.src = item.imageUrl;
-        previewTitle.textContent = item.imageUrl.startsWith('http') ? 'Link ảnh online' : 'Ảnh đã tải lên';
-        previewBox.classList.remove('hidden');
-      } else {
-        dataInput.value = '';
-        urlInput.value = '';
-        previewBox.classList.add('hidden');
+      document.getElementById('event-map-place').value = item.mapPlace || '';
+      document.getElementById('event-map-coords').value = item.mapCoords || '';
+      document.getElementById('event-map-url').value = item.mapUrl || '';
+      const statusLblEdit = document.getElementById('map-lookup-status');
+      if (statusLblEdit && item.mapPlace) {
+        statusLblEdit.textContent = '✓ Đã nhận diện: ' + item.mapPlace;
+        statusLblEdit.className = 'text-[10px] text-emerald-600 font-bold';
       }
-
+      document.getElementById('event-notes').value = item.notes || '';
       document.getElementById('btn-delete-event').classList.remove('hidden');
       document.getElementById('proposal-modal').classList.remove('hidden');
     }
@@ -1607,7 +1595,6 @@
       const author = document.getElementById('event-author').value;
       const location = document.getElementById('event-location').value.trim();
       const notes = document.getElementById('event-notes').value.trim();
-      const imageUrl = document.getElementById('event-img-data').value.trim() || document.getElementById('event-img-url').value.trim();
 
       const matchedSlot = timeSlots.find(s => s.id === slotId);
       const slotTime = matchedSlot ? matchedSlot.time : '';
@@ -1624,8 +1611,7 @@
             cost,
             author,
             location,
-            notes,
-            imageUrl
+            notes
           };
           showToast('Đã cập nhật kèo!');
         }
@@ -1640,7 +1626,6 @@
           author,
           location,
           notes,
-          imageUrl,
           votes: 1
         };
         scheduleEvents.push(newEvent);
@@ -1885,24 +1870,49 @@
       const tbody = document.getElementById('expense-table-rows');
       tbody.innerHTML = '';
 
-      let totalPerPerson = 0;
+      let totalGroupSum = 0;
       let totalItemsCount = 0;
+
+      // Personal total map for all 8 members
+      const memberTotals = {};
+      ALL_MEMBERS.forEach(m => { memberTotals[m] = 0; });
 
       // 1. Base / Fixed Expenses
       baseExpenses.forEach(exp => {
-        totalPerPerson += exp.amount;
+        const participants = (exp.participants && exp.participants.length > 0) ? exp.participants : ALL_MEMBERS;
+        const count = participants.length;
+        const totalLine = exp.amount * count;
+        totalGroupSum += totalLine;
         totalItemsCount++;
 
+        // Add to each participant's share
+        participants.forEach(m => {
+          if (memberTotals[m] !== undefined) memberTotals[m] += exp.amount;
+        });
+
+        const isSolo = count < 8;
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-50 transition';
         tr.innerHTML = `
-          <td class="py-3 px-4 font-bold text-slate-900">${exp.title}</td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-900">${exp.title}</div>
+            <div class="mt-1 flex items-center gap-1.5 flex-wrap">
+              ${isSolo 
+                ? `<span class="px-1.5 py-0.2 rounded text-[10px] font-extrabold bg-amber-100 text-amber-900 border border-amber-300">Đánh lẻ (${count} bạn: ${participants.join(', ')})</span>`
+                : `<span class="px-1.5 py-0.2 rounded text-[10px] font-extrabold bg-slate-100 text-slate-700">Toàn đoàn (8 bạn)</span>`
+              }
+            </div>
+          </td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-800 uppercase">${exp.cat}</span></td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2 py-0.5 rounded text-[11px] font-bold ${isSolo ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-700'}">
+              ${count}/8 bạn
+            </span>
+          </td>
           <td class="py-3 px-4 text-right font-mono font-bold text-slate-900">${formatMoney(exp.amount)}đ</td>
-          <td class="py-3 px-4 text-right font-mono font-bold text-[#dc2626]">${formatMoney(exp.amount * 8)}đ</td>
-          <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Chi Phí Nhóm</span></td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-[#dc2626]">${formatMoney(totalLine)}đ</td>
           <td class="py-3 px-4 text-right space-x-2">
-            <button onclick="openEditExpenseModal('${exp.id}')" title="Sửa khoản này" class="text-slate-600 hover:text-slate-900 font-bold">Sửa</button>
+            <button onclick="openEditExpenseModal('${exp.id}')" title="Sửa khoản này" class="text-slate-700 hover:text-slate-900 font-bold">Sửa</button>
             <span class="text-slate-300">•</span>
             <button onclick="deleteCustomExpense('${exp.id}')" title="Xóa khoản này" class="text-slate-400 hover:text-red-600 font-bold">Xóa</button>
           </td>
@@ -1910,35 +1920,159 @@
         tbody.appendChild(tr);
       });
 
-      // 2. Events Expenses from Schedule
+      // 2. Events Expenses from Schedule (default: split across 8 or creator)
       const eventsWithCost = scheduleEvents.filter(ev => ev.cost && ev.cost > 0);
       eventsWithCost.forEach(ev => {
-        totalPerPerson += ev.cost;
+        const count = 8;
+        const totalLine = ev.cost * count;
+        totalGroupSum += totalLine;
         totalItemsCount++;
+
+        ALL_MEMBERS.forEach(m => {
+          if (memberTotals[m] !== undefined) memberTotals[m] += ev.cost;
+        });
 
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-50 transition';
         tr.innerHTML = `
-          <td class="py-3 px-4 font-bold text-slate-900">
-            ${ev.title} <span class="text-[10px] text-slate-500 font-semibold">(${ev.time})</span>
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-900">${ev.title} <span class="text-[10px] text-slate-500 font-semibold">(${ev.time})</span></div>
+            <div class="mt-0.5"><span class="px-1.5 py-0.2 rounded text-[10px] font-extrabold bg-red-50 text-[#dc2626] border border-red-200">Từ Lịch Trình</span></div>
           </td>
-          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 uppercase">Ẩm thực / Kèo</span></td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 uppercase">Ẩm thực</span></td>
+          <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700">8/8 bạn</span></td>
           <td class="py-3 px-4 text-right font-mono font-bold text-slate-900">${formatMoney(ev.cost)}đ</td>
-          <td class="py-3 px-4 text-right font-mono font-bold text-[#dc2626]">${formatMoney(ev.cost * 8)}đ</td>
-          <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-[#dc2626]">Từ Lịch Trình</span></td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-[#dc2626]">${formatMoney(totalLine)}đ</td>
           <td class="py-3 px-4 text-right space-x-2">
-            <button onclick="openEditProposalModal('${ev.id}')" title="Sửa giá kèo này" class="text-slate-600 hover:text-slate-900 font-bold">Sửa Kèo</button>
+            <button onclick="openEditProposalModal('${ev.id}')" title="Sửa giá kèo này" class="text-slate-700 hover:text-slate-900 font-bold">Sửa Kèo</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
 
       // Update Summary Cards
-      const groupTotal = totalPerPerson * 8;
-      document.getElementById('stat-per-person').textContent = formatMoney(totalPerPerson) + 'đ';
-      document.getElementById('stat-group-total').textContent = formatMoney(groupTotal) + 'đ';
+      const averagePerPerson = Math.round(totalGroupSum / 8);
+      document.getElementById('stat-per-person').textContent = formatMoney(averagePerPerson) + 'đ';
+      document.getElementById('stat-group-total').textContent = formatMoney(totalGroupSum) + 'đ';
       document.getElementById('stat-winning-count').textContent = scheduleEvents.length + ' Kèo';
       document.getElementById('stat-total-props').textContent = totalItemsCount + ' Mục';
+
+      // Render 8 Member Bill Breakdown Cards (Tính riêng ai đánh lẻ thì cộng đúng vào người đó)
+      const breakdownGrid = document.getElementById('member-bill-breakdown-grid');
+      if (breakdownGrid) {
+        breakdownGrid.innerHTML = '';
+        ALL_MEMBERS.forEach((name, idx) => {
+          const personalTotal = memberTotals[name] || 0;
+          const diff = personalTotal - averagePerPerson;
+          const div = document.createElement('div');
+          div.className = 'p-2.5 rounded-xl border border-slate-200 bg-white shadow-2xs hover:border-slate-300 transition text-center';
+          div.innerHTML = `
+            <div class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wide mb-0.5">${idx + 1}. ${name}</div>
+            <div class="text-xs font-mono font-extrabold text-slate-900">${formatMoney(personalTotal)}đ</div>
+            <div class="text-[9px] font-bold mt-0.5 ${diff > 0 ? 'text-amber-600' : diff < 0 ? 'text-emerald-600' : 'text-slate-400'}">
+              ${diff > 0 ? '+' + formatMoney(diff) + 'đ' : diff < 0 ? '-' + formatMoney(Math.abs(diff)) + 'đ' : 'chuẩn quỹ'}
+            </div>
+          `;
+          breakdownGrid.appendChild(div);
+        });
+      }
+    }
+
+    
+    /* =========================================================================
+       EXPENSE SOLO & GROUP SPLITTING (ĐÁNH LẺ & TOÀN ĐOÀN)
+       ========================================================================= */
+    const ALL_MEMBERS = ['Cường', 'Huy', 'Giang', 'Dũng', 'Lân', 'Nhung', 'Quỳnh', 'Lanh'];
+    let currentExpenseParticipants = [...ALL_MEMBERS];
+
+    function renderExpenseMemberSelector(selectedList) {
+      const container = document.getElementById('expense-members-selector');
+      if (!container) return;
+
+      currentExpenseParticipants = selectedList && selectedList.length > 0 ? [...selectedList] : [...ALL_MEMBERS];
+      container.innerHTML = '';
+
+      ALL_MEMBERS.forEach(name => {
+        const isChecked = currentExpenseParticipants.includes(name);
+        const div = document.createElement('label');
+        div.className = `flex items-center gap-1.5 p-1.5 rounded-lg border cursor-pointer transition text-xs font-bold ${
+          isChecked ? 'bg-red-50 border-red-200 text-[#dc2626]' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+        }`;
+        div.innerHTML = `
+          <input type="checkbox" value="${name}" ${isChecked ? 'checked' : ''} onchange="toggleExpenseMember('${name}')" class="w-3.5 h-3.5 rounded text-[#dc2626] focus:ring-[#dc2626] border-slate-300" />
+          <span class="truncate">${name}</span>
+        `;
+        container.appendChild(div);
+      });
+
+      updateExpenseParticipantSummary();
+    }
+
+    function toggleExpenseMember(name) {
+      if (currentExpenseParticipants.includes(name)) {
+        if (currentExpenseParticipants.length === 1) {
+          showToast('Phải có ít nhất 1 người chia khoản này!');
+          renderExpenseMemberSelector(currentExpenseParticipants);
+          return;
+        }
+        currentExpenseParticipants = currentExpenseParticipants.filter(m => m !== name);
+      } else {
+        currentExpenseParticipants.push(name);
+      }
+      renderExpenseMemberSelector(currentExpenseParticipants);
+
+      // Recalculate total bill based on current amount per person
+      const amountPerPerson = parseInt(document.getElementById('custom-exp-amount').value) || 0;
+      if (amountPerPerson > 0) {
+        document.getElementById('custom-exp-total').value = amountPerPerson * currentExpenseParticipants.length;
+      }
+    }
+
+    function selectAllExpenseMembers(selectAll) {
+      currentExpenseParticipants = selectAll ? [...ALL_MEMBERS] : ['Cường'];
+      renderExpenseMemberSelector(currentExpenseParticipants);
+      const amountPerPerson = parseInt(document.getElementById('custom-exp-amount').value) || 0;
+      if (amountPerPerson > 0) {
+        document.getElementById('custom-exp-total').value = amountPerPerson * currentExpenseParticipants.length;
+      }
+    }
+
+    function updateExpenseParticipantSummary() {
+      const label = document.getElementById('expense-participants-label');
+      const badge = document.getElementById('expense-participants-badge');
+      const count = currentExpenseParticipants.length;
+
+      if (label) {
+        label.textContent = count === 8 
+          ? 'Đang chọn: 8 / 8 bạn (Toàn đoàn)' 
+          : `Đánh lẻ: ${count} / 8 bạn (${currentExpenseParticipants.join(', ')})`;
+      }
+      if (badge) {
+        if (count === 8) {
+          badge.textContent = 'Toàn đoàn';
+          badge.className = 'px-2 py-0.5 rounded text-[10px] font-extrabold bg-slate-200 text-slate-700';
+        } else {
+          badge.textContent = `Đánh lẻ (${count} bạn)`;
+          badge.className = 'px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-900 border border-amber-300';
+        }
+      }
+    }
+
+    function handleExpenseAmountPerPersonChange(val) {
+      const num = parseInt(val) || 0;
+      const totalInput = document.getElementById('custom-exp-total');
+      if (totalInput) {
+        totalInput.value = num * currentExpenseParticipants.length;
+      }
+    }
+
+    function handleExpenseTotalBillChange(val) {
+      const total = parseInt(val) || 0;
+      const count = currentExpenseParticipants.length || 1;
+      const amountInput = document.getElementById('custom-exp-amount');
+      if (amountInput) {
+        amountInput.value = Math.round(total / count);
+      }
     }
 
     function openExpenseModal(expId) {
@@ -1947,6 +2081,8 @@
       document.getElementById('custom-exp-title').value = '';
       document.getElementById('custom-exp-cat').value = 'food';
       document.getElementById('custom-exp-amount').value = '';
+      document.getElementById('custom-exp-total').value = '';
+      renderExpenseMemberSelector(ALL_MEMBERS);
       document.getElementById('exp-submit-btn').textContent = 'Lưu Vào Bảng Tính';
       document.getElementById('exp-delete-btn').classList.add('hidden');
       document.getElementById('expense-modal').classList.remove('hidden');
@@ -1961,6 +2097,9 @@
       document.getElementById('custom-exp-title').value = exp.title;
       document.getElementById('custom-exp-cat').value = exp.cat || 'other';
       document.getElementById('custom-exp-amount').value = exp.amount;
+      const expParticipants = (exp.participants && exp.participants.length > 0) ? exp.participants : ALL_MEMBERS;
+      renderExpenseMemberSelector(expParticipants);
+      document.getElementById('custom-exp-total').value = exp.amount * expParticipants.length;
       document.getElementById('exp-submit-btn').textContent = 'Cập Nhật Khoản Chi';
       document.getElementById('exp-delete-btn').classList.remove('hidden');
       document.getElementById('expense-modal').classList.remove('hidden');
@@ -1979,12 +2118,18 @@
 
       if (!title || !amount) return;
 
+      const participants = currentExpenseParticipants.length > 0 ? [...currentExpenseParticipants] : [...ALL_MEMBERS];
+      const totalAmount = amount * participants.length;
+
       if (id) {
         const index = baseExpenses.findIndex(e => e.id === id);
         if (index !== -1) {
           baseExpenses[index].title = title;
           baseExpenses[index].cat = cat;
           baseExpenses[index].amount = amount;
+          baseExpenses[index].totalAmount = totalAmount;
+          baseExpenses[index].participants = participants;
+          baseExpenses[index].isSolo = participants.length < 8;
           showToast('Đã cập nhật khoản chi!');
         }
       } else {
@@ -1992,7 +2137,10 @@
           id: 'exp-' + Date.now(),
           title,
           cat,
-          amount
+          amount,
+          totalAmount,
+          participants,
+          isSolo: participants.length < 8
         });
         showToast('Đã thêm khoản chi vào bảng tính!');
       }
@@ -2067,19 +2215,5 @@
       return (n || 0).toLocaleString('vi-VN');
     }
   </script>
-  <!-- ================= MODAL: XEM ẢNH FULL SIZE (IMAGE LIGHTBOX) ================= -->
-  <div id="image-lightbox-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closeLightboxModal()">
-    <div class="relative max-w-2xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
-      <button onclick="closeLightboxModal()" class="absolute -top-10 right-0 text-white hover:text-red-400 font-extrabold text-sm flex items-center gap-1.5 bg-black/50 px-3 py-1 rounded-full border border-white/20 transition">
-        <span>✕</span>
-        <span>Đóng (Esc)</span>
-      </button>
-      <div class="w-full max-h-[75vh] flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl">
-        <img id="lightbox-img" src="" alt="Ảnh minh họa" class="max-w-full max-h-[75vh] object-contain rounded-2xl" />
-      </div>
-      <p id="lightbox-caption" class="text-white text-xs font-bold mt-3 text-center px-4 py-1.5 bg-black/70 rounded-full backdrop-blur-xs border border-white/15"></p>
-    </div>
-  </div>
-
 </body>
 </html>
