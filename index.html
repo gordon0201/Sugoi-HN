@@ -325,7 +325,7 @@
           <span class="text-slate-300 hidden sm:inline">•</span>
           <span id="live-weather-desc" class="text-slate-600 text-[11px] font-semibold hidden sm:inline">Trời quang</span>
           <span class="text-slate-300">•</span>
-          <span id="live-hanoi-time" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-extrabold bg-white text-slate-900 border border-slate-200 shrink-0 shadow-2xs">--:--:--</span>
+          <span id="live-hanoi-time" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-extrabold bg-white text-slate-900 border border-slate-200 shrink-0 shadow-2xs"><script>document.write(new Date().toLocaleTimeString('vi-VN', {timeZone: 'Asia/Bangkok', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}));</script></span>
         </div>
       </div>
 
@@ -1124,6 +1124,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       loadState();
       initCountdown();
+      updateHanoiClock();
+      setInterval(updateHanoiClock, 1000);
       fetchLiveHanoiWeather();
 
       // Refresh live weather every 10 minutes
@@ -1154,14 +1156,21 @@
       const el = document.getElementById('live-hanoi-time');
       if (!el) return;
       const now = new Date();
-      const timeStr = now.toLocaleTimeString('vi-VN', {
-        timeZone: 'Asia/Bangkok',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      });
-      el.textContent = timeStr;
+      try {
+        const timeStr = now.toLocaleTimeString('vi-VN', {
+          timeZone: 'Asia/Bangkok',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        });
+        el.textContent = timeStr;
+      } catch (e) {
+        const hours = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        el.textContent = `${hours}:${mins}:${secs}`;
+      }
     }
 
     async function fetchLiveHanoiWeather() {
